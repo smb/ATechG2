@@ -1,27 +1,41 @@
 package de.adv.atech.roboter.test;
 
+import java.lang.reflect.Field;
 import java.util.Iterator;
+import java.util.Map.Entry;
 
 import de.adv.atech.roboter.commons.commands.DefaultMove;
 
-public class TestCommand {
+/**
+ * 
+ * @author sbu
+ * 
+ */
+public class TestCommand
+{
 
-	public static void main(String[] args) {
-		DefaultMove moveCommand = new DefaultMove();
+  /**
+   * 
+   * @param args
+   */
+  public static void main(String[] args)
+  {
+    DefaultMove moveCommand = new DefaultMove();
 
-		System.out.println("Parameterliste von Move: ");
+    System.out.println("Parameterliste von Move: ");
 
-		for (Iterator<String> it = moveCommand.getParameters().keySet()
-				.iterator(); it.hasNext();) {
-			System.out.println(" - " + it.next());
-		}
+    for (Iterator<Entry<Enum< ? >, Field>> it = moveCommand.getParameters()
+        .entrySet().iterator(); it.hasNext();)
+    {
+      Entry<Enum< ? >, Field> entry = it.next();
 
-		moveCommand.setParameter("X", new Double(123));
+      System.out.println(" - " + entry.getKey() + " --> " + entry.getValue());
+    }
 
-		Object param = moveCommand.getParameter("X");
+    moveCommand.setParameter(DefaultMove.Parameter.X, new Double(123));
 
-		param = moveCommand.getParameter("X");
+    Object param = moveCommand.getParameter(DefaultMove.Parameter.X);
 
-		System.out.println(param + " - " + param.getClass());
-	}
+    System.out.println(param + " - " + param.getClass());
+  }
 }

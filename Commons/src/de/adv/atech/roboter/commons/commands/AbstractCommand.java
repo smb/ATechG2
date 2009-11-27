@@ -6,80 +6,152 @@ import java.util.Map;
 
 import de.adv.atech.roboter.commons.interfaces.Command;
 
-public abstract class AbstractCommand implements Command {
+/**
+ * 
+ * @author sbu
+ * 
+ */
+public abstract class AbstractCommand implements Command
+{
 
-	protected String commandName = null;
+  /**
+   * 
+   */
+  protected String commandName = null;
 
-	Map<String, Field> parameterMap;
+  Map<Enum< ? >, Field> parameterMap;
 
-	protected AbstractCommand child;
+  /**
+   * 
+   */
+  private AbstractCommand child;
 
-	public AbstractCommand() {
+  private Class enumClass;
 
-	}
+  /**
+   * 
+   */
+  public AbstractCommand()
+  {
+    //
+  }
 
-	public void init(AbstractCommand child) {
-		this.child = child;
-		this.parameterMap = new HashMap<String, Field>();
-		this.parameterMap = findParameters();
-	}
+  /**
+   * 
+   * @param child
+   */
+  public void init(AbstractCommand child, Class enumClass)
+  {
+    this.child = child;
+    this.enumClass = enumClass;
+    this.parameterMap = new HashMap<Enum< ? >, Field>();
+    this.parameterMap = findParameters();
+  }
 
-	public String getCommandName() {
-		return this.commandName;
-	}
+  /**
+   * 
+   */
+  public String getCommandName()
+  {
+    return this.commandName;
+  }
 
-	public Map<String, Field> getParameters() {
-		return this.parameterMap;
-	}
+  /**
+   * 
+   */
+  public Map<Enum< ? >, Field> getParameters()
+  {
+    return this.parameterMap;
+  }
 
-	private Map<String, Field> findParameters() {
-		Map<String, Field> returnMap = new HashMap<String, Field>();
+  private Map<Enum< ? >, Field> findParameters()
+  {
+    Map<Enum< ? >, Field> returnMap = new HashMap<Enum< ? >, Field>();
 
-		Field[] fields = this.child.getClass().getFields();
-		for (int i = 0; i < fields.length; i++) {
-			Field tmpField = fields[i];
-			returnMap.put(tmpField.getName(), tmpField);
-		}
+    Field[] enumFields = this.enumClass.getFields();
 
-		return returnMap;
-	}
+    for (int i = 0; i < enumFields.length; i++)
+    {
+      Field tmpField = enumFields[i];
+      Field classField = null;
 
-	public Object getParameter(String name) {
-		Object returnObject = null;
+      // Passendes Feld zum enumFeld finden...
 
-		if (this.parameterMap.containsKey(name)) {
-			Field parameterField = this.getParameters().get(name);
+      try
+      {
+        classField = this.child.getClass().getField(tmpField.getName());
+      }
+      catch (SecurityException e)
+      {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+      catch (NoSuchFieldException e)
+      {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
 
-			try {
-				returnObject = parameterField.get(this.child);
-			}
-			catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		return returnObject;
-	}
+      returnMap.put(Enum.valueOf(enumClass, tmpField.getName()), classField);
+    }
 
-	public void setParameter(String name, Object object) {
-		if (this.parameterMap.containsKey(name)) {
-			Field parameterField = this.getParameters().get(name);
+    return returnMap;
+  }
 
-			try {
-				parameterField.set(this.child, object);
-			}
-			catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
+  /**
+   * 
+   */
+  public Object getParameter(Enum< ? > name)
+  {
+    Object returnObject = null;
+
+    if (this.parameterMap.containsKey(name))
+    {
+      Field parameterField = this.getParameters().get(name);
+
+      try
+      {
+        returnObject = parameterField.get(this.child);
+      }
+      catch (IllegalArgumentException e)
+      {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+      catch (IllegalAccessException e)
+      {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+    }
+    return returnObject;
+  }
+
+  /**
+   * 
+   * @param name
+   * @param object
+   */
+  public void setParameter(Enum< ? > name, Object object)
+  {
+    if (this.parameterMap.containsKey(name))
+    {
+      Field parameterField = this.getParameters().get(name);
+
+      try
+      {
+        parameterField.set(this.child, object);
+      }
+      catch (IllegalArgumentException e)
+      {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+      catch (IllegalAccessException e)
+      {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+    }
+  }
 }

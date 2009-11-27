@@ -1,16 +1,52 @@
 package de.adv.atech.roboter.commons.commands;
 
-public class DefaultMove extends AbstractCommand {
+/**
+ * 
+ * @author sbu
+ * 
+ */
+public class DefaultMove extends AbstractCommand
+{
 
-	public Double X;
+  /**
+   * 
+   */
+  public Double X;
 
-	public Double Y;
+  /**
+   * 
+   */
+  public Double Y;
 
-	public Double Z;
+  /**
+   * 
+   */
+  public Double Z;
 
-	public DefaultMove() {
-		super();
-		init(this);
-		commandName = "Move";
-	}
+  /**
+   * 
+   */
+  public String KeinGueltigerParameter;
+
+  /**
+   * 
+   * @author sbu
+   * 
+   *         Enum ohne "KeinGueltigerParameter" - liste der "gueltigen"
+   *         Parameter
+   */
+  public enum Parameter
+  {
+    X, Y, Z
+  }
+
+  /**
+   * 
+   */
+  public DefaultMove()
+  {
+    super();
+    init(this, Parameter.class);
+    this.commandName = "Move";
+  }
 }
