@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.adv.atech.roboter.commons.exceptions.CommandException;
 import de.adv.atech.roboter.commons.interfaces.Command;
 
 /**
@@ -11,147 +12,175 @@ import de.adv.atech.roboter.commons.interfaces.Command;
  * @author sbu
  * 
  */
-public abstract class AbstractCommand implements Command
-{
+public abstract class AbstractCommand implements Command {
 
-  /**
+	/**
    * 
    */
-  protected String commandName = null;
+	protected String commandName = null;
 
-  Map<Enum< ? >, Field> parameterMap;
+	Map<Enum<?>, Field> parameterMap;
 
-  /**
+	/**
    * 
    */
-  private AbstractCommand child;
+	private AbstractCommand child;
 
-  private Class enumClass;
+	private Class enumClass;
 
-  /**
+	/**
    * 
    */
-  public AbstractCommand()
-  {
-    //
-  }
+	public AbstractCommand() {
+		//
+	}
 
-  /**
-   * 
-   * @param child
-   */
-  public void init(AbstractCommand child, Class enumClass)
-  {
-    this.child = child;
-    this.enumClass = enumClass;
-    this.parameterMap = new HashMap<Enum< ? >, Field>();
-    this.parameterMap = findParameters();
-  }
+	/**
+	 * 
+	 * @param child
+	 */
+	public void init(AbstractCommand child, Class enumClass) {
+		this.child = child;
+		this.enumClass = enumClass;
+		this.parameterMap = new HashMap<Enum<?>, Field>();
 
-  /**
-   * 
-   */
-  public String getCommandName()
-  {
-    return this.commandName;
-  }
+		try {
+			this.parameterMap = findParameters();
+		} catch (CommandException e) {
+			// Controller.getInstance().handleException(e);
+		}
+	}
 
-  /**
+	/**
    * 
    */
-  public Map<Enum< ? >, Field> getParameters()
-  {
-    return this.parameterMap;
-  }
+	public String getCommandName() {
+		return this.commandName;
+	}
 
-  private Map<Enum< ? >, Field> findParameters()
-  {
-    Map<Enum< ? >, Field> returnMap = new HashMap<Enum< ? >, Field>();
-
-    Field[] enumFields = this.enumClass.getFields();
-
-    for (int i = 0; i < enumFields.length; i++)
-    {
-      Field tmpField = enumFields[i];
-      Field classField = null;
-
-      // Passendes Feld zum enumFeld finden...
-
-      try
-      {
-        classField = this.child.getClass().getField(tmpField.getName());
-      }
-      catch (SecurityException e)
-      {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
-      catch (NoSuchFieldException e)
-      {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
-
-      returnMap.put(Enum.valueOf(enumClass, tmpField.getName()), classField);
-    }
-
-    return returnMap;
-  }
-
-  /**
+	/**
    * 
    */
-  public Object getParameter(Enum< ? > name)
-  {
-    Object returnObject = null;
+	public Map<Enum<?>, Field> getParameters() {
+		return this.parameterMap;
+	}
 
-    if (this.parameterMap.containsKey(name))
-    {
-      Field parameterField = this.getParameters().get(name);
+	private Map<Enum<?>, Field> findParameters() throws CommandException {
+		Map<Enum<?>, Field> returnMap = new HashMap<Enum<?>, Field>();
 
-      try
-      {
-        returnObject = parameterField.get(this.child);
-      }
-      catch (IllegalArgumentException e)
-      {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
-      catch (IllegalAccessException e)
-      {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
-    }
-    return returnObject;
-  }
+		Field[] enumFields = this.enumClass.getFields();
 
-  /**
+		for (int i = 0; i < enumFields.length; i++) {
+			Field tmpField = enumFields[i];
+			Field classField = null;
+
+			// Passendes Feld zum enumFeld finden...
+
+			try {
+				// classField =
+				// this.child.getClass().getField(tmpField.getName());
+				// getDeclaredField benutzen -> Parameter koennen "protected"
+				// sein
+				classField = this.child.getClass().getDeclaredField(
+						tmpField.getName());
+			} catch (SecurityException e) {
+				throw new CommandException(e, this);
+			} catch (NoSuchFieldException e) {
+				throw new CommandException(e, this);
+			}
+
+			returnMap.put(Enum.valueOf(enumClass, tmpField.getName()),
+					classField);
+		}
+
+		return returnMap;
+	}
+
+	/**
    * 
-   * @param name
-   * @param object
    */
-  public void setParameter(Enum< ? > name, Object object)
-  {
-    if (this.parameterMap.containsKey(name))
-    {
-      Field parameterField = this.getParameters().get(name);
+	public Object getParameter(Enum<?> name) throws CommandException {
+		Object returnObject = null;
 
-      try
-      {
-        parameterField.set(this.child, object);
-      }
-      catch (IllegalArgumentException e)
-      {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
-      catch (IllegalAccessException e)
-      {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
-    }
-  }
+		if (this.parameterMap.containsKey(name)) {
+			Field parameterField = this.getParameters().get(name);
+
+			try {
+				returnObject = parameterField.get(this.child);
+			} catch (IllegalArgumentException e) {
+				throw new CommandException(e, this);
+			} catch (IllegalAccessException e) {
+				throw new CommandException(e, this);
+			}
+		}
+		return returnObject;
+	}
+
+	/**
+	 * 
+	 * @param name
+	 * @param object
+	 */
+	public void setParameter(Enum<?> name, Object object)
+			throws CommandException {
+		if (this.parameterMap.containsKey(name)) {
+			Field parameterField = this.getParameters().get(name);
+
+			try {
+				parameterField.set(this.child, object);
+			} catch (IllegalArgumentException e) {
+				throw new CommandException(e, this);
+			} catch (IllegalAccessException e) {
+				throw new CommandException(e, this);
+			}
+		}
+	}
+
+	/**
+	 * Alle lesbaren Informationen ausgeben - Prototyp fuer die Entwicklung
+	 * TODO: Besser machen!
+	 */
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		String className = this.getClass().getName();
+		Field[] declaredFields = this.getClass().getDeclaredFields();
+
+		sb.append("[");
+		sb.append(className);
+		sb.append(": [");
+
+		for (int i = 0; i < declaredFields.length; i++) {
+			Field tmpField = declaredFields[i];
+			String tmpFieldName = tmpField.getName();
+
+			sb.append(tmpFieldName);
+			sb.append(" (");
+			sb.append(tmpField.getType().getName());
+			sb.append(")");
+			sb.append(": ");
+
+			try {
+				Object tmpFieldContent = tmpField.get(this);
+
+				if (tmpFieldContent == null) {
+					sb.append("*NULL*");
+				} else {
+					sb.append(tmpFieldContent.toString());
+				}
+
+			} catch (IllegalAccessException e) {
+				sb.append("*unknown*");
+			} catch (Exception e) {
+				sb.append("*internal java error*");
+			}
+
+			if (i != declaredFields.length - 1) {
+				sb.append(", ");
+			}
+		}
+
+		sb.append("]]\n");
+
+		return sb.toString();
+	}
 }
