@@ -46,7 +46,8 @@ public abstract class AbstractCommand implements Command {
 
 		try {
 			this.parameterMap = findParameters();
-		} catch (CommandException e) {
+		}
+		catch (CommandException e) {
 			// Controller.getInstance().handleException(e);
 		}
 	}
@@ -83,9 +84,11 @@ public abstract class AbstractCommand implements Command {
 				// sein
 				classField = this.child.getClass().getDeclaredField(
 						tmpField.getName());
-			} catch (SecurityException e) {
+			}
+			catch (SecurityException e) {
 				throw new CommandException(e, this);
-			} catch (NoSuchFieldException e) {
+			}
+			catch (NoSuchFieldException e) {
 				throw new CommandException(e, this);
 			}
 
@@ -107,9 +110,11 @@ public abstract class AbstractCommand implements Command {
 
 			try {
 				returnObject = parameterField.get(this.child);
-			} catch (IllegalArgumentException e) {
+			}
+			catch (IllegalArgumentException e) {
 				throw new CommandException(e, this);
-			} catch (IllegalAccessException e) {
+			}
+			catch (IllegalAccessException e) {
 				throw new CommandException(e, this);
 			}
 		}
@@ -128,9 +133,11 @@ public abstract class AbstractCommand implements Command {
 
 			try {
 				parameterField.set(this.child, object);
-			} catch (IllegalArgumentException e) {
+			}
+			catch (IllegalArgumentException e) {
 				throw new CommandException(e, this);
-			} catch (IllegalAccessException e) {
+			}
+			catch (IllegalAccessException e) {
 				throw new CommandException(e, this);
 			}
 		}
@@ -164,13 +171,16 @@ public abstract class AbstractCommand implements Command {
 
 				if (tmpFieldContent == null) {
 					sb.append("*NULL*");
-				} else {
+				}
+				else {
 					sb.append(tmpFieldContent.toString());
 				}
 
-			} catch (IllegalAccessException e) {
+			}
+			catch (IllegalAccessException e) {
 				sb.append("*unknown*");
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				sb.append("*internal java error*");
 			}
 
