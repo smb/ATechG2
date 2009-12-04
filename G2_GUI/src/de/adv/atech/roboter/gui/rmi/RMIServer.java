@@ -29,6 +29,8 @@ public class RMIServer extends UnicastRemoteObject implements ServerInterface {
 		}
 		try {
 			Naming.rebind(Constant.RMI_SERVER_GUI, new RMIServer());
+
+			System.out.println("Server gestartet");
 		}
 		catch (MalformedURLException ex) {
 			System.out.println(ex.getMessage());
@@ -36,14 +38,16 @@ public class RMIServer extends UnicastRemoteObject implements ServerInterface {
 		catch (RemoteException ex) {
 			System.out.println(ex.getMessage());
 		}
+
 	}
 
 	public void processCommand(List<Command> commandList)
 			throws RemoteException {
+
+		System.out.println("Empfangene Daten: ");
+
 		for (Iterator<Command> it = commandList.iterator(); it.hasNext();) {
 			Command tmpCommand = it.next();
-
-			System.out.println("Empfangene Daten: ");
 
 			System.out.println(tmpCommand.toString());
 		}
