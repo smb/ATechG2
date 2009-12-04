@@ -43,14 +43,7 @@ public abstract class AbstractCommand implements Command, Serializable {
 	public void init(AbstractCommand child, Class enumClass) {
 		this.child = child;
 		this.enumClass = enumClass;
-//		this.parameterMap = new HashMap<Enum<?>, Field>();
-//
-//		try {
-//			this.parameterMap = findParameters();
-//		}
-//		catch (CommandException e) {
-//			// Controller.getInstance().handleException(e);
-//		}
+
 	}
 
 	/**
@@ -63,7 +56,7 @@ public abstract class AbstractCommand implements Command, Serializable {
 	/**
    * 
    */
-	public Map<Enum<?>, Field> getParameters() {
+	public Map<Enum<?>, Field> getParameters() throws CommandException {
 		return findParameters();
 	}
 
@@ -107,9 +100,9 @@ public abstract class AbstractCommand implements Command, Serializable {
 		Object returnObject = null;
 
 		Map<Enum<?>, Field> parameterMap = findParameters();
-		
+
 		if (parameterMap.containsKey(name)) {
-			Field parameterField = this.getParameters().get(name);
+			Field parameterField = parameterMap.get(name);
 
 			try {
 				returnObject = parameterField.get(this.child);
@@ -132,7 +125,7 @@ public abstract class AbstractCommand implements Command, Serializable {
 	public void setParameter(Enum<?> name, Object object)
 			throws CommandException {
 		Map<Enum<?>, Field> parameterMap = findParameters();
-		
+
 		if (parameterMap.containsKey(name)) {
 			Field parameterField = this.getParameters().get(name);
 

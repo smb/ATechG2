@@ -23,15 +23,15 @@ public class TestCommand {
 
 		System.out.println("Parameterliste von Move: ");
 
-		for (Iterator<Entry<Enum<?>, Field>> it = moveCommand.getParameters()
-				.entrySet().iterator(); it.hasNext();) {
-			Entry<Enum<?>, Field> entry = it.next();
-
-			System.out.println(" - " + entry.getKey() + " --> "
-					+ entry.getValue());
-		}
-
 		try {
+			for (Iterator<Entry<Enum<?>, Field>> it = moveCommand
+					.getParameters().entrySet().iterator(); it.hasNext();) {
+				Entry<Enum<?>, Field> entry = it.next();
+
+				System.out.println(" - " + entry.getKey() + " --> "
+						+ entry.getValue());
+			}
+
 			moveCommand
 					.setParameter(DefaultMove.Parameter.X, new Double("123"));
 			moveCommand
@@ -40,7 +40,8 @@ public class TestCommand {
 			Object param = moveCommand.getParameter(DefaultMove.Parameter.X);
 
 			System.out.println(param + " - " + param.getClass());
-		} catch (CommandException e) {
+		}
+		catch (CommandException e) {
 			e.dumpException();
 		}
 	}
