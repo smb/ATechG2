@@ -1,5 +1,6 @@
 package de.adv.atech.roboter.commons.commands;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,14 +13,14 @@ import de.adv.atech.roboter.commons.interfaces.Command;
  * @author sbu
  * 
  */
-public abstract class AbstractCommand implements Command {
+public abstract class AbstractCommand implements Command, Serializable {
 
 	/**
    * 
    */
 	protected String commandName = null;
 
-	Map<Enum<?>, Field> parameterMap;
+	// Map<Enum<?>, Field> parameterMap;
 
 	/**
    * 
@@ -42,14 +43,14 @@ public abstract class AbstractCommand implements Command {
 	public void init(AbstractCommand child, Class enumClass) {
 		this.child = child;
 		this.enumClass = enumClass;
-		this.parameterMap = new HashMap<Enum<?>, Field>();
-
-		try {
-			this.parameterMap = findParameters();
-		}
-		catch (CommandException e) {
-			// Controller.getInstance().handleException(e);
-		}
+//		this.parameterMap = new HashMap<Enum<?>, Field>();
+//
+//		try {
+//			this.parameterMap = findParameters();
+//		}
+//		catch (CommandException e) {
+//			// Controller.getInstance().handleException(e);
+//		}
 	}
 
 	/**
@@ -63,7 +64,7 @@ public abstract class AbstractCommand implements Command {
    * 
    */
 	public Map<Enum<?>, Field> getParameters() {
-		return this.parameterMap;
+		return findParameters();
 	}
 
 	private Map<Enum<?>, Field> findParameters() throws CommandException {
@@ -105,7 +106,9 @@ public abstract class AbstractCommand implements Command {
 	public Object getParameter(Enum<?> name) throws CommandException {
 		Object returnObject = null;
 
-		if (this.parameterMap.containsKey(name)) {
+		Map<Enum<?>, Field> parameterMap = findParameters();
+		
+		if (parameterMap.containsKey(name)) {
 			Field parameterField = this.getParameters().get(name);
 
 			try {
@@ -128,7 +131,9 @@ public abstract class AbstractCommand implements Command {
 	 */
 	public void setParameter(Enum<?> name, Object object)
 			throws CommandException {
-		if (this.parameterMap.containsKey(name)) {
+		Map<Enum<?>, Field> parameterMap = findParameters();
+		
+		if (parameterMap.containsKey(name)) {
 			Field parameterField = this.getParameters().get(name);
 
 			try {
