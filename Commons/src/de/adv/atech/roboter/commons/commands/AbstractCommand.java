@@ -187,7 +187,7 @@ public abstract class AbstractCommand implements Command, Serializable {
 			}
 		}
 
-		sb.append("]]\n");
+		sb.append("]]");
 
 		return sb.toString();
 	}
