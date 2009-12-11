@@ -1,44 +1,60 @@
 package de.adv.atech.roboter.gui.rmi;
 
-import java.net.MalformedURLException;
-import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 
 import de.adv.atech.roboter.commons.Constant;
 import de.adv.atech.roboter.commons.interfaces.Command;
+import de.adv.atech.roboter.commons.rmi.Discovery;
+import de.adv.atech.roboter.commons.rmi.RMILookup;
 import de.adv.atech.roboter.commons.rmi.ServerInterface;
 
 public class RMIServer extends UnicastRemoteObject implements ServerInterface {
 
 	RMIServer() throws RemoteException {
 		super();
+
+		try {
+			LocateRegistry.createRegistry(10232);
+		}
+
+		catch (RemoteException ex) {
+			System.out.println("EX: " + ex.getMessage());
+		}
+		try {
+			Properties tmpProps = new Properties();
+
+			tmpProps.put("jip.rmi.multicast.address", "228.5.6.7");
+			tmpProps.put("jip.rmi.multicast.port", "6789");
+			tmpProps.put("jip.rmi.unicast.port", new Integer(5000).toString());
+			tmpProps.put("jip.rmi.unicast.portRange", "20");
+			tmpProps.put("jip.rmi.protocol.header", "ROBOTHEAD");
+			tmpProps.put("jip.rmi.protocol.delim", "|");
+
+			Discovery.setProperties(tmpProps);
+
+			// Naming.rebind(Constant.RMI_SERVER_GUI, new RMIServer());
+
+			RMILookup.bind(this, Constant.RMI_SERVER_GUI);
+
+			System.out.println("Server gestartet");
+		}
+		catch (Exception ex) {
+			System.out.println(ex.getMessage());
+		}
 	}
 
 	public static void main(String[] args) {
 		try {
-			LocateRegistry.createRegistry(Registry.REGISTRY_PORT);
+			new RMIServer();
 		}
-
-		catch (RemoteException ex) {
+		catch (Exception ex) {
 			System.out.println(ex.getMessage());
 		}
-		try {
-			Naming.rebind(Constant.RMI_SERVER_GUI, new RMIServer());
-
-			System.out.println("Server gestartet");
-		}
-		catch (MalformedURLException ex) {
-			System.out.println(ex.getMessage());
-		}
-		catch (RemoteException ex) {
-			System.out.println(ex.getMessage());
-		}
-
 	}
 
 	public void processCommand(List<Command> commandList)
