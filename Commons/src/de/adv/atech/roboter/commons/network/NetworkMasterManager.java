@@ -31,7 +31,7 @@ public class NetworkMasterManager
 
     RMILookup.bind(this.server, Constant.RMI_SERVER_GUI);
 
-    System.out.println("Server gestartet");
+    System.out.println("(Master-)Server gestartet");
   }
 
   /**

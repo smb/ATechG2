@@ -22,7 +22,7 @@ public class NetworkSlaveManager
 
   String clientName;
 
-  int rmiPort = 32132;
+  int rmiPort = 12321;
 
   /**
    * 

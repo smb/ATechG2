@@ -19,7 +19,7 @@ public interface ServerInterface extends Remote
 
   public void processCommand(List<Command> commandList) throws RemoteException;
 
-  public boolean ping();
+  public void ping() throws RemoteException;
 
-  public void initConnection(Client client);
+  public void initConnection(Client client) throws RemoteException;
 }
