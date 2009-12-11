@@ -3,29 +3,36 @@ package de.adv.atech.roboter.commons;
 import java.util.List;
 import java.util.Vector;
 
+public class ClientManager
+{
 
-public class ClientManager {
+  List<Client> clientList;
 
-	List<Schlumpf> clientList;
+  public ClientManager()
+  {
+    this.clientList = new Vector<Client>();
+  }
 
-	public ClientManager() {
-		this.clientList = new Vector<Schlumpf>();
-	}
+  public boolean registerClient(Client client)
+  {
+    System.out.println("[ClientManager] registered Client: " + client);
 
-	public boolean registerClient(Schlumpf schlumpf) {
-		return this.clientList.add(schlumpf);
-	}
+    return this.clientList.add(client);
+  }
 
-	public boolean unregisterClient(Schlumpf schlumpf) {
-		return this.clientList.remove(schlumpf);
-	}
+  public boolean unregisterClient(Client client)
+  {
+    return this.clientList.remove(client);
+  }
 
-	public List<Schlumpf> getRegisteredClients() {
-		return this.clientList;
-	}
+  public List<Client> getRegisteredClients()
+  {
+    return this.clientList;
+  }
 
-	public boolean isRegisteredClient(Schlumpf schlumpf) {
-		return this.clientList.contains(schlumpf);
-	}
+  public boolean isRegisteredClient(Client client)
+  {
+    return this.clientList.contains(client);
+  }
 
 }

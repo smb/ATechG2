@@ -1,79 +1,117 @@
 package de.adv.atech.roboter.commons.rmi;
 
-/*
- * javainpractice.net 1999-2001
+import java.util.Properties;
+
+/**
  * 
- * This software is intended to be used for educational purposes only.
+ * @author sbu
  * 
- * We make no representations or warranties about the suitability of the
- * software.
- * 
- * Any feedback relating to this software can be sent to info@javainpractice.net
  */
+public final class Discovery
+{
 
-/*
- * System properties required jip.rmi.multicast.address jip.rmi.multicast.port
- * jip.rmi.unicast.port jip.rmi.unicast.portRange jip.rmi.protocol.header
- * jip.rmi.protocol.delim
- */
+  private static java.util.Properties _props;
 
-public final class Discovery {
+  public static final String ANY = "any";
 
-	private static java.util.Properties _props;
+  private Discovery()
+  {
+  }
 
-	public static final String ANY = "any";
+  /**
+   * 
+   * @param props
+   */
+  public static void setProperties(Properties props)
+  {
+    _props = props;
+  }
 
-	private Discovery() {
-	}
+  /**
+   * 
+   * @param fileName
+   * @throws java.io.IOException
+   */
+  public static void setProperties(String fileName) throws java.io.IOException
+  {
 
-	public static void setProperties(java.util.Properties props) {
-		_props = props;
-	}
+    java.io.FileInputStream fis = new java.io.FileInputStream(fileName);
+    _props = new Properties();
+    _props.load(fis);
+    fis.close();
+    _props.list(System.out);
+  }
 
-	public static void setProperties(String fileName)
-			throws java.io.IOException {
+  /**
+   * 
+   * @return
+   * @throws java.net.UnknownHostException
+   */
+  public static java.net.InetAddress getMulticastAddress()
+      throws java.net.UnknownHostException
+  {
 
-		java.io.FileInputStream fis = new java.io.FileInputStream(fileName);
-		_props = new java.util.Properties();
-		_props.load(fis);
-		fis.close();
-		_props.list(System.out);
-	}
+    String multicastAddress = _props.getProperty("rmi.multicast.address");
+    return java.net.InetAddress.getByName(multicastAddress);
+  }
 
-	public static java.net.InetAddress getMulticastAddress()
-			throws java.net.UnknownHostException {
+  /**
+   * 
+   * @return
+   */
+  public static int getMulticastPort()
+  {
+    return getIntProperty("rmi.multicast.port");
+  }
 
-		String multicastAddress = _props
-				.getProperty("jip.rmi.multicast.address");
-		return java.net.InetAddress.getByName(multicastAddress);
-	}
+  /**
+   * 
+   * @return
+   */
+  public static String getProtocolDelim()
+  {
+    return _props.getProperty("rmi.protocol.delim");
+  }
 
-	public static int getMulticastPort() {
-		return getIntProperty("jip.rmi.multicast.port");
-	}
+  /**
+   * 
+   * @return
+   */
+  public static String getProtocolHeader()
+  {
+    return _props.getProperty("rmi.protocol.header");
+  }
 
-	public static String getProtocolDelim() {
-		return _props.getProperty("jip.rmi.protocol.delim");
-	}
+  /**
+   * 
+   * @return
+   */
+  public static int getUnicastPort()
+  {
+    return getIntProperty("rmi.unicast.port");
+  }
 
-	public static String getProtocolHeader() {
-		return _props.getProperty("jip.rmi.protocol.header");
-	}
+  /**
+   * 
+   * @return
+   */
+  public static int getUnicastPortRange()
+  {
+    return getIntProperty("rmi.unicast.portRange");
+  }
 
-	public static int getUnicastPort() {
-		return getIntProperty("jip.rmi.unicast.port");
-	}
+  /**
+   * 
+   * @return
+   */
+  public static String getRegistyUrlPrefix()
+  {
+    return _props.getProperty("rmi.registry.urlPrefix");
+  }
 
-	public static int getUnicastPortRange() {
-		return getIntProperty("jip.rmi.unicast.portRange");
-	}
-
-	public static String getRegistyUrlPrefix() {
-		return _props.getProperty("jip.rmi.registry.urlPrefix");
-	}
-
-	private static int getIntProperty(String propertyName) {
-		String str = _props.getProperty(propertyName);
-		return Integer.parseInt(str);
-	}
+  private static int getIntProperty(String propertyName)
+  {
+    String str = _props.getProperty(propertyName);
+    return Integer.parseInt(str);
+  }
 }

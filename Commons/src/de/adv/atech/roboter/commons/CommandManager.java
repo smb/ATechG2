@@ -9,17 +9,17 @@ import de.adv.atech.roboter.commons.interfaces.Command;
 
 public class CommandManager {
 
-	HashMap<Schlumpf, List<Command>> commands;
+	HashMap<Client, List<Command>> commands;
 
 	public CommandManager() {
-		this.commands = new HashMap<Schlumpf, List<Command>>();
+		this.commands = new HashMap<Client, List<Command>>();
 	}
 
-	public List<Command> getCommandList(Schlumpf schlumpf) {
+	public List<Command> getCommandList(Client client) {
 		List<Command> tmpCommandList = null;
 
-		if (this.commands.containsKey(schlumpf)) {
-			tmpCommandList = this.commands.get(schlumpf);
+		if (this.commands.containsKey(client)) {
+			tmpCommandList = this.commands.get(client);
 		}
 
 		if (tmpCommandList == null) {
@@ -29,25 +29,25 @@ public class CommandManager {
 		return tmpCommandList;
 	}
 
-	public boolean registerCommand(Schlumpf schlumpf, Command command) {
+	public boolean registerCommand(Client client, Command command) {
 
-		return getCommandList(schlumpf).add(command);
+		return getCommandList(client).add(command);
 	}
 
-	public boolean unregisterCommand(Schlumpf schlumpf, Command command) {
-		return getCommandList(schlumpf).remove(command);
+	public boolean unregisterCommand(Client client, Command command) {
+		return getCommandList(client).remove(command);
 	}
 
-	public boolean isRegisteredCommand(Schlumpf schlumpf, Command command) {
-		return getCommandList(schlumpf).contains(command);
+	public boolean isRegisteredCommand(Client client, Command command) {
+		return getCommandList(client).contains(command);
 	}
 
-	public Command resolveCommand(Schlumpf schlumpf, String command) {
+	public Command resolveCommand(Client client, String command) {
 		Command resolvedCommand = null;
 
 		if (command != null) {
 
-			List<Command> tmpCommandList = getCommandList(schlumpf);
+			List<Command> tmpCommandList = getCommandList(client);
 			for (Iterator<Command> it = tmpCommandList.iterator(); it.hasNext();) {
 				Command tmpCommand = it.next();
 				if (command.equalsIgnoreCase(tmpCommand.getCommandName())) {
