@@ -18,7 +18,7 @@ import de.adv.atech.roboter.gui.core.GUIController;
 public class RMIServer extends UnicastRemoteObject implements ServerInterface
 {
 
-  RMIServer() throws RemoteException
+  public RMIServer() throws RemoteException
   {
     super();
   }
@@ -43,7 +43,7 @@ public class RMIServer extends UnicastRemoteObject implements ServerInterface
    * 
    * @param client
    */
-  public void initConnection(Client client)
+  public void initConnection(Client client) throws RemoteException
   {
     // Handshake
     GUIController.getInstance().getClientManager().registerClient(client);
@@ -52,11 +52,9 @@ public class RMIServer extends UnicastRemoteObject implements ServerInterface
   /**
  * 
  */
-  public boolean ping()
+  public void ping() throws RemoteException
   {
     System.out.println("** PING? PONG! **");
-
-    return true;
   }
 
 }
