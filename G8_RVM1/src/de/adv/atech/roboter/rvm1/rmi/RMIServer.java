@@ -1,4 +1,4 @@
-package de.adv.atech.roboter.rvm1;
+package de.adv.atech.roboter.rvm1.rmi;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
