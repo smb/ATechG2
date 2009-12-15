@@ -10,43 +10,43 @@ import de.adv.atech.roboter.commons.ClientManager;
  * @author sbu
  * 
  */
-public class GUIController
-{
-  private ClientManager clientManager;
+public class GUIController {
+	private ClientManager clientManager;
 
-  /**
+	/**
    * 
    */
-  private static GUIController _instance;
+	private static GUIController _instance;
 
-  /**
-   * 
-   * @return
-   */
-  public static GUIController getInstance()
-  {
-    if (GUIController._instance == null)
-    {
-      GUIController._instance = new GUIController();
-    }
+	GUIController() {
+		this.clientManager = new ClientManager();
+	}
 
-    return GUIController._instance;
-  }
+	/**
+	 * 
+	 * @return
+	 */
+	public static GUIController getInstance() {
+		if (GUIController._instance == null) {
+			GUIController._instance = new GUIController();
+		}
 
-  /**
-   * @param clientManager the clientManager to set
-   */
-  public void setClientManager(ClientManager clientManager)
-  {
-    this.clientManager = clientManager;
-  }
+		return GUIController._instance;
+	}
 
-  /**
-   * @return the clientManager
-   */
-  public ClientManager getClientManager()
-  {
-    return this.clientManager;
-  }
+	/**
+	 * @param clientManager
+	 *            the clientManager to set
+	 */
+	public void setClientManager(ClientManager clientManager) {
+		this.clientManager = clientManager;
+	}
+
+	/**
+	 * @return the clientManager
+	 */
+	public ClientManager getClientManager() {
+		return this.clientManager;
+	}
 
 }
