@@ -14,12 +14,12 @@ import de.adv.atech.roboter.commons.interfaces.Command;
  * @author buehls
  * 
  */
-public interface ServerInterface extends Remote
-{
+public interface ServerInterface extends Remote {
 
-  public void processCommand(List<Command> commandList) throws RemoteException;
+	public void processCommand(List<Command> commandList)
+			throws RemoteException;
 
-  public void ping() throws RemoteException;
+	public void ping() throws RemoteException;
 
-  public void initConnection(Client client) throws RemoteException;
+	public void initConnection(String clientIdentifier) throws RemoteException;
 }

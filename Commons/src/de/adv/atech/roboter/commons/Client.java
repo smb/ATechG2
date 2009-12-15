@@ -1,27 +1,38 @@
 package de.adv.atech.roboter.commons;
 
-import java.net.InetAddress;
+public class Client {
 
-public class Client
-{
+	protected String address;
 
-  protected InetAddress address;
+	protected String identifier;
 
-  protected String identifier;
+	protected String RMIURL;
 
-  public Client(String identifier, InetAddress address)
-  {
-    this.identifier = identifier;
-    this.address = address;
-  }
+	public Client(String identifier, String address) {
+		this.identifier = identifier;
+		this.address = address;
+	}
 
-  public InetAddress getInetAddress()
-  {
-    return this.address;
-  }
+	public void createRMIURL() {
 
-  public String getIdentifier()
-  {
-    return this.identifier;
-  }
+		StringBuilder endpoint = new StringBuilder(40);
+		endpoint.append("//");
+		endpoint.append(this.address);
+		endpoint.append("/");
+		endpoint.append(this.identifier);
+
+		this.RMIURL = endpoint.toString();
+	}
+
+	public String getRMIURL() {
+		return this.RMIURL;
+	}
+
+	public String getInetAddress() {
+		return this.address;
+	}
+
+	public String getIdentifier() {
+		return this.identifier;
+	}
 }

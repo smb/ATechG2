@@ -13,33 +13,34 @@ import de.adv.atech.roboter.commons.rmi.ServerInterface;
  * @author sbu
  * 
  */
-public class NetworkMasterManager
-{
-  /**
+public class NetworkMasterManager {
+	/**
    * 
    */
-  protected ServerInterface server;
+	protected ServerInterface server;
 
-  /**
+	/**
    * 
    */
-  public void initServer() throws Exception
-  {
-    LocateRegistry.createRegistry(10232);
+	public void initServer() throws Exception {
+		Discovery.setProperties("RMIDiscovery.properties");
 
-    Discovery.setProperties("RMIDiscovery.properties");
+		int rmiPort = Discovery.getRMIRegistryPort();
 
-    RMILookup.bind(this.server, Constant.RMI_SERVER_GUI);
+		LocateRegistry.createRegistry(rmiPort);
 
-    System.out.println("(Master-)Server gestartet");
-  }
+		Discovery.setProperties("RMIDiscovery.properties");
 
-  /**
+		RMILookup.bind(this.server, Constant.RMI_SERVER_GUI, rmiPort);
+
+		System.out.println("[Master]: Server gestartet");
+	}
+
+	/**
    * 
    */
-  public NetworkMasterManager(ServerInterface server)
-  {
-    this.server = server;
-  }
+	public NetworkMasterManager(ServerInterface server) {
+		this.server = server;
+	}
 
 }
