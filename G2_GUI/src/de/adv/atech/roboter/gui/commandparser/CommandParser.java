@@ -7,10 +7,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-import de.adv.atech.roboter.commons.CommandManager;
+import de.adv.atech.roboter.commons.AbstractCommandManager;
 import de.adv.atech.roboter.commons.commands.DefaultMove;
 import de.adv.atech.roboter.commons.exceptions.CommandException;
 import de.adv.atech.roboter.commons.interfaces.Command;
+import de.adv.atech.roboter.gui.core.GUIController;
 import de.adv.atech.roboter.gui.exceptions.IllegalSyntaxException;
 
 public class CommandParser {
@@ -20,11 +21,13 @@ public class CommandParser {
 	private final String COMMANDPATTERNSTRING = "([a-zA-Z]+)";
 	private final String PARAMETERPATTERNSTRING = "([a-zA-Z0-9]+)";
 
-	private CommandManager commandManager;
+	// TODO: siehe unten - getActiveClient
+	// private AbstractCommandManager commandManager;
 	private Pattern parameterPattern;
 	
 	public CommandParser() {
-		commandManager = new CommandManager();
+		// TODO: siehe unten - getActiveClient
+		// commandManager = new AbstractCommandManager();
 		this.parameterPattern = Pattern.compile(PARAMETERPATTERNSTRING);
 	}
 
@@ -63,6 +66,9 @@ public class CommandParser {
 		String commandName = stringTokenizer.nextToken();
 		// TODO: Warten auf sb
 		// Command command = this.commandManager.resolveCommand(null, commandString);
+		// TODO Anmerkdung (sb):
+		// Ungefaehr so: TODO: NPEX fangen und Exceptions werfen (NoActiveClient etc.)
+		// GUIController.getInstance().getClientManager().getActiveClient().getCommandManager().resolveCommand(commandString, false);
 	    Command command = new DefaultMove();
 	    
 		Pattern commandPattern = this.getCommandPattern(command);
