@@ -4,6 +4,8 @@
 package de.adv.atech.roboter.gui.core;
 
 import de.adv.atech.roboter.commons.ClientManager;
+import de.adv.atech.roboter.commons.LocalClient;
+import de.adv.atech.roboter.commons.interfaces.Client;
 
 /**
  * 
@@ -20,6 +22,10 @@ public class GUIController {
 
 	GUIController() {
 		this.clientManager = new ClientManager();
+
+		Client localClient = new LocalClient();
+
+		this.clientManager.registerClient(localClient);
 	}
 
 	/**

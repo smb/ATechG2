@@ -6,7 +6,10 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.Iterator;
 import java.util.List;
 
-import de.adv.atech.roboter.commons.Client;
+import de.adv.atech.roboter.commons.Constant;
+import de.adv.atech.roboter.commons.NetworkClient;
+import de.adv.atech.roboter.commons.exceptions.CommandException;
+import de.adv.atech.roboter.commons.interfaces.Client;
 import de.adv.atech.roboter.commons.interfaces.Command;
 import de.adv.atech.roboter.commons.rmi.ServerInterface;
 import de.adv.atech.roboter.gui.core.GUIController;
@@ -41,7 +44,8 @@ public class RMIServer extends UnicastRemoteObject implements ServerInterface {
 	 * 
 	 * @param client
 	 */
-	public void initConnection(String clientIdentifier) throws RemoteException {
+	public void initConnection(String clientIdentifier, int localPort)
+			throws RemoteException {
 		String clientAddress = null;
 
 		try {
@@ -51,10 +55,45 @@ public class RMIServer extends UnicastRemoteObject implements ServerInterface {
 			e.printStackTrace();
 		}
 
-		Client client = new Client(clientIdentifier, clientAddress);
+		System.out.println("Client Host: " + clientAddress);
 
-		// Handshake
+		NetworkClient client = new NetworkClient(clientIdentifier,
+				clientAddress, localPort);
+
+		// Client registrieren
 		GUIController.getInstance().getClientManager().registerClient(client);
+
+		// Command Liste anfragen
+
+		try {
+			List<Class<? extends Command>> commandList = client.getRMI()
+					.getCommandList();
+
+			System.out.println("received list: " + commandList.toString());
+
+			client.getCommandManager().registerCommandList(commandList);
+		} catch (CommandException e) {
+			throw new RemoteException("getCommandList failed", e);
+		} catch (Exception e) {
+			throw new RemoteException("RMILookup failed", e);
+		}
+
+	}
+
+	public List<Class<? extends Command>> getCommandList()
+			throws RemoteException {
+		List<Class<? extends Command>> commandClassList = null;
+
+		Client localClient = GUIController.getInstance().getClientManager()
+				.getClient(Constant.CLIENT_SELF);
+
+		try {
+			commandClassList = localClient.getCommandManager().getCommandList();
+		} catch (CommandException ex) {
+			throw new RemoteException();
+		}
+
+		return commandClassList;
 	}
 
 	/**
