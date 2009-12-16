@@ -1,7 +1,9 @@
 package de.adv.atech.roboter.rvm1.rmi;
 
-import java.net.InetAddress;
-
+import de.adv.atech.roboter.commons.Constant;
+import de.adv.atech.roboter.commons.GenericController;
+import de.adv.atech.roboter.commons.commands.DefaultMove;
+import de.adv.atech.roboter.commons.interfaces.Client;
 import de.adv.atech.roboter.commons.network.NetworkSlaveManager;
 import de.adv.atech.roboter.commons.rmi.ServerInterface;
 
@@ -9,6 +11,10 @@ public class RMIClient {
 
 	public static void main(String[] args) {
 		try {
+			Client localClient = GenericController.getInstance()
+					.getClientManager().getClient(Constant.CLIENT_SELF);
+
+			localClient.getCommandManager().registerCommand(DefaultMove.class);
 
 			NetworkSlaveManager ncl = new NetworkSlaveManager(new RMIServer(),
 					"RVM1");
