@@ -1,5 +1,7 @@
 package de.adv.atech.roboter.commons;
 
+import de.adv.atech.roboter.commons.interfaces.CommandManager;
+
 public class Client {
 
 	protected String address;
@@ -8,9 +10,13 @@ public class Client {
 
 	protected String RMIURL;
 
+	protected CommandManager commandManager;
+
 	public Client(String identifier, String address) {
 		this.identifier = identifier;
 		this.address = address;
+
+		commandManager = new ClientCommandManager(this);
 	}
 
 	public void createRMIURL() {
@@ -34,5 +40,9 @@ public class Client {
 
 	public String getIdentifier() {
 		return this.identifier;
+	}
+
+	public CommandManager getCommandManager() {
+		return this.commandManager;
 	}
 }
