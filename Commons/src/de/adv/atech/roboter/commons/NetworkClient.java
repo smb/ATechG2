@@ -1,20 +1,31 @@
 package de.adv.atech.roboter.commons;
 
-import de.adv.atech.roboter.commons.interfaces.CommandManager;
+import java.rmi.Naming;
 
-public class Client {
+import de.adv.atech.roboter.commons.interfaces.Client;
+import de.adv.atech.roboter.commons.interfaces.CommandManager;
+import de.adv.atech.roboter.commons.rmi.ServerInterface;
+
+public class NetworkClient implements Client {
 
 	protected String address;
 
 	protected String identifier;
 
+	protected int port;
+
 	protected String RMIURL;
 
 	protected CommandManager commandManager;
 
-	public Client(String identifier, String address) {
+	protected ServerInterface clientRMI;
+
+	public NetworkClient(String identifier, String address, int port) {
 		this.identifier = identifier;
 		this.address = address;
+		this.port = port;
+
+		createRMIURL();
 
 		commandManager = new ClientCommandManager(this);
 	}
@@ -24,6 +35,8 @@ public class Client {
 		StringBuilder endpoint = new StringBuilder(40);
 		endpoint.append("//");
 		endpoint.append(this.address);
+		endpoint.append(":");
+		endpoint.append(this.port);
 		endpoint.append("/");
 		endpoint.append(this.identifier);
 
@@ -44,5 +57,18 @@ public class Client {
 
 	public CommandManager getCommandManager() {
 		return this.commandManager;
+	}
+
+	protected void rmiLookup() throws Exception {
+		System.out.println("URL: " + this.getRMIURL());
+		this.clientRMI = (ServerInterface) Naming.lookup(this.getRMIURL());
+	}
+
+	public ServerInterface getRMI() throws Exception {
+		if (clientRMI == null) {
+			rmiLookup();
+		}
+
+		return this.clientRMI;
 	}
 }

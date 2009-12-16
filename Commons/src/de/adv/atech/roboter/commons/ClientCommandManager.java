@@ -3,6 +3,7 @@ package de.adv.atech.roboter.commons;
 import java.util.List;
 
 import de.adv.atech.roboter.commons.exceptions.CommandException;
+import de.adv.atech.roboter.commons.interfaces.Client;
 import de.adv.atech.roboter.commons.interfaces.Command;
 import de.adv.atech.roboter.commons.interfaces.CommandManager;
 
@@ -24,12 +25,12 @@ public class ClientCommandManager extends AbstractCommandManager implements
 		this.client = client;
 	}
 
-	public boolean isRegisteredCommand(Class<Command> command)
+	public boolean isRegisteredCommand(Class<? extends Command> command)
 			throws CommandException {
 		return super.isRegisteredCommand(this.client, command);
 	}
 
-	public boolean registerCommand(Class<Command> commandClass)
+	public boolean registerCommand(Class<? extends Command> commandClass)
 			throws CommandException {
 		return super.registerCommand(this.client, commandClass);
 	}
@@ -39,14 +40,18 @@ public class ClientCommandManager extends AbstractCommandManager implements
 		return super.resolveCommand(this.client, command, forceNewInstance);
 	}
 
-	public boolean unregisterCommand(Class<Command> commandClass)
+	public boolean unregisterCommand(Class<? extends Command> commandClass)
 			throws CommandException {
 		return super.unregisterCommand(this.client, commandClass);
 	}
 
-	public boolean registerCommandList(List<Class<Command>> commandClassList)
+	public boolean registerCommandList(List<Class<? extends Command>> commandClassList)
 			throws CommandException {
 		return super.registerCommandList(this.client, commandClassList);
+	}
+
+	public List<Class<? extends Command>> getCommandList() throws CommandException {
+		return this.getCommandList(this.client);
 	}
 
 }

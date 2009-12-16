@@ -7,7 +7,6 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
 
-import de.adv.atech.roboter.commons.Client;
 import de.adv.atech.roboter.commons.interfaces.Command;
 
 /**
@@ -21,5 +20,7 @@ public interface ServerInterface extends Remote {
 
 	public void ping() throws RemoteException;
 
-	public void initConnection(String clientIdentifier) throws RemoteException;
+	public void initConnection(String clientIdentifier, int localPort) throws RemoteException;
+
+	public List<Class<? extends Command>> getCommandList() throws RemoteException;
 }

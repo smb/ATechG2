@@ -1,34 +1,40 @@
 package de.adv.atech.roboter.commons;
 
+import de.adv.atech.roboter.commons.interfaces.Client;
+
 /**
  * Beispielcode - bitte in eigenen Controller uebernehmen
  * 
  * @author sb
  * 
  */
-public class Controller {
+public class GenericController {
 
 	private ClientManager clientManager;
 
 	/**
    * 
    */
-	private static Controller _instance;
+	private static GenericController _instance;
 
-	protected Controller() {
+	protected GenericController() {
 		this.clientManager = new ClientManager();
+
+		Client localClient = new LocalClient();
+
+		this.clientManager.registerClient(localClient);
 	}
 
 	/**
 	 * 
 	 * @return
 	 */
-	public static Controller getInstance() {
-		if (Controller._instance == null) {
-			Controller._instance = new Controller();
+	public static GenericController getInstance() {
+		if (GenericController._instance == null) {
+			GenericController._instance = new GenericController();
 		}
 
-		return Controller._instance;
+		return GenericController._instance;
 	}
 
 	/**

@@ -23,8 +23,6 @@ public class NetworkSlaveManager {
 
 	String clientName;
 
-	int rmiPort = 10232;
-
 	/**
 	 * 
 	 * @throws Exception
@@ -34,9 +32,9 @@ public class NetworkSlaveManager {
 
 		int rmiPort = Discovery.getRMIRegistryPort() + 1;
 
-		LocateRegistry.createRegistry(this.rmiPort);
+		LocateRegistry.createRegistry(rmiPort);
 
-		Registry reg = LocateRegistry.getRegistry(this.rmiPort);
+		Registry reg = LocateRegistry.getRegistry(rmiPort);
 
 		reg.bind(this.clientName, this.serverReg);
 
@@ -50,7 +48,7 @@ public class NetworkSlaveManager {
 		// Client Objekt erzeugen
 
 		// am Server registrieren
-		this.clientReg.initConnection(this.clientName);
+		this.clientReg.initConnection(this.clientName, rmiPort);
 
 		return true;
 	}

@@ -1,60 +1,62 @@
 package de.adv.atech.roboter.commons;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Vector;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import de.adv.atech.roboter.commons.interfaces.Client;
 
 public class ClientManager {
 
-	protected List<Client> clientList;
+	protected Map<String, Client> clientMap;
 
 	protected Client activeClient;
 
 	public ClientManager() {
-		this.clientList = new Vector<Client>();
+		this.clientMap = new LinkedHashMap<String, Client>();
+
 	}
 
 	public boolean registerClient(Client client) {
-		System.out.println("[ClientManager] registered Client: " + client);
+		System.out.println("[ClientManager] registered Client: "
+				+ client.getIdentifier());
 
-		return this.clientList.add(client);
+		this.clientMap.put(client.getIdentifier(), client);
+
+		return true;
 	}
 
 	public boolean unregisterClient(Client client) {
-		return this.clientList.remove(client);
+		this.clientMap.remove(client);
+
+		return true;
 	}
 
-	public List<Client> getRegisteredClients() {
-		return this.clientList;
+	public Map<String, Client> getRegisteredClients() {
+		return this.clientMap;
 	}
 
 	public boolean isRegisteredClient(Client client) {
-		return this.clientList.contains(client);
+		return this.clientMap.containsValue(client);
 	}
 
 	public boolean setActiveClient(String identifier) {
-		Client resolvedClient = null;
-
 		boolean returnValue = false;
 
 		if (identifier != null) {
-			for (Iterator<Client> it = this.clientList.iterator(); it.hasNext();) {
-				Client tmpClient = it.next();
-				String tmpIdentifier = tmpClient.getIdentifier();
-				if (tmpIdentifier != null) {
-					if (tmpIdentifier.equals(identifier)) {
-						resolvedClient = tmpClient;
-						returnValue = true;
-					}
-				} else {
-					returnValue = false;
-				}
+			if (this.clientMap.containsKey(identifier)) {
+				this.activeClient = this.clientMap.get(identifier);
+				returnValue = true;
 			}
-		} else {
-			returnValue = false;
-		}
 
-		this.activeClient = resolvedClient;
+			/*
+			 * for (Iterator<Client> it = this.clientMap.iterator();
+			 * it.hasNext();) { Client tmpClient = it.next(); String
+			 * tmpIdentifier = tmpClient.getIdentifier(); if (tmpIdentifier !=
+			 * null) { if (tmpIdentifier.equals(identifier)) { resolvedClient =
+			 * tmpClient; returnValue = true; } } else { returnValue = false; }
+			 * }
+			 */} else {
+		}
 
 		return returnValue;
 	}
@@ -65,5 +67,27 @@ public class ClientManager {
 
 	public Client getActiveClient() {
 		return this.activeClient;
+	}
+
+	public NetworkClient getNetworkClient(String identifier) {
+		NetworkClient networkClient = null;
+
+		Client client = getClient(identifier);
+
+		if (client instanceof NetworkClient) {
+			networkClient = (NetworkClient) client;
+		}
+
+		return networkClient;
+	}
+
+	public Client getClient(String identifier) {
+		Client client = null;
+
+		if (this.clientMap.containsKey(identifier)) {
+			client = this.clientMap.get(identifier);
+		}
+
+		return client;
 	}
 }
