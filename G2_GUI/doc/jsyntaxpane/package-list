@@ -1,0 +1,7 @@
+jsyntaxpane
+jsyntaxpane.actions
+jsyntaxpane.actions.gui
+jsyntaxpane.components
+jsyntaxpane.lexers
+jsyntaxpane.syntaxkits
+jsyntaxpane.util
