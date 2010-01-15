@@ -50,7 +50,8 @@ public class RMIServer extends UnicastRemoteObject implements ServerInterface {
 
 		try {
 			clientAddress = this.getClientHost();
-		} catch (ServerNotActiveException e) {
+		}
+		catch (ServerNotActiveException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -72,9 +73,11 @@ public class RMIServer extends UnicastRemoteObject implements ServerInterface {
 			System.out.println("received list: " + commandList.toString());
 
 			client.getCommandManager().registerCommandList(commandList);
-		} catch (CommandException e) {
+		}
+		catch (CommandException e) {
 			throw new RemoteException("getCommandList failed", e);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			throw new RemoteException("RMILookup failed", e);
 		}
 
@@ -89,7 +92,8 @@ public class RMIServer extends UnicastRemoteObject implements ServerInterface {
 
 		try {
 			commandClassList = localClient.getCommandManager().getCommandList();
-		} catch (CommandException ex) {
+		}
+		catch (CommandException ex) {
 			throw new RemoteException();
 		}
 
@@ -99,8 +103,10 @@ public class RMIServer extends UnicastRemoteObject implements ServerInterface {
 	/**
  * 
  */
-	public void ping() throws RemoteException {
+	public long ping() throws RemoteException {
 		System.out.println("** PING? PONG! **");
+
+		return System.currentTimeMillis();
 	}
 
 }

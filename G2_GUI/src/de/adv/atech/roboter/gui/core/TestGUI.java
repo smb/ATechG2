@@ -3,22 +3,23 @@
  */
 package de.adv.atech.roboter.gui.core;
 
-import de.adv.atech.roboter.commons.network.NetworkMasterManager;
-import de.adv.atech.roboter.gui.rmi.RMIServer;
+import de.adv.atech.roboter.gui.MainFrame;
 
-public class TestGUI
-{
+public class TestGUI {
 
-  public static void main(String[] args)
-  {
-    try
-    {
-      NetworkMasterManager nmm = new NetworkMasterManager(new RMIServer());
-      nmm.initServer();
-    }
-    catch (Exception ex)
-    {
-      ex.printStackTrace();
-    }
-  }
+	public static void main(String[] args) {
+		try {
+			new MainFrame();
+
+			CommController comm = new CommController();
+
+			Thread commThread = new Thread(comm);
+
+			commThread.start();
+
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
 }
