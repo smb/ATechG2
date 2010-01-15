@@ -60,7 +60,7 @@ public class NetworkClient implements Client {
 	}
 
 	protected void rmiLookup() throws Exception {
-		System.out.println("URL: " + this.getRMIURL());
+		ControllerManager.debug("URL: " + this.getRMIURL());
 		this.clientRMI = (ServerInterface) Naming.lookup(this.getRMIURL());
 	}
 

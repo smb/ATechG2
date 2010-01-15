@@ -17,7 +17,7 @@ public class ClientManager {
 	}
 
 	public boolean registerClient(Client client) {
-		System.out.println("[ClientManager] registered Client: "
+		ControllerManager.debug("[ClientManager] registered Client: "
 				+ client.getIdentifier());
 
 		this.clientMap.put(client.getIdentifier(), client);

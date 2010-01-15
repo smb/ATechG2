@@ -18,7 +18,7 @@ public interface ServerInterface extends Remote {
 	public void processCommand(List<Command> commandList)
 			throws RemoteException;
 
-	public void ping() throws RemoteException;
+	public long ping() throws RemoteException;
 
 	public void initConnection(String clientIdentifier, int localPort) throws RemoteException;
 

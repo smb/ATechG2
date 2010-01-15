@@ -125,7 +125,7 @@ public abstract class AbstractCommandManager {
 		// Fuer Command-Cache benutzen
 		cacheCommand(client, commandClass, tmpCommand);
 
-		System.out.println("[CommandManager]: registered Command "
+		ControllerManager.debug("[CommandManager]: registered Command "
 				+ tmpCommand.toString());
 
 		getCommandMap(client).put(tmpCommand.getCommandName(), commandClass);

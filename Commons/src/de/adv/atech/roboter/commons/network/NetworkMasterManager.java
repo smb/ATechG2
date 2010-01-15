@@ -3,6 +3,7 @@ package de.adv.atech.roboter.commons.network;
 import java.rmi.registry.LocateRegistry;
 
 import de.adv.atech.roboter.commons.Constant;
+import de.adv.atech.roboter.commons.ControllerManager;
 import de.adv.atech.roboter.commons.rmi.Discovery;
 import de.adv.atech.roboter.commons.rmi.RMILookup;
 import de.adv.atech.roboter.commons.rmi.ServerInterface;
@@ -14,6 +15,7 @@ import de.adv.atech.roboter.commons.rmi.ServerInterface;
  * 
  */
 public class NetworkMasterManager {
+
 	/**
    * 
    */
@@ -33,7 +35,7 @@ public class NetworkMasterManager {
 
 		RMILookup.bind(this.server, Constant.RMI_SERVER_GUI, rmiPort);
 
-		System.out.println("[Master]: Server gestartet");
+		ControllerManager.debug("[Master]: Server gestartet");
 	}
 
 	/**

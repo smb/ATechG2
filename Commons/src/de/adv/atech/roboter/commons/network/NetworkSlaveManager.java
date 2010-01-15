@@ -6,6 +6,7 @@ package de.adv.atech.roboter.commons.network;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
+import de.adv.atech.roboter.commons.ControllerManager;
 import de.adv.atech.roboter.commons.rmi.Discovery;
 import de.adv.atech.roboter.commons.rmi.RMIDiscovery;
 import de.adv.atech.roboter.commons.rmi.ServerInterface;
@@ -40,7 +41,7 @@ public class NetworkSlaveManager {
 
 		// RMILookup.bind(this.server, Constant.RMI_SERVER_GUI);
 
-		System.out.println("[Slave] Server gestartet");
+		ControllerManager.debug("[Slave] Server gestartet");
 
 		this.clientReg = (ServerInterface) RMIDiscovery.lookup(
 				ServerInterface.class, null);
