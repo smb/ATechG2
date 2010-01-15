@@ -58,12 +58,11 @@ public class RMIServer extends UnicastRemoteObject implements ServerInterface {
 
 		Client localClient = GenericController.getInstance().getClientManager()
 				.getClient(Constant.CLIENT_SELF);
-		
-		
 
 		try {
 			commandClassList = localClient.getCommandManager().getCommandList();
-		} catch (CommandException ex) {
+		}
+		catch (CommandException ex) {
 			throw new RemoteException();
 		}
 
@@ -73,8 +72,10 @@ public class RMIServer extends UnicastRemoteObject implements ServerInterface {
 	/**
  * 
  */
-	public void ping() throws RemoteException {
+	public long ping() throws RemoteException {
 		System.out.println("** PING? PONG! **");
+
+		return System.currentTimeMillis();
 	}
 
 }
