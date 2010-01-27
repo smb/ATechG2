@@ -15,10 +15,6 @@ public class MainFrame extends JFrame {
 	public MainFrame() {
 		super("Roboter-Steuerung");
 
-		SyntaxEditorContainer syntaxEditorPane = new SyntaxEditorContainer();
-
-		this.setLayout(new BorderLayout());
-		
 		GUIController controller = GUIController.getInstance();
 
 		controller.setRootPanel(new RootPanel());

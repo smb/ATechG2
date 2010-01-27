@@ -18,11 +18,10 @@ public class MenuBar extends JMenuBar {
 
 		this.file.add(this.file_Exit);
 
+		this.add(this.file);
 	}
 
 	public void init() {
-
-		this.add(this.file);
 
 	}
 
