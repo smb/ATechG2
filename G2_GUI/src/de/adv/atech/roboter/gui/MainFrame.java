@@ -3,11 +3,12 @@ package de.adv.atech.roboter.gui;
 import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
-import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
 
 import de.adv.atech.roboter.gui.components.SyntaxEditorContainer;
 import de.adv.atech.roboter.gui.core.GUIController;
+import de.adv.atech.roboter.gui.panel.MenuBar;
+import de.adv.atech.roboter.gui.panel.RootPanel;
 
 public class MainFrame extends JFrame {
 
@@ -17,17 +18,16 @@ public class MainFrame extends JFrame {
 		SyntaxEditorContainer syntaxEditorPane = new SyntaxEditorContainer();
 
 		this.setLayout(new BorderLayout());
+		
+		GUIController controller = GUIController.getInstance();
 
-		JScrollPane jScrollPane = new JScrollPane(syntaxEditorPane);
-		this.add(jScrollPane, BorderLayout.CENTER);
+		controller.setRootPanel(new RootPanel());
 
-		DebugPanel debugPanel = new DebugPanel();
+		controller.setMenuBar(new MenuBar());
 
-		GUIController.getInstance().setDebugPanel(debugPanel);
+		this.setJMenuBar(controller.getMenuBar());
 
-		JScrollPane debugScrollPane = new JScrollPane(debugPanel);
-
-		this.add(debugScrollPane, BorderLayout.SOUTH);
+		this.add(controller.getRootPanel());
 
 		this.setSize(800, 600);
 		this.setVisible(true);

@@ -1,15 +1,16 @@
-package de.adv.atech.roboter.gui;
+package de.adv.atech.roboter.gui.panel;
 
 import java.awt.TextArea;
 
-public class DebugPanel extends TextArea {
+public class DebugArea extends TextArea {
 
-	public DebugPanel() {
-		super(7, 60);
+	public DebugArea() {
+		super();
 	}
 
 	public void addText(String text) {
 		super.append(text + System.getProperty("line.separator"));
+
 	}
 
 }
