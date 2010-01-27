@@ -1,6 +1,7 @@
 package de.adv.atech.roboter.gui.commandparser;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
@@ -20,6 +21,9 @@ public class CommandParser {
 	private final String COMMANDDELIMITER = " ";
 	private final String COMMANDPATTERNSTRING = "([a-zA-Z]+)";
 	private final String PARAMETERPATTERNSTRING = "([a-zA-Z0-9]+)";
+	
+	private final String SELECTCOMMAND = "SELECT";
+	private final String LOOPCOMMAND = "LOOP";
 
 	// TODO: siehe unten - getActiveClient
 	// private AbstractCommandManager commandManager;
@@ -48,14 +52,16 @@ public class CommandParser {
 		while (stringTokenizer.hasMoreTokens()) {
 			String commandToken = stringTokenizer.nextToken();
 			Command command = getCommand(commandToken);
-			commandList.add(command);
+			if (command!=null) {
+				commandList.add(command);
+			}
 		}
 		
 		return commandList;
 	}
 	
 	/**
-	 * Bekommt eine Zeile Ÿbergeben und generiert daraus ein Command Objekt
+	 * Bekommt eine Zeile übergeben und generiert daraus ein Command Objekt. Wenn es sich bei der Zeile um ein Editorkommando handelt, wird null zurückgegeben
 	 * @param commandString
 	 * @return Command Objekt
 	 * @throws CommandException
@@ -64,38 +70,55 @@ public class CommandParser {
 	private Command getCommand(String commandString) throws CommandException, IllegalSyntaxException {
 		StringTokenizer stringTokenizer = new StringTokenizer(commandString, COMMANDDELIMITER);
 		String commandName = stringTokenizer.nextToken();
-		// TODO: Warten auf sb
-		// Command command = this.commandManager.resolveCommand(null, commandString);
-		// TODO Anmerkdung (sb):
-		// Ungefaehr so: TODO: NPEX fangen und Exceptions werfen (NoActiveClient etc.)
-		// GUIController.getInstance().getClientManager().getActiveClient().getCommandManager().resolveCommand(commandString, false);
-	    Command command = new DefaultMove();
-	    
-		Pattern commandPattern = this.getCommandPattern(command);
-		if (!commandPattern.matcher(commandString).matches()) {
-			throw new IllegalSyntaxException("Syntaxfehler in Befehlszeile");
+
+		Command command = null;
+		Pattern commandPattern = null;
+		if (commandName.equals(SELECTCOMMAND)) {
+			commandPattern = getCommandPattern(1);
+			
+			if (!commandPattern.matcher(commandString).matches()) {
+				throw new IllegalSyntaxException("Fehler in SELECT Befehl");
+			}
+			
+			Matcher parameterMatcher = this.parameterPattern.matcher(commandString);
+			parameterMatcher.find();
+			String value = parameterMatcher.group();
+			boolean isActiveClient = GUIController.getInstance().getClientManager().setActiveClient(value);
+			if (!isActiveClient) {
+				throw new IllegalSyntaxException("Client exisitert nicht");
+			}
+			
+		} else {
+			command = GUIController.getInstance().getClientManager().getActiveClient().getCommandManager().resolveCommand(commandName, false);
+			commandPattern = getCommandPattern(command.getParameters().size());
+			
+			if (!commandPattern.matcher(commandString).matches()) {
+				throw new IllegalSyntaxException("Syntaxfehler in Befehlszeile");
+			}
+			
+			Matcher parameterMatcher = this.parameterPattern.matcher(commandString);
+			for (Iterator<Enum<?>> iterator = command.getParameters().keySet().iterator(); iterator.hasNext();) {
+    			Enum<?> key = (Enum<?>) iterator.next();
+    			parameterMatcher.find();
+    			String value = parameterMatcher.group();
+    			command.setParameter(key, value);
+    		}
 		}
 
-        Matcher parameterMatcher = this.parameterPattern.matcher(commandString);
-        while (parameterMatcher.find()) {
-        	System.out.println(parameterMatcher.group());
-        	//TODO: Parameter in Command schreiben
-        }
-		
 		return command;
 	}
 	
 	/**
-	 * Erstellt fŸr ein Ÿbergebenes Command Objekt ein Pattern
+	 * Erstellt für eine Anzahl von Parametern ein Pattern
 	 * @param command
 	 * @return Pattern fŸr das Command
 	 * @throws CommandException
 	 */
-	private Pattern getCommandPattern(Command command) throws CommandException {
+	private Pattern getCommandPattern(int parameters) throws CommandException {
 		StringBuilder patternBuilder = new StringBuilder();
 		patternBuilder.append(COMMANDPATTERNSTRING);
 		
-		int parameterAnzahl = command.getParameters().size();
+		int parameterAnzahl = parameters;
 		for (int i = 0; i < parameterAnzahl; i++) {
 			if (i==0){
 				patternBuilder.append(" ");
