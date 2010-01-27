@@ -6,4 +6,8 @@ public class Constant {
 
 	public static final String CLIENT_SELF = "CLIENT_SELF";
 
+	public static final String TEXT_EDITOR_TAB = "Editor";
+	
+	public static final String TEXT_CONTROL_TAB = "Manuelle Steuerung";
+
 }
