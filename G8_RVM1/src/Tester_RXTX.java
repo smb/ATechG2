@@ -88,28 +88,16 @@ public class Tester_RXTX
         {
             try
             {                
-                int c = 0;
-//                while ( ( c = System.in.read()) > -1 )
                 while( true )
                 {
-                    String comand = "gc\r";
+                    String comand = Eingabe.liesString();
+                    comand = comand + "\r";
                     byte[] coman_arr = comand.getBytes("ASCII");
                     for(int i = 0; i < coman_arr.length; i++)
                     {
                         this.out.write(coman_arr[i]);
                     }
-                    comand = "go\r";
-                    coman_arr = comand.getBytes("ASCII");
-                    for(int i = 0; i < coman_arr.length; i++)
-                    {
-                        this.out.write(coman_arr[i]);
-                    }
-//                    comand = "gc\r";
-//                    coman_arr = comand.getBytes("ASCII");
-//                    for(int i = 0; i < coman_arr.length; i++)
-//                    {
-//                        this.out.write(coman_arr[i]);
-//                    }
+
                 }                
             }
             catch ( IOException e )

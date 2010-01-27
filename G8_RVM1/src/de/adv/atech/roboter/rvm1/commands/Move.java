@@ -8,7 +8,7 @@ public class Move extends DefaultMove {
 
 	public Move() {
 		super();
-		init(this);
+//		init(this);
 		commandName = "Move";
 	}
 }
