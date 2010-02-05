@@ -23,6 +23,13 @@ public class ControllerManager {
 		return ControllerManager._instance;
 	}
 
+	public static void message(int messageType, String text) {
+		if (getInstance().getController() != null) {
+			ControllerManager.getInstance().getController().message(
+					messageType, text);
+		}
+	}
+
 	public static void debug(String text) {
 		if (getInstance().getController() != null) {
 			ControllerManager.getInstance().getController().debug(text);
