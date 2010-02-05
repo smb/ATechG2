@@ -11,10 +11,12 @@ import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 
 import de.adv.atech.roboter.commons.ClientManager;
+import de.adv.atech.roboter.commons.Constant;
 import de.adv.atech.roboter.commons.ControllerManager;
 import de.adv.atech.roboter.commons.LocalClient;
 import de.adv.atech.roboter.commons.interfaces.Client;
 import de.adv.atech.roboter.commons.interfaces.Controller;
+import de.adv.atech.roboter.gui.ActionManager;
 import de.adv.atech.roboter.gui.MainFrame;
 import de.adv.atech.roboter.gui.panel.DebugArea;
 
@@ -28,6 +30,15 @@ public class GUIController implements Controller {
 	private ClientManager clientManager;
 
 	private DebugArea debugArea;
+
+	private CommController commController;
+
+	private ActionManager actionManager;
+
+	/*
+	 * Threads
+	 */
+	private Thread threadCommController;
 
 	/*
 	 * GUI Conent
@@ -158,6 +169,8 @@ public class GUIController implements Controller {
 	public void initGUI() {
 		this.debugArea = new DebugArea();
 
+		this.actionManager = new ActionManager();
+
 		this.mainFrame = new MainFrame();
 	}
 
@@ -167,6 +180,12 @@ public class GUIController implements Controller {
 		Client localClient = new LocalClient();
 
 		this.clientManager.registerClient(localClient);
+
+		this.commController = new CommController();
+
+		this.threadCommController = new Thread(this.commController);
+
+		threadCommController.start();
 	}
 
 	/**
@@ -197,6 +216,13 @@ public class GUIController implements Controller {
 	}
 
 	/**
+	 * @return the clientManager
+	 */
+	public ActionManager getActionManager() {
+		return this.actionManager;
+	}
+
+	/**
 	 * @param debugArea
 	 *            the debugPanel to set
 	 */
@@ -209,6 +235,15 @@ public class GUIController implements Controller {
 	 */
 	public DebugArea getDebugArea() {
 		return this.debugArea;
+	}
+
+	public void message(int messageType, String text) {
+		if (messageType == Constant.MESSAGE_TYPE_INFO) {
+			debug(text);
+		}
+		if (messageType == Constant.MESSAGE_TYPE_ERROR) {
+			debug("ERROR: " + text);
+		}
 	}
 
 	public void debug(String text) {
@@ -278,6 +313,12 @@ public class GUIController implements Controller {
 	 */
 	public JPanel getRootPanel() {
 		return rootPanel;
+	}
+
+	@Override
+	public void shutdown() {
+		this.threadCommController.interrupt();
+		System.exit(0);
 	}
 
 }

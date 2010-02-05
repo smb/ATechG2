@@ -1,11 +1,8 @@
 package de.adv.atech.roboter.gui;
 
-import java.awt.BorderLayout;
-
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-import de.adv.atech.roboter.gui.components.SyntaxEditorContainer;
 import de.adv.atech.roboter.gui.core.GUIController;
 import de.adv.atech.roboter.gui.panel.MenuBar;
 import de.adv.atech.roboter.gui.panel.RootPanel;
