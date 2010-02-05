@@ -14,6 +14,13 @@ public class IllegalSyntaxException extends Exception {
 	public IllegalSyntaxException(String message) {
 		super(message);
 	}
+	
+	/**
+	 * @param message
+	 */
+	public IllegalSyntaxException(String message, int codeZeile) {
+		super("Zeile " + codeZeile + ": " + message);
+	}
 
 	/**
 	 * @param cause
