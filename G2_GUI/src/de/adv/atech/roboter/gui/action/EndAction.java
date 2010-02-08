@@ -6,8 +6,10 @@ import de.adv.atech.roboter.commons.ControllerManager;
 
 public class EndAction extends GUIAbstractAction {
 
+	public static final String actionName = "End";
+
 	public EndAction() {
-		super("Beenden", null);
+		super(actionName, null);
 	}
 
 	public void execute(ActionEvent event) throws Exception {

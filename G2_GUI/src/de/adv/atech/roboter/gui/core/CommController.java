@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import de.adv.atech.roboter.commons.ClientManager;
+import de.adv.atech.roboter.commons.Constant;
 import de.adv.atech.roboter.commons.ControllerManager;
 import de.adv.atech.roboter.commons.NetworkClient;
 import de.adv.atech.roboter.commons.interfaces.Client;
@@ -16,11 +17,15 @@ public class CommController implements Runnable {
 
 	NetworkMasterManager nmm = null;
 
+	boolean shutdown;
+
 	ClientManager clientManager = null;
 
 	public CommController() {
 
 		this.clientManager = GUIController.getInstance().getClientManager();
+
+		this.shutdown = false;
 
 		try {
 			this.nmm = new NetworkMasterManager(new RMIServer());
@@ -34,7 +39,7 @@ public class CommController implements Runnable {
 
 	public void run() {
 		// Idle-Cycle
-		while (true) {
+		while (!this.shutdown) {
 			try {
 				long currentTimestamp = System.currentTimeMillis();
 
@@ -86,9 +91,15 @@ public class CommController implements Runnable {
 				Thread.sleep(this.sleepTime);
 			}
 			catch (InterruptedException e) {
-				e.printStackTrace();
+				ControllerManager.message(Constant.MESSAGE_TYPE_INFO,
+						"[CommController] Shutdown");
 			}
 
 		}
+	}
+
+	public void shutdown() {
+		this.shutdown = true;
+
 	}
 }

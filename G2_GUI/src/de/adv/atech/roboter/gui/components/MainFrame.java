@@ -1,4 +1,4 @@
-package de.adv.atech.roboter.gui;
+package de.adv.atech.roboter.gui.components;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;

@@ -17,7 +17,7 @@ import de.adv.atech.roboter.commons.LocalClient;
 import de.adv.atech.roboter.commons.interfaces.Client;
 import de.adv.atech.roboter.commons.interfaces.Controller;
 import de.adv.atech.roboter.gui.ActionManager;
-import de.adv.atech.roboter.gui.MainFrame;
+import de.adv.atech.roboter.gui.components.MainFrame;
 import de.adv.atech.roboter.gui.panel.DebugArea;
 
 /**
@@ -26,6 +26,8 @@ import de.adv.atech.roboter.gui.panel.DebugArea;
  * 
  */
 public class GUIController implements Controller {
+
+	private static final Runtime sRuntime = Runtime.getRuntime();
 
 	private ClientManager clientManager;
 
@@ -171,7 +173,7 @@ public class GUIController implements Controller {
 
 		this.actionManager = new ActionManager();
 
-		this.mainFrame = new MainFrame();
+		this.setMainFrame(new MainFrame());
 	}
 
 	public void init() {
@@ -317,8 +319,33 @@ public class GUIController implements Controller {
 
 	@Override
 	public void shutdown() {
-		this.threadCommController.interrupt();
+		this.commController.shutdown();
 		System.exit(0);
 	}
 
+	public static int getFreeMemory() {
+		return (int) (sRuntime.freeMemory() / 1024);
+	}
+
+	public static int getTotalMemory() {
+		return (int) (sRuntime.totalMemory() / 1024);
+	}
+
+	public static int getUsedMemory() {
+		return getTotalMemory() - getFreeMemory();
+	}
+
+	/**
+	 * @param mainFrame the mainFrame to set
+	 */
+	public void setMainFrame(JFrame mainFrame) {
+		this.mainFrame = mainFrame;
+	}
+
+	/**
+	 * @return the mainFrame
+	 */
+	public JFrame getMainFrame() {
+		return mainFrame;
+	}
 }

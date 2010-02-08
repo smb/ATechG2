@@ -7,8 +7,10 @@ import de.adv.atech.roboter.commons.ControllerManager;
 
 public class SendAction extends GUIAbstractAction {
 
+	public static final String actionName = "Send";
+
 	public SendAction() {
-		super("Senden", null);
+		super(actionName, null);
 	}
 
 	public void execute(ActionEvent event) throws Exception {
