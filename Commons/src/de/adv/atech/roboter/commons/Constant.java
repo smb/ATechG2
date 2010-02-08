@@ -1,7 +1,11 @@
 package de.adv.atech.roboter.commons;
 
 public class Constant {
-
+	
+	public static String G_VERSION = "$Revision$";
+	
+	public static String G_BUILD = "$Date$";
+	
 	public static final String RMI_SERVER_GUI = "RMI_SERVER_GUI";
 
 	public static final String CLIENT_SELF = "CLIENT_SELF";
