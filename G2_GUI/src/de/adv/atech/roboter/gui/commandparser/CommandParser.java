@@ -1,159 +1,121 @@
 package de.adv.atech.roboter.gui.commandparser;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.StringTokenizer;
-import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import de.adv.atech.roboter.commons.Constant;
 import de.adv.atech.roboter.commons.ErrorMessages;
-import de.adv.atech.roboter.commons.exceptions.CommandException;
 import de.adv.atech.roboter.commons.interfaces.Command;
-import de.adv.atech.roboter.gui.core.GUIController;
 import de.adv.atech.roboter.gui.exceptions.IllegalSyntaxException;
 
 public class CommandParser {
 
-	private int codeZeile;
+	private String commandString;
+	private List<Command> commandList;
+	private Pattern[] commandPattern;
 	private Pattern parameterPattern;
-	private Map loopMap;
-
+	private int codeZeile;
+	
 	public CommandParser() {
-		this.parameterPattern = Pattern
-				.compile(Constant.COMMANDPARSER_PARAMETERPATTERNSTRING);
+		commandList = new ArrayList<Command>();
+		initCommandPattern();
+		parameterPattern = Pattern
+			.compile(Constant.COMMANDPARSER_PARAMETERPATTERNSTRING);
+		codeZeile = 0;
+	}
+	
+	private void initCommandPattern() {
+		commandPattern = new Pattern[Constant.COMMANDPARSER_PARAMETER_MAX];
+		for (int parameters = 0; parameters < Constant.COMMANDPARSER_PARAMETER_MAX; parameters++) {
+			StringBuilder patternBuilder = new StringBuilder();
+			patternBuilder.append(
+				Constant.COMMANDPARSER_COMMANDPATTERNSTRING);
+			for (int i = 0; i < parameters; i++) {
+				if (i == 0) {
+					patternBuilder.append("\\(");
+				}
+				patternBuilder.append(
+					Constant.COMMANDPARSER_PARAMETERPATTERNSTRING);
+				if (i == parameters - 1) {
+					patternBuilder.append("\\)\\s*$");
+				} else {
+					patternBuilder.append(",");
+				}
+			}			
+			Pattern pattern = Pattern.compile(patternBuilder.toString());
+			commandPattern[parameters] = pattern;
+		}
 	}
 
-	/**
-	 * Generiert aus einem String von Befehlen und Parametern eine Liste
-	 * mit Command Objekten
-	 * 
-	 * @param commandsString
-	 * @return Liste von Commands
-	 * @throws IllegalSyntaxException
-	 * @throws CommandException
-	 */
-	public List<Command> getCommandList(String commandsString)
-			throws IllegalSyntaxException, CommandException {
-		if (commandsString == null || commandsString.isEmpty()) {
-			throw new IllegalSyntaxException(
-					ErrorMessages.COMMANDPARSER_STRING_EMPTY);
-		}
-		List<Command> commandList = new ArrayList<Command>();
-		codeZeile = 0;
-		loopMap = new TreeMap<Integer, Integer>();
-
+	public List<Command> getCommandList(String commandsString) throws IllegalSyntaxException {
+		commandList.clear();
 		StringTokenizer stringTokenizer = new StringTokenizer(
-				commandsString, Constant.COMMANDPARSER_COMMANDSDELIMITER);
+			commandsString, Constant.COMMANDPARSER_COMMANDSDELIMITER);
 		while (stringTokenizer.hasMoreTokens()) {
-			String commandToken = stringTokenizer.nextToken();
-			Command command = getCommand(commandToken);
-			if (command != null) {
-				commandList.add(command);
-			}
+			String line = stringTokenizer.nextToken();
+			handleLine(line);
 		}
-
 		return commandList;
 	}
-
-	/**
-	 * Bekommt eine Zeile übergeben und generiert daraus ein Command
-	 * Objekt. Wenn es sich bei der Zeile um ein Editorkommando handelt,
-	 * wird null zurückgegeben
-	 * 
-	 * @param commandString
-	 * @return Command Objekt
-	 * @throws CommandException
-	 * @throws IllegalSyntaxException
-	 */
-	private Command getCommand(String commandString) throws CommandException, IllegalSyntaxException {
-		codeZeile++;
-		
-		StringTokenizer stringTokenizer = new StringTokenizer(commandString, Constant.COMMANDPARSER_COMMANDDELIMITER);
+	
+	private void handleLine(String line) throws IllegalSyntaxException {
+		StringTokenizer stringTokenizer = new StringTokenizer(
+			line, Constant.COMMANDPARSER_COMMANDDELIMITER);
 		String commandName = stringTokenizer.nextToken();
-
-		Command command = null;
-		Pattern commandPattern = null;
-		
-		// Select Befehl
 		if (commandName.equals(Constant.COMMANDPARSER_COMMAND_SELECTCLIENT)) {
-			commandPattern = getCommandPattern(Constant.COMMANDPARSER_COMMAND_SELECTCLIENT_PARAMETER);
-		// Loop Befehl
-		} else if (commandName.equals(Constant.COMMANDPARSER_COMMAND_LOOP)) {
-			commandPattern = getCommandPattern(Constant.COMMANDPARSER_COMMAND_LOOP_PARAMETER);
-		// Roboter Befehl
+			checkCommandPattern(line, Constant.COMMANDPARSER_COMMAND_SELECTCLIENT_PARAMETER);
+			handleSelectCommand(line);
+		} else if (commandName.equals(Constant.COMMANDPARSER_COMMAND_LOOP)){
+			checkCommandPattern(line, Constant.COMMANDPARSER_COMMAND_LOOP_PARAMETER);
+			handleLoopCommand(line);
+		} else if (commandName.equals(Constant.COMMANDPARSER_COMMAND_SUB)){
+			checkCommandPattern(line, Constant.COMMANDPARSER_COMMAND_SUB_PARAMETER);
+			handleSubCommand(line);
 		} else {
-			command = GUIController.getInstance().getClientManager().getActiveClient().getCommandManager().resolveCommand(commandName, false);
-			commandPattern = getCommandPattern(command.getParameters().size());
+			
+			handleRobotCommand(line);
 		}
-		
-		
-		if (!commandPattern.matcher(commandString).matches()) {
+	}
+
+	private void handleSelectCommand(String line) {
+		System.out.println(line);
+	}
+
+	private void handleLoopCommand(String line) {
+		System.out.println(line);
+	}
+
+	private void handleSubCommand(String line) {
+		List<String> parameterList = getParameters(line);
+		System.out.println(parameterList.get(0));
+	}
+	
+	private void handleRobotCommand(String line) {
+		System.out.println(line);
+	}
+
+	private void checkCommandPattern(String line, int parameter) throws IllegalSyntaxException {
+		System.out.println(commandPattern[parameter]);
+		System.out.println(line);
+		Matcher m = commandPattern[parameter].matcher(line);
+		System.out.println(m);
+		if (commandPattern[parameter].matcher(line).matches() == false) {
 			throw new IllegalSyntaxException(ErrorMessages.COMMANDPARSER_SYNTAX_ERROR, codeZeile);
-		}	
-		Matcher parameterMatcher = this.parameterPattern.matcher(commandString);
-		
-		
-		// Select Befehl
-		if (commandName.equals(Constant.COMMANDPARSER_COMMAND_SELECTCLIENT)) {
-			parameterMatcher.find();
+		}
+	}
+	
+	private List<String> getParameters(String line) {
+		List<String> parameterList = new ArrayList<String>();
+		Matcher parameterMatcher = parameterPattern.matcher(line);
+		while (parameterMatcher.find()) {
 			String value = parameterMatcher.group();
-			boolean isActiveClient = GUIController.getInstance().getClientManager().setActiveClient(value);
-			if (!isActiveClient) {
-				throw new IllegalSyntaxException(ErrorMessages.ACTIVE_CLIENT_NOT_EXIST, codeZeile);
-			} 
-		// Loop Befehl
-		} else if (commandName.equals(Constant.COMMANDPARSER_COMMAND_LOOP)) {
-			for (int i = 0; i < Constant.COMMANDPARSER_COMMAND_LOOP_PARAMETER; i++) {
-				parameterMatcher.find();
-				String value = parameterMatcher.group();
-				
-			}
-		// Roboter Befehl
-		} else {
-			for (Iterator<Enum<?>> iterator = command.getParameters().keySet().iterator(); iterator.hasNext();) {
-				Enum<?> key = (Enum<?>) iterator.next();
-				parameterMatcher.find();
-				String value = parameterMatcher.group();
-				command.setParameter(key, value);
-			}
+			parameterList.add(value);
 		}
-		
-
-		return command;
+		return parameterList;
 	}
-
-	/**
-	 * Erstellt für eine Anzahl von Parametern ein Pattern
-	 * 
-	 * @param command
-	 * @return Pattern fuer das Command
-	 * @throws CommandException
-	 */
-	private Pattern getCommandPattern(int parameters)
-			throws CommandException {
-		StringBuilder patternBuilder = new StringBuilder();
-		patternBuilder
-				.append(Constant.COMMANDPARSER_COMMANDPATTERNSTRING);
-
-		int parameterAnzahl = parameters;
-		for (int i = 0; i < parameterAnzahl; i++) {
-			if (i == 0) {
-				patternBuilder.append(" ");
-				patternBuilder.append("\\(");
-			}
-			patternBuilder
-					.append(Constant.COMMANDPARSER_PARAMETERPATTERNSTRING);
-			if (i < parameterAnzahl - 1) {
-				patternBuilder.append(",");
-			} else {
-				patternBuilder.append("\\)");
-			}
-		}
-		Pattern pattern = Pattern.compile(patternBuilder.toString());
-		return pattern;
-	}
+	
+	
 }
