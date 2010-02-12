@@ -1,5 +1,7 @@
 package de.adv.atech.roboter.commons.commands;
 
+import de.adv.atech.roboter.commons.exceptions.CommandException;
+
 /**
  * 
  * @author sbu
@@ -30,8 +32,13 @@ public class DefaultMove extends AbstractCommand {
    * 
    */
 	public DefaultMove() {
-		super();		
-		init(this, Parameter.class);		
+		super();
+		init(this, Parameter.class);
 		this.commandName = "Move";
+	}
+
+	@Override
+	public String getCode(Object informationRef) throws CommandException {
+		return "OG";
 	}
 }

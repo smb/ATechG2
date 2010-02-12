@@ -78,9 +78,11 @@ public abstract class AbstractCommand implements Command, Serializable {
 				// sein
 				classField = this.child.getClass().getDeclaredField(
 						tmpField.getName());
-			} catch (SecurityException e) {
+			}
+			catch (SecurityException e) {
 				throw new CommandException(e, this);
-			} catch (NoSuchFieldException e) {
+			}
+			catch (NoSuchFieldException e) {
 				throw new CommandException(e, this);
 			}
 
@@ -104,9 +106,11 @@ public abstract class AbstractCommand implements Command, Serializable {
 
 			try {
 				returnObject = parameterField.get(this.child);
-			} catch (IllegalArgumentException e) {
+			}
+			catch (IllegalArgumentException e) {
 				throw new CommandException(e, this);
-			} catch (IllegalAccessException e) {
+			}
+			catch (IllegalAccessException e) {
 				throw new CommandException(e, this);
 			}
 		}
@@ -127,9 +131,11 @@ public abstract class AbstractCommand implements Command, Serializable {
 
 			try {
 				parameterField.set(this.child, object);
-			} catch (IllegalArgumentException e) {
+			}
+			catch (IllegalArgumentException e) {
 				throw new CommandException(e, this);
-			} catch (IllegalAccessException e) {
+			}
+			catch (IllegalAccessException e) {
 				throw new CommandException(e, this);
 			}
 		}
@@ -163,13 +169,16 @@ public abstract class AbstractCommand implements Command, Serializable {
 
 				if (tmpFieldContent == null) {
 					sb.append("*NULL*");
-				} else {
+				}
+				else {
 					sb.append(tmpFieldContent.toString());
 				}
 
-			} catch (IllegalAccessException e) {
+			}
+			catch (IllegalAccessException e) {
 				sb.append("*unknown*");
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				sb.append("*internal java error*");
 			}
 

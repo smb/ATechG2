@@ -40,4 +40,13 @@ public interface Command {
 	public void setParameter(Enum<?> name, Object object)
 			throws CommandException;
 
+	/**
+	 * 
+	 * 
+	 * @param informationRef
+	 * @return
+	 * @throws CommandException
+	 */
+	public String getCode(Object informationRef) throws CommandException;
+
 }
