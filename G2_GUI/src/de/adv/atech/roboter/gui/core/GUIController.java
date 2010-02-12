@@ -9,6 +9,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
+import javax.swing.LookAndFeel;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import de.adv.atech.roboter.commons.ClientManager;
 import de.adv.atech.roboter.commons.Constant;
@@ -169,6 +172,19 @@ public class GUIController implements Controller {
 	}
 
 	public void initGUI() {
+		try {
+			UIManager
+					.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+		}
+		catch (InstantiationException e) {
+		}
+		catch (ClassNotFoundException e) {
+		}
+		catch (UnsupportedLookAndFeelException e) {
+		}
+		catch (IllegalAccessException e) {
+		}
+
 		this.debugArea = new DebugArea();
 
 		this.actionManager = new ActionManager();
@@ -336,7 +352,8 @@ public class GUIController implements Controller {
 	}
 
 	/**
-	 * @param mainFrame the mainFrame to set
+	 * @param mainFrame
+	 *            the mainFrame to set
 	 */
 	public void setMainFrame(JFrame mainFrame) {
 		this.mainFrame = mainFrame;
