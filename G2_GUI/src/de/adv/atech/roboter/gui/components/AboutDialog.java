@@ -1,14 +1,22 @@
 package de.adv.atech.roboter.gui.components;
 
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.InputMap;
 import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JEditorPane;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
+import javax.swing.KeyStroke;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.text.html.HTMLEditorKit;
@@ -21,7 +29,7 @@ import edu.stanford.ejalbert.BrowserLauncher;
  * @author sb
  * 
  */
-public class AboutDialog extends JPanel implements HyperlinkListener {
+public class AboutDialog extends JDialog implements HyperlinkListener {
 
 	JButton cancelButton = null;
 
@@ -33,8 +41,32 @@ public class AboutDialog extends JPanel implements HyperlinkListener {
 
 	JScrollPane exportScrollPane = null;
 
-	public AboutDialog() {
-		super();
+	Action actionListener;
+
+	public AboutDialog(Frame owner) {
+		super(owner, true);
+		this.setTitle("About");
+		initUI();
+	}
+
+	protected JRootPane createRootPane() {
+
+		actionListener = new AbstractAction() {
+
+			public void actionPerformed(ActionEvent actionEvent) {
+				setVisible(false);
+			}
+		};
+
+		JRootPane rootPane = new JRootPane();
+		KeyStroke stroke = KeyStroke.getKeyStroke("ESCAPE");
+
+		InputMap inputMap = rootPane
+				.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+		inputMap.put(stroke, "ESCAPE");
+		rootPane.getActionMap().put("ESCAPE", actionListener);
+
+		return rootPane;
 	}
 
 	public void initUI() {
@@ -49,7 +81,7 @@ public class AboutDialog extends JPanel implements HyperlinkListener {
 		gridBagConstraints.gridwidth = 4;
 		gridBagConstraints.fill = GridBagConstraints.BOTH;
 		gridBagConstraints.insets = new java.awt.Insets(15, 10, 10, 10);
-		this.add(getExportScrollPane(), gridBagConstraints);
+		getContentPane().add(getExportScrollPane(), gridBagConstraints);
 
 		// Cancel Button
 		cancelButton = new JButton("Schliessen");
@@ -58,8 +90,9 @@ public class AboutDialog extends JPanel implements HyperlinkListener {
 		gridBagConstraints.gridy = 1;
 		gridBagConstraints.weightx = 0;
 		gridBagConstraints.insets = new java.awt.Insets(10, 5, 10, 10);
+		cancelButton.addActionListener(this.actionListener);
 
-		this.add(cancelButton, gridBagConstraints);
+		getContentPane().add(cancelButton, gridBagConstraints);
 
 		gcButton = new JButton("Garbage Collection");
 		gridBagConstraints = new java.awt.GridBagConstraints();
@@ -69,7 +102,7 @@ public class AboutDialog extends JPanel implements HyperlinkListener {
 		gridBagConstraints.anchor = GridBagConstraints.WEST;
 		gridBagConstraints.insets = new java.awt.Insets(10, 5, 10, 10);
 
-		this.add(gcButton, gridBagConstraints);
+		getContentPane().add(gcButton, gridBagConstraints);
 	}
 
 	public JScrollPane getExportScrollPane() {
@@ -101,8 +134,8 @@ public class AboutDialog extends JPanel implements HyperlinkListener {
 					+ "<hr><br><br>"
 					+ "<font face=\"Verdana\" size=\"3\">"
 					+ "<b>Autoren:</b><br>"
-					+ "<a href=\"mailto:@studi.informatik.uni-stuttgart.de\">Emanuel Egger</a><br>"
-					+ "<a href=\"mailto:buehlsn@studi.informatik.uni-stuttgart.de\">Steffen Buehl</a><br>"
+					+ "<a href=\"mailto:mail@emanuel-egger.de\">Emanuel Egger</a><br>"
+					+ "<a href=\"mailto:sbuehl@gmail.com\">Steffen Buehl</a><br>"
 					+ "<br>" + "<b>Version:</b> " + Constant.G_VERSION + "<br>"
 					+ "<b>Build Date:</b> " + Constant.G_BUILD + "<br>"
 					+ "<b>Used Memory:</b> " + GUIController.getUsedMemory()
@@ -113,10 +146,6 @@ public class AboutDialog extends JPanel implements HyperlinkListener {
 			myTextArea.setText(formText);
 		}
 		return myTextArea;
-	}
-
-	public void cancel() {
-
 	}
 
 	public void garbageCollection() {
