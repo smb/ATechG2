@@ -120,7 +120,7 @@ public class AboutDialog extends JDialog implements HyperlinkListener {
 		if (myTextArea == null) {
 			myTextArea = new JEditorPane();
 			myTextArea.setEditable(false);
-			myTextArea.setEditorKit(new HTMLEditorKit());
+			myTextArea.setEditorKit(new MyHTMLEditorKit());
 			String BGColor = Integer.toHexString(this.getBackground().getRed())
 					+ Integer.toHexString(this.getBackground().getGreen())
 					+ Integer.toHexString(this.getBackground().getBlue());
@@ -131,7 +131,7 @@ public class AboutDialog extends JDialog implements HyperlinkListener {
 					+ BGColor
 					+ "\">"
 					+ "<font face=\"Verdana\" size=\"6\"><b>Roboter GUI</b></font><br>"
-					+ "<hr><br><br>"
+					+ "<hr><img src=\"about_img.jpg\" height=\"125\" width=\"245\"><br><br>"
 					+ "<font face=\"Verdana\" size=\"3\">"
 					+ "<b>Autoren:</b><br>"
 					+ "<a href=\"mailto:mail@emanuel-egger.de\">Emanuel Egger</a><br>"
@@ -158,8 +158,7 @@ public class AboutDialog extends JDialog implements HyperlinkListener {
 			try {
 				BrowserLauncher launcher = new BrowserLauncher();
 				launcher.openURLinBrowser(e.getURL().toString());
-			}
-			catch (Exception r) {
+			} catch (Exception r) {
 			}
 			;
 		}

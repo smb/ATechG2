@@ -9,7 +9,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
-import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -39,6 +38,10 @@ public class GUIController implements Controller {
 	private CommController commController;
 
 	private ActionManager actionManager;
+
+	private EventDispatcher eventDispatcher;
+
+	private ActionHandler actionCore;
 
 	/*
 	 * Threads
@@ -165,6 +168,8 @@ public class GUIController implements Controller {
    */
 	private static GUIController _instance;
 
+	public static String ApplicationImagePath = "";
+
 	GUIController() {
 
 		ControllerManager.getInstance().setController(this);
@@ -175,14 +180,10 @@ public class GUIController implements Controller {
 		try {
 			UIManager
 					.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-		}
-		catch (InstantiationException e) {
-		}
-		catch (ClassNotFoundException e) {
-		}
-		catch (UnsupportedLookAndFeelException e) {
-		}
-		catch (IllegalAccessException e) {
+		} catch (InstantiationException e) {
+		} catch (ClassNotFoundException e) {
+		} catch (UnsupportedLookAndFeelException e) {
+		} catch (IllegalAccessException e) {
 		}
 
 		this.debugArea = new DebugArea();
@@ -192,18 +193,36 @@ public class GUIController implements Controller {
 		this.setMainFrame(new MainFrame());
 	}
 
-	public void init() {
-		this.clientManager = new ClientManager();
+	public boolean init() {
+		try {
+			this.actionCore = new ActionHandler();
 
-		Client localClient = new LocalClient();
+			this.eventDispatcher = new EventDispatcher();
 
-		this.clientManager.registerClient(localClient);
+			this.clientManager = new ClientManager();
 
-		this.commController = new CommController();
+			Client localClient = new LocalClient();
 
-		this.threadCommController = new Thread(this.commController);
+			this.clientManager.registerClient(localClient);
 
-		threadCommController.start();
+			this.commController = new CommController();
+
+			this.threadCommController = new Thread(this.commController);
+
+			threadCommController.start();
+
+			this.eventDispatcher.registerEvent(this.actionCore, "Send",
+					EventDispatcher.TYPE_ACTION);
+
+		} catch (Exception ex) {
+
+			message(Constant.MESSAGE_TYPE_ERROR, "Fehler beim Start: "
+					+ ex.getMessage());
+
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
@@ -267,8 +286,7 @@ public class GUIController implements Controller {
 	public void debug(String text) {
 		if (this.debugArea != null) {
 			this.debugArea.addText("[GUIController]" + text);
-		}
-		else {
+		} else {
 			System.out.println("[GUIController]" + text);
 		}
 	}
@@ -364,5 +382,13 @@ public class GUIController implements Controller {
 	 */
 	public JFrame getMainFrame() {
 		return mainFrame;
+	}
+
+	public void setEventDispatcher(EventDispatcher eventDispatcher) {
+		this.eventDispatcher = eventDispatcher;
+	}
+
+	public EventDispatcher getEventDispatcher() {
+		return eventDispatcher;
 	}
 }

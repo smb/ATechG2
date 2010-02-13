@@ -21,7 +21,7 @@ public class CommController implements Runnable {
 
 	ClientManager clientManager = null;
 
-	public CommController() {
+	public CommController() throws Exception {
 
 		this.clientManager = GUIController.getInstance().getClientManager();
 
@@ -30,10 +30,8 @@ public class CommController implements Runnable {
 		try {
 			this.nmm = new NetworkMasterManager(new RMIServer());
 			this.nmm.initServer();
-		}
-		catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception e) {
+			throw new Exception("Fehler beim Initialisieren des Servers", e);
 		}
 	}
 
@@ -59,8 +57,7 @@ public class CommController implements Runnable {
 
 						try {
 							clientTimestamp = client.getRMI().ping();
-						}
-						catch (Exception ex) {
+						} catch (Exception ex) {
 
 						}
 
@@ -69,8 +66,7 @@ public class CommController implements Runnable {
 						if (clientTimestamp != 0) {
 							ControllerManager.debug(" Ping '"
 									+ clientIdentifier + "': " + diff + "ms");
-						}
-						else {
+						} else {
 							ControllerManager
 									.debug("FEHLER!! Client '"
 											+ clientIdentifier
@@ -81,16 +77,14 @@ public class CommController implements Runnable {
 					}
 
 				}
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			try {
 				ControllerManager.debug("Idle Cycle - sleeping "
 						+ this.sleepTime + "ms");
 				Thread.sleep(this.sleepTime);
-			}
-			catch (InterruptedException e) {
+			} catch (InterruptedException e) {
 				ControllerManager.message(Constant.MESSAGE_TYPE_INFO,
 						"[CommController] Shutdown");
 			}

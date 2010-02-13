@@ -2,8 +2,9 @@ package de.adv.atech.roboter.gui.action;
 
 import java.awt.event.ActionEvent;
 
-import de.adv.atech.roboter.commons.Constant;
-import de.adv.atech.roboter.commons.ControllerManager;
+import de.adv.atech.roboter.gui.core.EventDispatcher;
+import de.adv.atech.roboter.gui.core.GUIController;
+import de.adv.atech.roboter.gui.core.RobotGUIEvent;
 
 public class SendAction extends GUIAbstractAction {
 
@@ -14,8 +15,9 @@ public class SendAction extends GUIAbstractAction {
 	}
 
 	public void execute(ActionEvent event) throws Exception {
-		ControllerManager.message(Constant.MESSAGE_TYPE_INFO,
-				"Senden Knopf gedrueckt");
-	}
 
+		GUIController.getInstance().getEventDispatcher().fireActionEvent(
+				new RobotGUIEvent(this, EventDispatcher.TYPE_ACTION, "Send"));
+
+	}
 }
