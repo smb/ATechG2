@@ -70,27 +70,82 @@ public abstract class AbstractCommand implements Command, Serializable {
 			Field classField = null;
 
 			// Passendes Feld zum enumFeld finden...
-
-			try {
-				// classField =
-				// this.child.getClass().getField(tmpField.getName());
-				// getDeclaredField benutzen -> Parameter koennen "protected"
-				// sein
-				classField = this.child.getClass().getDeclaredField(
-						tmpField.getName());
-			}
-			catch (SecurityException e) {
-				throw new CommandException(e, this);
-			}
-			catch (NoSuchFieldException e) {
-				throw new CommandException(e, this);
-			}
+			/*
+			 * sb / 15.02.2009 / Ausgelagert in eigene Methode
+			 */
+			classField = resolveClassField(tmpField);
 
 			returnMap.put(Enum.valueOf(enumClass, tmpField.getName()),
 					classField);
 		}
 
 		return returnMap;
+	}
+
+	/**
+	 * 
+	 * @param field
+	 * @return
+	 */
+	public Class getParameterClass(Field field) throws CommandException {
+		Class parameter = null;
+
+		if (field != null) {
+			Field tmpField = resolveClassField(field);
+			parameter = tmpField.getType();
+		}
+
+		return parameter;
+	}
+
+	/**
+	 * 
+	 * @param field
+	 * @return
+	 */
+	public Class getParameterClass(String fieldName) throws CommandException {
+		return getParameterClass(resolveClassField(fieldName));
+	}
+
+	/**
+	 * Wrapper fuer resolveClassField(String fieldName)
+	 * 
+	 * @see resolveClassField(String fieldName)
+	 * @param field
+	 * @return
+	 * @throws CommandException
+	 */
+	public Field resolveClassField(Field field) throws CommandException {
+		Field classField = null;
+
+		if (field.isEnumConstant()) {
+			classField = resolveClassField(field.getName());
+		} else {
+			classField = field;
+		}
+
+		return classField;
+	}
+
+	/**
+	 * Enum-Fieldname in ein Class Field aufloesen
+	 * 
+	 * @param fieldName
+	 * @return
+	 * @throws CommandException
+	 */
+	public Field resolveClassField(String fieldName) throws CommandException {
+		Field classField = null;
+
+		try {
+			classField = this.child.getClass().getDeclaredField(fieldName);
+		} catch (SecurityException e) {
+			throw new CommandException(e, this);
+		} catch (NoSuchFieldException e) {
+			throw new CommandException(e, this);
+		}
+
+		return classField;
 	}
 
 	/**
@@ -106,11 +161,9 @@ public abstract class AbstractCommand implements Command, Serializable {
 
 			try {
 				returnObject = parameterField.get(this.child);
-			}
-			catch (IllegalArgumentException e) {
+			} catch (IllegalArgumentException e) {
 				throw new CommandException(e, this);
-			}
-			catch (IllegalAccessException e) {
+			} catch (IllegalAccessException e) {
 				throw new CommandException(e, this);
 			}
 		}
@@ -131,11 +184,9 @@ public abstract class AbstractCommand implements Command, Serializable {
 
 			try {
 				parameterField.set(this.child, object);
-			}
-			catch (IllegalArgumentException e) {
+			} catch (IllegalArgumentException e) {
 				throw new CommandException(e, this);
-			}
-			catch (IllegalAccessException e) {
+			} catch (IllegalAccessException e) {
 				throw new CommandException(e, this);
 			}
 		}
@@ -169,16 +220,13 @@ public abstract class AbstractCommand implements Command, Serializable {
 
 				if (tmpFieldContent == null) {
 					sb.append("*NULL*");
-				}
-				else {
+				} else {
 					sb.append(tmpFieldContent.toString());
 				}
 
-			}
-			catch (IllegalAccessException e) {
+			} catch (IllegalAccessException e) {
 				sb.append("*unknown*");
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 				sb.append("*internal java error*");
 			}
 

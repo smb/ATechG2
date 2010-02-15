@@ -28,9 +28,17 @@ public class TestCommand {
 					.getParameters().entrySet().iterator(); it.hasNext();) {
 				Entry<Enum<?>, Field> entry = it.next();
 
-				System.out.println(" - " + entry.getKey() + " --> "
-						+ entry.getValue());
+				System.out
+						.println(" - "
+								+ entry.getKey()
+								+ " --> "
+								+ entry.getValue()
+								+ " ("
+								+ moveCommand.getParameterClass(entry
+										.getValue()) + ")");
 			}
+
+			System.out.println(moveCommand.getParameterClass("X"));
 
 			moveCommand
 					.setParameter(DefaultMove.Parameter.X, new Double("123"));
@@ -40,8 +48,7 @@ public class TestCommand {
 			Object param = moveCommand.getParameter(DefaultMove.Parameter.X);
 
 			System.out.println(param + " - " + param.getClass());
-		}
-		catch (CommandException e) {
+		} catch (CommandException e) {
 			e.dumpException();
 		}
 	}
