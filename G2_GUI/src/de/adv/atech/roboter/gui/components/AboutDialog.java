@@ -94,7 +94,7 @@ public class AboutDialog extends JDialog implements HyperlinkListener {
 
 		getContentPane().add(cancelButton, gridBagConstraints);
 
-		gcButton = new JButton("Garbage Collection");
+/*		gcButton = new JButton("Garbage Collection");
 		gridBagConstraints = new java.awt.GridBagConstraints();
 		gridBagConstraints.gridx = 1;
 		gridBagConstraints.gridy = 1;
@@ -102,7 +102,7 @@ public class AboutDialog extends JDialog implements HyperlinkListener {
 		gridBagConstraints.anchor = GridBagConstraints.WEST;
 		gridBagConstraints.insets = new java.awt.Insets(10, 5, 10, 10);
 
-		getContentPane().add(gcButton, gridBagConstraints);
+		getContentPane().add(gcButton, gridBagConstraints);*/
 	}
 
 	public JScrollPane getExportScrollPane() {
