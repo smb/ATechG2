@@ -13,7 +13,7 @@ import de.adv.atech.roboter.commons.interfaces.Command;
  * @author sbu
  * 
  */
-public abstract class AbstractCommand implements Command, Serializable {
+public abstract class AbstractCommand implements Command, Serializable, Cloneable {
 
 	/**
    * 
@@ -190,6 +190,17 @@ public abstract class AbstractCommand implements Command, Serializable {
 				throw new CommandException(e, this);
 			}
 		}
+	}
+	
+	
+	public Command clone() {
+		Command clone;
+		try {
+			clone = (Command) super.clone();
+		} catch (CloneNotSupportedException e) {
+			throw new InternalError();
+		}
+		return clone;
 	}
 
 	/**

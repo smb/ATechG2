@@ -22,8 +22,10 @@ public class Constant {
 
 	public static final String COMMANDPARSER_COMMANDDELIMITER = " ";
 
-	public static final String COMMANDPARSER_COMMANDPATTERNSTRING = "([a-zA-Z]+)";
+	public static final String COMMANDPARSER_COMMANDPATTERNSTRING = "\\s*([a-zA-Z]+)\\s*";
 
+	// TODO: Parameter RegEx so anpassen, dass auch Punkte für Double Werte akzeptiert werden
+	
 	public static final String COMMANDPARSER_PARAMETERPATTERNSTRING = "([a-zA-Z0-9]+)";
 
 	public static final String COMMANDPARSER_COMMAND_SELECTCLIENT = "SELECT";
@@ -32,6 +34,16 @@ public class Constant {
 
 	public static final String COMMANDPARSER_COMMAND_LOOP = "LOOP";
 
-	public static final int COMMANDPARSER_COMMAND_LOOP_PARAMETER = 2;
+	public static final int COMMANDPARSER_COMMAND_LOOP_PARAMETER = 1;
+	
+	public static final String COMMANDPARSER_COMMAND_LOOPEND = "LOOPEND";
+
+	public static final int COMMANDPARSER_COMMAND_LOOPEND_PARAMETER = 0;
+
+	public static final String COMMANDPARSER_COMMAND_SUB = "SUB";
+
+	public static final int COMMANDPARSER_COMMAND_SUB_PARAMETER = 1;
+	
+	public static final int COMMANDPARSER_PARAMETER_MAX = 10;
 
 }

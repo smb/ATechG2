@@ -6,5 +6,7 @@ public class ErrorMessages {
 	
 	public static final String COMMANDPARSER_STRING_EMPTY = "Die Befehlszeilen sind leer.";
 	public static final String COMMANDPARSER_SYNTAX_ERROR = "Fehlerhafte Befehlssyntax";
+	public static final String COMMANDPARSER_ILLEGAL_PARAMETER = "Ungültiger Parameter";
+	public static final String COMMANDPARSER_LOOPEND_ERROR = "LOOPEND ohne zugehörigen LOOP";
 	
 }
