@@ -1,5 +1,10 @@
 package de.adv.atech.roboter.gui.commandparser;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.Iterator;
@@ -72,7 +77,7 @@ public class CommandParser {
 		commandList.clear();
 		loopQueue.clear();
 		codeLine = 0;
-		handleCodeLines(codeLines);
+		handleCodeLines(codeLines, false);
 		return commandList;
 	}
 
@@ -83,13 +88,14 @@ public class CommandParser {
 	 * @throws CommandException
 	 * @throws IllegalSyntaxException
 	 */
-	private void handleCodeLines(String codeLines) throws CommandException,
-			IllegalSyntaxException {
+	private void handleCodeLines(String codeLines, boolean isRecursive)
+			throws CommandException, IllegalSyntaxException {
+
 		StringTokenizer stringTokenizer = new StringTokenizer(codeLines,
 				Constant.COMMANDPARSER_COMMANDSDELIMITER);
 		while (stringTokenizer.hasMoreTokens()) {
 			String line = stringTokenizer.nextToken();
-			handleLine(line);
+			handleLine(line, false);
 		}
 	}
 
@@ -101,12 +107,12 @@ public class CommandParser {
 	 * @throws IllegalSyntaxException
 	 * @throws CommandException
 	 */
-	private void handleLine(String line) throws IllegalSyntaxException,
-			CommandException {
-		
-		// Debug:
-		System.out.println("handleLine: " + line);
-		
+	private void handleLine(String line, boolean isRecursive)
+			throws IllegalSyntaxException, CommandException {
+		if (!isRecursive) {
+			codeLine++;
+		}
+
 		StringTokenizer stringTokenizer = new StringTokenizer(line,
 				Constant.COMMANDPARSER_COMMANDDELIMITER);
 		String commandName = stringTokenizer.nextToken();
@@ -159,7 +165,6 @@ public class CommandParser {
 		System.out.println(line);
 	}
 
-	
 	private void handleLoopEndCommand(String line)
 			throws IllegalSyntaxException {
 		checkCommandPattern(line,
@@ -170,9 +175,9 @@ public class CommandParser {
 		} catch (EmptyStackException e) {
 			throw new IllegalSyntaxException(
 					ErrorMessages.COMMANDPARSER_ILLEGAL_PARAMETER, codeLine);
-		}	
+		}
 		int lastCommandListIndex = commandList.size();
-		for (int i = 0; i < loop.getLoopLength()-1; i++) {
+		for (int i = 0; i < loop.getLoopLength() - 1; i++) {
 			for (int j = loop.getCommandListIndex(); j < lastCommandListIndex; j++) {
 				Command command = commandList.get(j).clone();
 				commandList.add(command);
@@ -180,33 +185,58 @@ public class CommandParser {
 		}
 	}
 
-	
-	private void handleSubCommand(String line) throws IllegalSyntaxException {
+	private void handleSubCommand(String line) throws IllegalSyntaxException,
+			CommandException {
 		checkCommandPattern(line, Constant.COMMANDPARSER_COMMAND_SUB_PARAMETER);
 		List<String> parameterList = getParameters(line);
-		System.out.println(parameterList.get(0));
+		String filename = parameterList.get(0);
+		BufferedReader bufferedReader;
+		try {
+			bufferedReader = new BufferedReader(new InputStreamReader(
+					new FileInputStream(filename)));
+		} catch (FileNotFoundException e) {
+			throw new IllegalSyntaxException(
+					ErrorMessages.COMMANDPARSER_SUBFILE_NOT_FOUND, codeLine);
+		}
+		StringBuffer stringBuffer = new StringBuffer();
+		String fileLine;
+		try {
+			while ((fileLine = bufferedReader.readLine()) != null) {
+				stringBuffer.append(fileLine);
+				stringBuffer.append("\n");
+			}
+		} catch (IOException e) {
+			throw new IllegalSyntaxException(
+					ErrorMessages.COMMANDPARSER_SUBFILE_ERROR, codeLine);
+		}
+		String subLines = stringBuffer.toString();
+		handleCodeLines(subLines, true);
 	}
 
 	private void handleRobotCommand(String commandName, String line)
 			throws CommandException, IllegalSyntaxException {
 		// TODO: aktivieren
-//		Command command = GUIController.getInstance().getClientManager()
-//				.getActiveClient().getCommandManager().resolveCommand(
-//						commandName, false);
+		// Command command = GUIController.getInstance().getClientManager()
+		// .getActiveClient().getCommandManager().resolveCommand(
+		// commandName, false);
 		Command command = new DefaultMove();
 		int parameter = command.getParameters().size();
 		checkCommandPattern(line, parameter);
 		List<String> parameterList = getParameters(line);
-		
+
 		int i = 0;
 		Set<Enum<?>> parameterSet = command.getParameters().keySet();
-		for (Iterator<Enum<?>> iterator = parameterSet.iterator(); iterator.hasNext();) {
+		for (Iterator<Enum<?>> iterator = parameterSet.iterator(); iterator
+				.hasNext();) {
 			Enum<?> parameterKey = (Enum<?>) iterator.next();
-			Class fieldClass = command.getParameterClass(command.getParameters().get(parameterKey));
+			Class fieldClass = command.getParameterClass(command
+					.getParameters().get(parameterKey));
 			if (fieldClass == Double.class) {
-				command.setParameter(parameterKey, Double.valueOf(parameterList.get(i)));
+				command.setParameter(parameterKey, Double.valueOf(parameterList
+						.get(i)));
 			} else if (fieldClass == Integer.class) {
-				command.setParameter(parameterKey, Integer.valueOf(parameterList.get(i)));
+				command.setParameter(parameterKey, Integer
+						.valueOf(parameterList.get(i)));
 			} else {
 				command.setParameter(parameterKey, parameterList.get(i));
 			}
@@ -217,10 +247,11 @@ public class CommandParser {
 
 	private void checkCommandPattern(String line, int parameter)
 			throws IllegalSyntaxException {
-		
-		System.out.println("Matcher: " + commandPattern[parameter].matcher(line));
+
+		System.out.println("Matcher: "
+				+ commandPattern[parameter].matcher(line));
 		System.out.println("Line: " + line);
-		
+
 		if (commandPattern[parameter].matcher(line).matches() == false) {
 			throw new IllegalSyntaxException(
 					ErrorMessages.COMMANDPARSER_SYNTAX_ERROR, codeLine);
