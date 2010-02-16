@@ -21,6 +21,7 @@ import de.adv.atech.roboter.commons.interfaces.Controller;
 import de.adv.atech.roboter.gui.ActionManager;
 import de.adv.atech.roboter.gui.components.MainFrame;
 import de.adv.atech.roboter.gui.panel.DebugArea;
+import de.adv.atech.roboter.gui.panel.EditorPanel;
 
 /**
  * 
@@ -74,8 +75,8 @@ public class GUIController implements Controller {
 	/**
 	 * @return the editorPanel
 	 */
-	public JPanel getEditorPanel() {
-		return this.editorPanel;
+	public EditorPanel getEditorPanel() {
+		return (EditorPanel) this.editorPanel;
 	}
 
 	/**

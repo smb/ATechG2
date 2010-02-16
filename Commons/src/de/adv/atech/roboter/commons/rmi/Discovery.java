@@ -36,7 +36,8 @@ public final class Discovery {
 		_props = new Properties();
 		_props.load(fis);
 		fis.close();
-		_props.list(System.out);
+		// sb - Keine Ausgabe der Properties
+		// _props.list(System.out);
 	}
 
 	/**

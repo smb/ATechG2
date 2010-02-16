@@ -81,8 +81,10 @@ public class CommController implements Runnable {
 				e.printStackTrace();
 			}
 			try {
-				ControllerManager.debug("Idle Cycle - sleeping "
-						+ this.sleepTime + "ms");
+				/*
+				 * ControllerManager.debug("Idle Cycle - sleeping " +
+				 * this.sleepTime + "ms");
+				 */
 				Thread.sleep(this.sleepTime);
 			} catch (InterruptedException e) {
 				ControllerManager.message(Constant.MESSAGE_TYPE_INFO,
