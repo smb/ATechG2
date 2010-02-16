@@ -8,5 +8,7 @@ public class ErrorMessages {
 	public static final String COMMANDPARSER_SYNTAX_ERROR = "Fehlerhafte Befehlssyntax";
 	public static final String COMMANDPARSER_ILLEGAL_PARAMETER = "Ungültiger Parameter";
 	public static final String COMMANDPARSER_LOOPEND_ERROR = "LOOPEND ohne zugehörigen LOOP";
+	public static final String COMMANDPARSER_SUBFILE_NOT_FOUND = "Datei für Unterprogramm wurde nicht gefunden";
+	public static final String COMMANDPARSER_SUBFILE_ERROR = "Unterprogramm konnte nicht gelesen werden";
 	
 }
