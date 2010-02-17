@@ -71,4 +71,14 @@ public class NetworkClient implements Client {
 
 		return this.clientRMI;
 	}
+
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+
+		sb.append("[NetworkClient][");
+		sb.append(this.identifier);
+		sb.append("]: ");
+		sb.append(this.RMIURL);
+		return sb.toString();
+	}
 }

@@ -26,9 +26,21 @@ public class ClientManager {
 	}
 
 	public boolean unregisterClient(Client client) {
-		this.clientMap.remove(client);
+		if (client != null) {
+
+			this.clientMap.remove(client);
+
+			// Client war aktiver Client - entfernen
+			if (this.activeClient == client) {
+				this.activeClient = null;
+			}
+		}
 
 		return true;
+	}
+
+	public boolean unregisterClient(String identifier) {
+		return this.unregisterClient(getClient(identifier));
 	}
 
 	public Map<String, Client> getRegisteredClients() {
@@ -46,6 +58,9 @@ public class ClientManager {
 			if (this.clientMap.containsKey(identifier)) {
 				this.activeClient = this.clientMap.get(identifier);
 				returnValue = true;
+
+				ControllerManager.message(Constant.MESSAGE_TYPE_INFO,
+						"Aktiver Client gesetzt: " + this.activeClient);
 			}
 
 			/*
@@ -55,7 +70,8 @@ public class ClientManager {
 			 * null) { if (tmpIdentifier.equals(identifier)) { resolvedClient =
 			 * tmpClient; returnValue = true; } } else { returnValue = false; }
 			 * }
-			 */} else {
+			 */
+		} else {
 		}
 
 		return returnValue;
