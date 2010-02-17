@@ -27,6 +27,7 @@ public class CommandParser {
 	private List<Command> commandList;
 	private Stack<Loop> loopQueue;
 	private Pattern[] commandPattern;
+	private Pattern commandNamePattern;
 	private Pattern parameterPattern;
 	private int codeLine;
 
@@ -34,6 +35,8 @@ public class CommandParser {
 		commandList = new ArrayList<Command>();
 		loopQueue = new Stack<Loop>();
 		initCommandPattern();
+		commandNamePattern = Pattern
+				.compile(Constant.COMMANDPARSER_COMMANDPATTERNSTRING);
 		parameterPattern = Pattern
 				.compile(Constant.COMMANDPARSER_PARAMETERPATTERNSTRING);
 	}
@@ -82,15 +85,17 @@ public class CommandParser {
 	}
 
 	/**
-	 * Methode spaltet den Code in Zeilen
+	 * Spaltet den Code in Zeilen. Wenn isRcursive == true, dann handelt es sich
+	 * um einen rekursiven Aufruf, bei dem die Codezeilen nicht mitgezählt
+	 * werden.
 	 * 
 	 * @param codeLines
+	 * @param isRecursive
 	 * @throws CommandException
 	 * @throws IllegalSyntaxException
 	 */
 	private void handleCodeLines(String codeLines, boolean isRecursive)
 			throws CommandException, IllegalSyntaxException {
-
 		StringTokenizer stringTokenizer = new StringTokenizer(codeLines,
 				Constant.COMMANDPARSER_COMMANDSDELIMITER);
 		while (stringTokenizer.hasMoreTokens()) {
@@ -100,10 +105,12 @@ public class CommandParser {
 	}
 
 	/**
-	 * Methode liest den Befehl der Codezeile und weist ihn der passenden
-	 * Methode zu
+	 * Liest aus einer Codezeile den Befehlsnamen und weist ihn der passenden
+	 * Methode zu. Wenn isRcursive == true, dann handelt es sich um einen
+	 * rekursiven Aufruf, bei dem die Codezeilen nicht mitgezählt werden.
 	 * 
 	 * @param line
+	 * @param isRecursive
 	 * @throws IllegalSyntaxException
 	 * @throws CommandException
 	 */
@@ -113,10 +120,17 @@ public class CommandParser {
 			codeLine++;
 		}
 
-		StringTokenizer stringTokenizer = new StringTokenizer(line,
-				Constant.COMMANDPARSER_COMMANDDELIMITER);
-		String commandName = stringTokenizer.nextToken();
-		if (commandName.equals(Constant.COMMANDPARSER_COMMAND_SELECTCLIENT)) {
+		String commandName = null;
+		Matcher commandNameMatcher = commandNamePattern.matcher(line);
+		while (commandNameMatcher.find()) {
+			commandName = commandNameMatcher.group();
+		}
+
+		if (commandName == null) {
+			throw new IllegalSyntaxException(
+					ErrorMessages.COMMANDPARSER_SYNTAX_ERROR, codeLine);
+		} else if (commandName
+				.equals(Constant.COMMANDPARSER_COMMAND_SELECTCLIENT)) {
 			handleSelectCommand(line);
 		} else if (commandName.equals(Constant.COMMANDPARSER_COMMAND_LOOP)) {
 			handleLoopCommand(line);
@@ -150,7 +164,9 @@ public class CommandParser {
 	}
 
 	/**
-	 * Methode verarbeitet einen LOOP Befehl
+	 * Methode verarbeitet einen LOOP Befehl. Dabei wird sich der letzte Befehl
+	 * und die Wiederholung gemerkt. Beim passenden LOOPEND wird der LOOP dann
+	 * verarbeitet.
 	 * 
 	 * @param line
 	 * @throws IllegalSyntaxException
@@ -162,9 +178,15 @@ public class CommandParser {
 		loop.setCommandListIndex(commandList.size());
 		loop.setLoopLength(getIntValue(parameterList.get(0)));
 		loopQueue.push(loop);
-		System.out.println(line);
 	}
 
+	/**
+	 * Methode verarbeitet einen LOOPEND Befehl. Sucht den passenden LOOP und
+	 * klont die relevanten Command Objekte
+	 * 
+	 * @param line
+	 * @throws IllegalSyntaxException
+	 */
 	private void handleLoopEndCommand(String line)
 			throws IllegalSyntaxException {
 		checkCommandPattern(line,
@@ -185,6 +207,12 @@ public class CommandParser {
 		}
 	}
 
+	/**
+	 * Verarbeitet einen SUB Befehl. Eine Datei wird eingelesen und der Inhalt rekursiv verarbeitet.
+	 * @param line
+	 * @throws IllegalSyntaxException
+	 * @throws CommandException
+	 */
 	private void handleSubCommand(String line) throws IllegalSyntaxException,
 			CommandException {
 		checkCommandPattern(line, Constant.COMMANDPARSER_COMMAND_SUB_PARAMETER);
