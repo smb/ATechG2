@@ -20,6 +20,7 @@ import de.adv.atech.roboter.commons.ErrorMessages;
 import de.adv.atech.roboter.commons.commands.DefaultMove;
 import de.adv.atech.roboter.commons.exceptions.CommandException;
 import de.adv.atech.roboter.commons.interfaces.Command;
+import de.adv.atech.roboter.gui.core.GUIController;
 import de.adv.atech.roboter.gui.exceptions.IllegalSyntaxException;
 
 public class CommandParser {
@@ -49,7 +50,9 @@ public class CommandParser {
 		commandPattern = new Pattern[Constant.COMMANDPARSER_PARAMETER_MAX];
 		for (int parameters = 0; parameters < Constant.COMMANDPARSER_PARAMETER_MAX; parameters++) {
 			StringBuilder patternBuilder = new StringBuilder();
+			patternBuilder.append(Constant.COMMANDPARSER_WHITESPACESPATTERN);
 			patternBuilder.append(Constant.COMMANDPARSER_COMMANDPATTERNSTRING);
+			patternBuilder.append(Constant.COMMANDPARSER_WHITESPACESPATTERN);
 			for (int i = 0; i < parameters; i++) {
 				if (i == 0) {
 					patternBuilder.append("\\(");
@@ -57,7 +60,9 @@ public class CommandParser {
 				patternBuilder
 						.append(Constant.COMMANDPARSER_PARAMETERPATTERNSTRING);
 				if (i == parameters - 1) {
-					patternBuilder.append("\\)\\s*");
+					patternBuilder.append("\\)");
+					patternBuilder
+							.append(Constant.COMMANDPARSER_WHITESPACESPATTERN);
 				} else {
 					patternBuilder.append(",");
 				}
@@ -122,9 +127,8 @@ public class CommandParser {
 
 		String commandName = null;
 		Matcher commandNameMatcher = commandNamePattern.matcher(line);
-		while (commandNameMatcher.find()) {
-			commandName = commandNameMatcher.group();
-		}
+		commandNameMatcher.find();
+		commandName = commandNameMatcher.group();
 
 		if (commandName == null) {
 			throw new IllegalSyntaxException(
@@ -153,14 +157,12 @@ public class CommandParser {
 		checkCommandPattern(line,
 				Constant.COMMANDPARSER_COMMAND_SELECTCLIENT_PARAMETER);
 		List<String> parameterList = getParameters(line);
-		// TODO: aktivieren
-		// boolean isActiveClient =
-		// GUIController.getInstance().getClientManager()
-		// .setActiveClient(parameterList.get(0));
-		// if (!isActiveClient) {
-		// throw new IllegalSyntaxException(
-		// ErrorMessages.ACTIVE_CLIENT_NOT_EXIST, codeZeile);
-		// }
+		boolean isActiveClient = GUIController.getInstance().getClientManager()
+				.setActiveClient(parameterList.get(0));
+		if (!isActiveClient) {
+			throw new IllegalSyntaxException(
+					ErrorMessages.ACTIVE_CLIENT_NOT_EXIST, codeLine);
+		}
 	}
 
 	/**
@@ -208,7 +210,9 @@ public class CommandParser {
 	}
 
 	/**
-	 * Verarbeitet einen SUB Befehl. Eine Datei wird eingelesen und der Inhalt rekursiv verarbeitet.
+	 * Verarbeitet einen SUB Befehl. Eine Datei wird eingelesen und der Inhalt
+	 * rekursiv verarbeitet.
+	 * 
 	 * @param line
 	 * @throws IllegalSyntaxException
 	 * @throws CommandException
@@ -243,11 +247,9 @@ public class CommandParser {
 
 	private void handleRobotCommand(String commandName, String line)
 			throws CommandException, IllegalSyntaxException {
-		// TODO: aktivieren
-		// Command command = GUIController.getInstance().getClientManager()
-		// .getActiveClient().getCommandManager().resolveCommand(
-		// commandName, false);
-		Command command = new DefaultMove();
+		Command command = GUIController.getInstance().getClientManager()
+				.getActiveClient().getCommandManager().resolveCommand(
+						commandName, false);
 		int parameter = command.getParameters().size();
 		checkCommandPattern(line, parameter);
 		List<String> parameterList = getParameters(line);

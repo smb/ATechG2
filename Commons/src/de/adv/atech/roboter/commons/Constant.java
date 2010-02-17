@@ -19,8 +19,10 @@ public class Constant {
 	public static final int MESSAGE_TYPE_ERROR = 1;
 
 	public static final String COMMANDPARSER_COMMANDSDELIMITER = "\n";
+	
+	public static final String COMMANDPARSER_WHITESPACESPATTERN = "\\s*";
 
-	public static final String COMMANDPARSER_COMMANDPATTERNSTRING = "\\s*([a-zA-Z]+)\\s*";
+	public static final String COMMANDPARSER_COMMANDPATTERNSTRING = "([a-zA-Z]+)";
 
 	// TODO: Parameter RegEx so anpassen, dass auch Punkte für Double Werte akzeptiert werden
 	
