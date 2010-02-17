@@ -1,5 +1,8 @@
 package de.adv.atech.roboter.gui;
 
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 import de.adv.atech.roboter.gui.components.SplashScreenMain;
 import de.adv.atech.roboter.gui.core.GUIController;
 
@@ -7,13 +10,30 @@ public class Start {
 
 	public static void main(String[] args) {
 
-		GUIController controller = GUIController.getInstance();
-
 		SplashScreenMain ss = new SplashScreenMain("splashscreen.png");
 
-		controller.initGUI();
+		java.awt.EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					UIManager
+							.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+				} catch (UnsupportedLookAndFeelException e) {
+					e.printStackTrace();
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				} catch (InstantiationException e) {
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				}
 
-		controller.init();
+				GUIController controller = GUIController.getInstance();
+
+				controller.initGUI();
+
+				controller.init();
+			}
+		});
+
 	}
-
 }

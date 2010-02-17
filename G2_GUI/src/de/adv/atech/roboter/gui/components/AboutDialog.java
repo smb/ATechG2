@@ -19,7 +19,6 @@ import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
-import javax.swing.text.html.HTMLEditorKit;
 
 import de.adv.atech.roboter.commons.Constant;
 import de.adv.atech.roboter.gui.core.GUIController;

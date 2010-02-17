@@ -3,14 +3,13 @@
  */
 package de.adv.atech.roboter.gui.core;
 
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 import de.adv.atech.roboter.commons.ClientManager;
 import de.adv.atech.roboter.commons.Constant;
@@ -66,7 +65,7 @@ public class GUIController implements Controller {
 
 	private JPanel editorPanel; // Editor
 
-	private JPanel statusBar; // StatusBar
+	private JComponent statusBar; // StatusBar
 
 	private JScrollPane debugPanel;
 
@@ -178,14 +177,6 @@ public class GUIController implements Controller {
 	}
 
 	public void initGUI() {
-		try {
-			UIManager
-					.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-		} catch (InstantiationException e) {
-		} catch (ClassNotFoundException e) {
-		} catch (UnsupportedLookAndFeelException e) {
-		} catch (IllegalAccessException e) {
-		}
 
 		this.debugArea = new DebugArea();
 
@@ -311,14 +302,14 @@ public class GUIController implements Controller {
 	 * @param statusBar
 	 *            the statusBar to set
 	 */
-	public void setStatusBar(JPanel statusBar) {
+	public void setStatusBar(JComponent statusBar) {
 		this.statusBar = statusBar;
 	}
 
 	/**
 	 * @return the statusBar
 	 */
-	public JPanel getStatusBar() {
+	public JComponent getStatusBar() {
 		return statusBar;
 	}
 

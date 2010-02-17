@@ -3,13 +3,14 @@ package de.adv.atech.roboter.gui.action;
 import java.awt.event.ActionEvent;
 
 import de.adv.atech.roboter.commons.ControllerManager;
+import de.adv.atech.roboter.gui.media.Media;
 
 public class EndAction extends GUIAbstractAction {
 
-	public static final String actionName = "End";
+	public static final String actionName = "Beenden";
 
 	public EndAction() {
-		super(actionName, null);
+		super(actionName, Media.getIcon("cross"));
 	}
 
 	public void execute(ActionEvent event) throws Exception {

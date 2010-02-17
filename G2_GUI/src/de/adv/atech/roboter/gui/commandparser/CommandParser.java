@@ -17,7 +17,6 @@ import java.util.regex.Pattern;
 
 import de.adv.atech.roboter.commons.Constant;
 import de.adv.atech.roboter.commons.ErrorMessages;
-import de.adv.atech.roboter.commons.commands.DefaultMove;
 import de.adv.atech.roboter.commons.exceptions.CommandException;
 import de.adv.atech.roboter.commons.interfaces.Command;
 import de.adv.atech.roboter.gui.core.GUIController;

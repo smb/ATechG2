@@ -45,6 +45,8 @@ public class CommController implements Runnable {
 				Map<String, Client> clientMap = this.clientManager
 						.getRegisteredClients();
 
+				boolean clientActive = false;
+
 				for (Iterator<String> it = clientMap.keySet().iterator(); it
 						.hasNext();) {
 
@@ -64,19 +66,25 @@ public class CommController implements Runnable {
 						long diff = clientTimestamp - currentTimestamp;
 
 						if (clientTimestamp != 0) {
+							clientActive = true;
 							ControllerManager.debug(" Ping '"
 									+ clientIdentifier + "': " + diff + "ms");
 						} else {
+							clientActive = false;
+
 							ControllerManager
 									.debug("FEHLER!! Client '"
 											+ clientIdentifier
 											+ "' nicht mehr erreichbar - wird entfernt");
 
-							this.clientManager.unregisterClient(client);
+							// this.clientManager.unregisterClient(client);
+							it.remove();
 						}
+					} else {
+						clientActive = true;
 					}
-
 				}
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

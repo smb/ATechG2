@@ -1,8 +1,5 @@
 package de.adv.atech.roboter.gui.panel;
 
-import java.awt.BorderLayout;
-
-import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import de.adv.atech.roboter.commons.Constant;

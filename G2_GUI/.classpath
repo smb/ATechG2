@@ -5,5 +5,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/Commons"/>
 	<classpathentry kind="lib" path="lib/jsyntaxpane-0.9.5-b29.jar" sourcepath="lib/jsyntaxpane-0.9.5-sources.jar"/>
 	<classpathentry kind="lib" path="lib/BrowserLauncher2-all-1_3.jar"/>
+	<classpathentry kind="lib" path="lib/G2_GUI_Icons.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
