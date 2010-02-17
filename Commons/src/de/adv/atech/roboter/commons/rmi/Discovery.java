@@ -1,5 +1,6 @@
 package de.adv.atech.roboter.commons.rmi;
 
+import java.io.InputStream;
 import java.util.Properties;
 
 /**
@@ -32,10 +33,12 @@ public final class Discovery {
 	public static void setProperties(String fileName)
 			throws java.io.IOException {
 
-		java.io.FileInputStream fis = new java.io.FileInputStream(fileName);
+		InputStream is = Discovery.class.getResourceAsStream(fileName);
+
+		// java.io.FileInputStream fis = new java.io.FileInputStream(fileName);
 		_props = new Properties();
-		_props.load(fis);
-		fis.close();
+		_props.load(is);
+		is.close();
 		// sb - Keine Ausgabe der Properties
 		// _props.list(System.out);
 	}
