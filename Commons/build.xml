@@ -1,0 +1,53 @@
+<project name="g2_commons" default="compile" basedir=".">
+	<description>
+        simple example build file
+    </description>
+
+	<!-- set global properties for this build -->
+	<property name="src" location="src" />
+	<property name="build" location="build" />
+	<property name="dist" location="dist" />
+	<property name="libs" location="libs" />
+	<property name="output" location="output" />
+	<property name="target" value="1.6" />
+	<property name="source" value="1.6" />
+
+
+	<path id="Commons.classpath">
+		<pathelement location="${Commons.location}/build" />
+	</path>
+
+	<target name="init">
+		<!-- Create the time stamp -->
+		<tstamp />
+		<!-- Create the build directory structure used by compile -->
+		<mkdir dir="${build}" />
+
+		<copy includeemptydirs="false" todir="${build}">
+			<fileset dir="src">
+				<exclude name="**/*.launch" />
+				<exclude name="**/*.java" />
+			</fileset>
+		</copy>
+	</target>
+
+	<path id="G2_Commons.classpath">
+		<pathelement path="${classpath}" />
+	</path>
+
+	<target name="compile" depends="init" description="compile the source ">
+
+
+		<!-- Compile the java code from ${src} into ${build} -->
+		<javac srcdir="${src}" destdir="${build}" source="${source}" target="${target}">
+			<classpath refid="G2_Commons.classpath" />
+		</javac>
+	</target>
+
+
+	<target name="clean" description="clean up">
+		<!-- Delete the ${build} and ${dist} directory trees -->
+		<delete dir="${build}" />
+		<delete dir="${dist}" />
+	</target>
+</project>

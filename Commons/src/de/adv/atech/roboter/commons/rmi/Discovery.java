@@ -40,7 +40,7 @@ public final class Discovery {
 		_props.load(is);
 		is.close();
 		// sb - Keine Ausgabe der Properties
-		// _props.list(System.out);
+		_props.list(System.out);
 	}
 
 	/**
