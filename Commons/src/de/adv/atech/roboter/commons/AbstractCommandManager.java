@@ -172,8 +172,11 @@ public abstract class AbstractCommandManager {
 			Class<? extends Command> commandClass = getCommandMap(client).get(
 					command.toUpperCase());
 
-			resolvedCommand = getCommandInstance(client, commandClass,
-					forceNewInstance);
+			// Ist null, wenn Command nicht existiert
+			if (commandClass != null) {
+				resolvedCommand = getCommandInstance(client, commandClass,
+						forceNewInstance);
+			}
 
 			/*
 			 * List<Class<Command>> tmpCommandList = getCommandList(client); for

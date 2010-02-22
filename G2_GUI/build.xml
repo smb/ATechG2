@@ -68,10 +68,10 @@
 		<manifest file="MANIFEST.MF">
 			<attribute name="Built-By" value="${user.name}" />
 			<attribute name="Main-Class" value="de.adv.atech.roboter.gui.Start" />
-			<attribute name="Class-Path" value=". ${manifest.class.path}" />
+			<attribute name="Class-Path" value="." />
 		</manifest>
 
-		<jar manifest="MANIFEST.txt" jarfile="${jarfile}" basedir="${build}">
+		<jar manifest="MANIFEST.MF" jarfile="${jarfile}" basedir="${build}">
 			<fileset dir="${Commons.location}/build" />
 		</jar>
 

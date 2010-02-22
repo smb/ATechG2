@@ -15,10 +15,12 @@ import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import de.adv.atech.roboter.commons.ClientManager;
 import de.adv.atech.roboter.commons.Constant;
 import de.adv.atech.roboter.commons.ErrorMessages;
 import de.adv.atech.roboter.commons.exceptions.CommandException;
 import de.adv.atech.roboter.commons.interfaces.Command;
+import de.adv.atech.roboter.commons.interfaces.CommandManager;
 import de.adv.atech.roboter.gui.core.GUIController;
 import de.adv.atech.roboter.gui.exceptions.IllegalSyntaxException;
 
@@ -58,13 +60,17 @@ public class CommandParser {
 				}
 				patternBuilder
 						.append(Constant.COMMANDPARSER_PARAMETERPATTERNSTRING);
+
+				patternBuilder
+						.append(Constant.COMMANDPARSER_WHITESPACESPATTERN);
+
 				if (i == parameters - 1) {
 					patternBuilder.append("\\)");
-					patternBuilder
-							.append(Constant.COMMANDPARSER_WHITESPACESPATTERN);
 				} else {
 					patternBuilder.append(",");
 				}
+				patternBuilder
+						.append(Constant.COMMANDPARSER_WHITESPACESPATTERN);
 			}
 			Pattern pattern = Pattern.compile(patternBuilder.toString());
 			commandPattern[parameters] = pattern;
@@ -246,9 +252,16 @@ public class CommandParser {
 
 	private void handleRobotCommand(String commandName, String line)
 			throws CommandException, IllegalSyntaxException {
-		Command command = GUIController.getInstance().getClientManager()
-				.getActiveClient().getCommandManager().resolveCommand(
-						commandName, false);
+		ClientManager cm = GUIController.getInstance().getClientManager();
+		CommandManager commandManager = cm.getActiveClient()
+				.getCommandManager();
+		Command command = commandManager.resolveCommand(commandName, false);
+
+		if (command == null) {
+			throw new IllegalSyntaxException(
+					ErrorMessages.COMMANDPARSER_COMMAND_NOT_FOUND, codeLine);
+		}
+
 		int parameter = command.getParameters().size();
 		checkCommandPattern(line, parameter);
 		List<String> parameterList = getParameters(line);
