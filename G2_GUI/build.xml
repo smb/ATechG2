@@ -1,0 +1,87 @@
+<project name="g2_gui" default="dist" basedir=".">
+	<description>
+        simple example build file
+    </description>
+
+	<!-- set global properties for this build -->
+	<property name="src" location="src" />
+	<property name="build" location="build" />
+	<property name="dist" location="dist" />
+	<property name="libs" location="lib" />
+	<property name="output" location="output" />
+	<property name="target" value="1.6" />
+	<property name="source" value="1.6" />
+	<property name="jarfile" value="dist/G2_GUI.jar" />
+
+	<!-- Libs -->
+	<property name="LIB_BrowserLauncher" value="${libs}/BrowserLauncher2-all-1_3.jar" />
+	<property name="LIB_Icons" value="${libs}/G2_GUI_Icons.jar" />
+	<property name="LIB_JSyntaxPane" value="${libs}/jsyntaxpane-0.9.5-b29.jar" />
+
+	<property name="Commons.location" value="../Commons" />
+
+	<path id="G2_Commons.classpath">
+		<pathelement location="${Commons.location}/build" />
+	</path>
+
+	<target name="init">
+		<!-- Create the time stamp -->
+		<tstamp />
+		<!-- Create the build directory structure used by compile -->
+		<mkdir dir="${build}" />
+	</target>
+
+	<path id="G2_GUI.classpath">
+		<pathelement path="${classpath}" />
+		<path refid="G2_Commons.classpath" />
+		<pathelement location="${LIB_BrowserLauncher}" />
+		<pathelement location="${LIB_Icons}" />
+		<pathelement location="${LIB_JSyntaxPane}" />
+	</path>
+
+	<target name="compile" depends="init" description="compile the source ">
+		<!-- Compile the java code from ${src} into ${build} -->
+		<javac srcdir="${src}" destdir="${build}" source="${source}" target="${target}">
+			<classpath refid="G2_GUI.classpath" />
+		</javac>
+	</target>
+
+	<target depends="build-subprojects, compile" name="build" />
+	<target name="build-subprojects">
+		<ant antfile="${Commons.location}/build.xml" dir="${Commons.location}" inheritAll="false" target="compile">
+			<propertyset>
+				<propertyref name="build.compiler" />
+			</propertyset>
+		</ant>
+	</target>
+
+	<target name="dist" depends="build" description="generate the distribution">
+		<!-- Create the distribution directory -->
+		<mkdir dir="${dist}" />
+		<mkdir dir="${output}" />
+
+		<!-- unjar libs so we can build a standalone jar file -->
+		<unjar src="${LIB_BrowserLauncher}" dest="${build}" />
+		<unjar src="${LIB_Icons}" dest="${build}" />
+		<unjar src="${LIB_JSyntaxPane}" dest="${build}" />
+
+		<manifest file="MANIFEST.MF">
+			<attribute name="Built-By" value="${user.name}" />
+			<attribute name="Main-Class" value="de.adv.atech.roboter.gui.Start" />
+			<attribute name="Class-Path" value=". ${manifest.class.path}" />
+		</manifest>
+
+		<jar manifest="MANIFEST.txt" jarfile="${jarfile}" basedir="${build}">
+			<fileset dir="${Commons.location}/build" />
+		</jar>
+
+		<!-- zip into final file -->
+		<!-- <zip basedir="${dist}" destfile="${output}/G2_GUI-${DSTAMP}.zip" / -->
+	</target>
+
+	<target name="clean" description="clean up">
+		<!-- Delete the ${build} and ${dist} directory trees -->
+		<delete dir="${build}" />
+		<delete dir="${dist}" />
+	</target>
+</project>
