@@ -128,7 +128,8 @@ public abstract class AbstractCommandManager {
 		ControllerManager.debug("[CommandManager]: registered Command "
 				+ tmpCommand.toString());
 
-		getCommandMap(client).put(tmpCommand.getCommandName(), commandClass);
+		getCommandMap(client).put(tmpCommand.getCommandName().toUpperCase(),
+				commandClass);
 
 		return true;
 	}
@@ -169,7 +170,7 @@ public abstract class AbstractCommandManager {
 
 		if (command != null) {
 			Class<? extends Command> commandClass = getCommandMap(client).get(
-					command);
+					command.toUpperCase());
 
 			resolvedCommand = getCommandInstance(client, commandClass,
 					forceNewInstance);
