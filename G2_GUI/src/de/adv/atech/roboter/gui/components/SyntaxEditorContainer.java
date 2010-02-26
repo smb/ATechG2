@@ -41,7 +41,6 @@ public class SyntaxEditorContainer extends Container {
 		}		
 		kit.setConfig(editorProperties);		
 		syntaxEditor.setEditorKit(kit);
-		syntaxEditor.setForeground(Color.YELLOW);
 		syntaxEditor.setBackground(Color.BLACK);
 		
 		if (kit instanceof DefaultSyntaxKit) {
