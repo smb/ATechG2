@@ -1,8 +1,11 @@
 package de.adv.atech.roboter.gui.components;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
+import javax.swing.Icon;
 import javax.swing.JLabel;
 
 import de.adv.atech.roboter.commons.ClientManager;
@@ -13,19 +16,31 @@ import de.adv.atech.roboter.commons.interfaces.Client;
 import de.adv.atech.roboter.gui.core.GUIController;
 import de.adv.atech.roboter.gui.media.Media;
 
-public class ClientStatusLabel extends JLabel implements Runnable {
+public class ClientStatusInfo implements Runnable {
 
 	boolean shutdown;
 
 	String currentLabel;
 
-	public ClientStatusLabel() {
+	Icon currentIcon;
+
+	List<JLabel> targetLabels;
+
+	public ClientStatusInfo() {
+		targetLabels = new ArrayList<JLabel>();
+
 		currentLabel = "Kein Client ausgewaehlt";
 
-		this.setIcon(Media.getIcon("stop"));
+		// this.setText(currentLabel);
+
+		currentIcon = Media.getIcon("stop");
 
 		Thread t = new Thread(this);
 		t.start();
+	}
+
+	public boolean registerTargetLabel(JLabel label) {
+		return targetLabels.add(label);
 	}
 
 	/**
@@ -55,22 +70,29 @@ public class ClientStatusLabel extends JLabel implements Runnable {
 
 					if (client == cm.getActiveClient()) {
 						connectedClients.append("*" + clientIdentifier + "*");
-					} else {
+					}
+					else {
 						connectedClients.append(clientIdentifier);
 					}
 				}
 			}
 		}
+
 		if (connectedClients != null && connectedClients.length() > 0) {
 			currentLabel = "Verbundene Clients: " + connectedClients.toString();
-			this.setIcon(Media.getIcon("accept"));
-
-		} else {
+			currentIcon = Media.getIcon("accept");
+		}
+		else {
 			currentLabel = "Keine Clients verbunden";
-			this.setIcon(Media.getIcon("stop"));
+			currentIcon = Media.getIcon("stop");
 		}
 
-		this.setText(currentLabel);
+		// UpdateLabels
+		for (Iterator<JLabel> it = this.targetLabels.iterator(); it.hasNext();) {
+			JLabel tmpLabel = it.next();
+			tmpLabel.setIcon(currentIcon);
+			tmpLabel.setText(currentLabel);
+		}
 	}
 
 	public void run() {
@@ -79,13 +101,15 @@ public class ClientStatusLabel extends JLabel implements Runnable {
 			try {
 				setClientLabel();
 
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				e.printStackTrace();
 			}
 			try {
 
 				Thread.sleep(1 * 1000);
-			} catch (InterruptedException e) {
+			}
+			catch (InterruptedException e) {
 				ControllerManager.message(Constant.MESSAGE_TYPE_INFO,
 						"[DateTimeStatusLabel] Shutdown");
 			}

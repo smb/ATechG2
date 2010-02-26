@@ -2,12 +2,17 @@ package de.adv.atech.roboter.gui.action;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.AbstractButton;
+
+import de.adv.atech.roboter.commons.ClientManager;
+import de.adv.atech.roboter.commons.interfaces.ClientChangedListener;
 import de.adv.atech.roboter.gui.core.EventDispatcher;
 import de.adv.atech.roboter.gui.core.GUIController;
 import de.adv.atech.roboter.gui.core.RobotGUIEvent;
 import de.adv.atech.roboter.gui.media.Media;
 
-public class SendAction extends GUIAbstractAction {
+public class SendAction extends GUIAbstractAction implements
+		ClientChangedListener {
 
 	public static final String actionName = "Send";
 
@@ -20,5 +25,16 @@ public class SendAction extends GUIAbstractAction {
 		GUIController.getInstance().getEventDispatcher().fireActionEvent(
 				new RobotGUIEvent(this, EventDispatcher.TYPE_ACTION, "Send"));
 
+	}
+
+	public void clientChanged(ClientManager clientManager, Object object) {
+		if (clientManager.getRegisteredClients().size() > 0) {
+			// ((AbstractButton) object)s
+		}
+	}
+
+	public void registerButtonListener(AbstractButton button) {
+		GUIController.getInstance().getClientManager()
+				.registerClientChangedListener(this, button);
 	}
 }

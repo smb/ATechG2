@@ -1,9 +1,13 @@
 package de.adv.atech.roboter.commons;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import de.adv.atech.roboter.commons.interfaces.Client;
+import de.adv.atech.roboter.commons.interfaces.ClientChangedListener;
 
 public class ClientManager {
 
@@ -13,7 +17,22 @@ public class ClientManager {
 
 	public ClientManager() {
 		this.clientMap = new LinkedHashMap<String, Client>();
+		this.listenerMap = new HashMap<ClientChangedListener, Object>();
+	}
 
+	private Map<ClientChangedListener, Object> listenerMap;
+
+	public void registerClientChangedListener(ClientChangedListener listener,
+			Object data) {
+		this.listenerMap.put(listener, data);
+	}
+
+	public void fireClientChangedEvent() {
+		for (Iterator<Entry<ClientChangedListener, Object>> it = this.listenerMap
+				.entrySet().iterator(); it.hasNext();) {
+			Entry<ClientChangedListener, Object> entry = it.next();
+			entry.getKey().clientChanged(this, entry.getValue());
+		}
 	}
 
 	public boolean registerClient(Client client) {
@@ -21,6 +40,8 @@ public class ClientManager {
 				+ client.getIdentifier());
 
 		this.clientMap.put(client.getIdentifier(), client);
+
+		fireClientChangedEvent();
 
 		return true;
 	}
@@ -34,6 +55,8 @@ public class ClientManager {
 			if (this.activeClient == client) {
 				this.activeClient = null;
 			}
+
+			fireClientChangedEvent();
 		}
 
 		return true;
@@ -71,7 +94,8 @@ public class ClientManager {
 			 * tmpClient; returnValue = true; } } else { returnValue = false; }
 			 * }
 			 */
-		} else {
+		}
+		else {
 		}
 
 		return returnValue;

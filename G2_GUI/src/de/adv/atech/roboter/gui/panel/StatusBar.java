@@ -12,9 +12,9 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.UIResource;
 
-import de.adv.atech.roboter.gui.components.ClientStatusLabel;
 import de.adv.atech.roboter.gui.components.DateTimeStatusLabel;
 import de.adv.atech.roboter.gui.components.PercentLayout;
+import de.adv.atech.roboter.gui.core.GUIController;
 
 public class StatusBar extends JComponent {
 
@@ -24,27 +24,40 @@ public class StatusBar extends JComponent {
 	public final static String DEFAULT_ZONE = "default";
 
 	private Hashtable idToZones;
+
 	private Border zoneBorder;
 
 	private DateTimeStatusLabel dateTimeLabel;
+
 	private JLabel textLabel;
-	private ClientStatusLabel clientLabel;
+
+	// private ClientStatusLabel clientLabel;
 
 	/**
 	 * Construct a new StatusBar
 	 * 
 	 */
 	public StatusBar() {
+		GUIController controller = GUIController.getInstance();
+
 		setLayout(new PercentLayout(PercentLayout.HORIZONTAL, 8));
 		idToZones = new Hashtable();
 		setZoneBorder(BorderFactory.createLineBorder(Color.lightGray));
 
-		dateTimeLabel = new DateTimeStatusLabel();
-		clientLabel = new ClientStatusLabel();
+		// dateTimeLabel = new DateTimeStatusLabel();
+		JLabel clientLabel = new JLabel();
+
+		controller.getClientStatusInfo().registerTargetLabel(clientLabel);
+
 		textLabel = new JLabel();
 
-		setZones(new String[] { "Client", "Zeit" }, new JComponent[] {
-				clientLabel, dateTimeLabel }, new String[] { "*", "20%" });
+		setZones(new String[] {
+				"Client", "Zeit"
+		}, new JComponent[] {
+				clientLabel, controller.getDateTimeLabel()
+		}, new String[] {
+				"*", "20%"
+		});
 	}
 
 	public void setZoneBorder(Border border) {
@@ -75,7 +88,8 @@ public class StatusBar extends JComponent {
 					jc.setBorder(new CompoundBorder(zoneBorder,
 							new EmptyBorder(0, 2, 0, 2)));
 					((JLabel) jc).setText(" ");
-				} else {
+				}
+				else {
 					jc.setBorder(zoneBorder);
 				}
 			}

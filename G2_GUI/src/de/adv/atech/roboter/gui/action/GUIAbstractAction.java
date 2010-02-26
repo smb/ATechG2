@@ -64,8 +64,12 @@ public abstract class GUIAbstractAction {
 
 		button.addActionListener(this.listener);
 
+		this.registerButtonListener(button);
+
 		return button;
 	}
+
+	public abstract void registerButtonListener(AbstractButton button);
 
 	public GUIAbstractAction(String name, String defaultLabel, Icon icon) {
 		this.name = name;

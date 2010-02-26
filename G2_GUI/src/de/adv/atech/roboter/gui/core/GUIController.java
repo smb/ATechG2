@@ -18,6 +18,8 @@ import de.adv.atech.roboter.commons.LocalClient;
 import de.adv.atech.roboter.commons.interfaces.Client;
 import de.adv.atech.roboter.commons.interfaces.Controller;
 import de.adv.atech.roboter.gui.ActionManager;
+import de.adv.atech.roboter.gui.components.ClientStatusInfo;
+import de.adv.atech.roboter.gui.components.DateTimeStatusLabel;
 import de.adv.atech.roboter.gui.components.MainFrame;
 import de.adv.atech.roboter.gui.panel.DebugArea;
 import de.adv.atech.roboter.gui.panel.EditorPanel;
@@ -47,6 +49,10 @@ public class GUIController implements Controller {
 	 * Threads
 	 */
 	private Thread threadCommController;
+
+	private DateTimeStatusLabel dateTimeLabel; // = new DateTimeStatusLabel();
+
+	private ClientStatusInfo clientStatusInfo; // = new ClientStatusLabel();
 
 	/*
 	 * GUI Conent
@@ -182,6 +188,10 @@ public class GUIController implements Controller {
 
 		this.actionManager = new ActionManager();
 
+		this.dateTimeLabel = new DateTimeStatusLabel();
+
+		this.clientStatusInfo = new ClientStatusInfo();
+
 		this.setMainFrame(new MainFrame());
 	}
 
@@ -206,7 +216,8 @@ public class GUIController implements Controller {
 			this.eventDispatcher.registerEvent(this.actionCore, "Send",
 					EventDispatcher.TYPE_ACTION);
 
-		} catch (Exception ex) {
+		}
+		catch (Exception ex) {
 
 			message(Constant.MESSAGE_TYPE_ERROR, "Fehler beim Start: "
 					+ ex.getMessage());
@@ -278,7 +289,8 @@ public class GUIController implements Controller {
 	public void debug(String text) {
 		if (this.debugArea != null) {
 			this.debugArea.addText("[GUIController]" + text);
-		} else {
+		}
+		else {
 			System.out.println("[GUIController]" + text);
 		}
 	}
@@ -382,5 +394,27 @@ public class GUIController implements Controller {
 
 	public EventDispatcher getEventDispatcher() {
 		return eventDispatcher;
+	}
+
+	/**
+	 * @param dateTimeLabel
+	 *            the dateTimeLabel to set
+	 */
+	public void setDateTimeLabel(DateTimeStatusLabel dateTimeLabel) {
+		this.dateTimeLabel = dateTimeLabel;
+	}
+
+	/**
+	 * @return the dateTimeLabel
+	 */
+	public DateTimeStatusLabel getDateTimeLabel() {
+		return dateTimeLabel;
+	}
+
+	/**
+	 * @return the clientLabel
+	 */
+	public ClientStatusInfo getClientStatusInfo() {
+		return clientStatusInfo;
 	}
 }

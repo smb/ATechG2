@@ -1,7 +1,9 @@
 package de.adv.atech.roboter.gui.panel;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import de.adv.atech.roboter.gui.components.SyntaxEditorContainer;
@@ -10,18 +12,24 @@ public class EditorPanel extends JPanel {
 
 	SyntaxEditorContainer syntaxEditorPane;
 
+	ClientInfoPanel clientInfoPanel;
+
 	public EditorPanel() {
 
-		syntaxEditorPane = new SyntaxEditorContainer();
+		this.syntaxEditorPane = new SyntaxEditorContainer();
+
+		this.clientInfoPanel = new ClientInfoPanel();
 
 		this.setLayout(new BorderLayout());
 
-		this.add(syntaxEditorPane, BorderLayout.CENTER);
+		this.add(this.syntaxEditorPane, BorderLayout.CENTER);
+
+		this.add(this.clientInfoPanel, BorderLayout.EAST);
 
 	}
 
 	public String getEditorContent() {
-		return syntaxEditorPane.getEditorContent();
+		return this.syntaxEditorPane.getEditorContent();
 	}
 
 }
