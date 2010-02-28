@@ -3,6 +3,7 @@ package de.adv.atech.roboter.commons;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -49,7 +50,12 @@ public class ClientManager {
 	public boolean unregisterClient(Client client) {
 		if (client != null) {
 
-			this.clientMap.remove(client);
+			for (Iterator<Client> it = this.clientMap.values().iterator(); it
+					.hasNext();) {
+				if (it.next().equals(client)) {
+					it.remove();
+				}
+			}
 
 			// Client war aktiver Client - entfernen
 			if (this.activeClient == client) {
@@ -63,7 +69,18 @@ public class ClientManager {
 	}
 
 	public boolean unregisterClient(String identifier) {
-		return this.unregisterClient(getClient(identifier));
+		// return this.unregisterClient(getClient(identifier));
+		if (identifier != null) {
+			Client client = this.clientMap.remove(identifier);
+
+			if (this.activeClient == null || this.activeClient.equals(client)) {
+				this.activeClient = null;
+			}
+
+			fireClientChangedEvent();
+		}
+
+		return true;
 	}
 
 	public Map<String, Client> getRegisteredClients() {
@@ -94,8 +111,7 @@ public class ClientManager {
 			 * tmpClient; returnValue = true; } } else { returnValue = false; }
 			 * }
 			 */
-		}
-		else {
+		} else {
 		}
 
 		return returnValue;
@@ -121,6 +137,19 @@ public class ClientManager {
 		return networkClient;
 	}
 
+	public int getRegisteredNetworkClientCount() {
+		int registeredClients = 0;
+
+		for (Iterator<Client> it = this.clientMap.values().iterator(); it
+				.hasNext();) {
+			if (it.next() instanceof NetworkClient) {
+				registeredClients++;
+			}
+		}
+
+		return registeredClients;
+	}
+
 	public Client getClient(String identifier) {
 		Client client = null;
 
@@ -129,5 +158,11 @@ public class ClientManager {
 		}
 
 		return client;
+	}
+
+	public void unregisterClients(List<String> removeClients) {
+		for (Iterator<String> it = removeClients.iterator(); it.hasNext();) {
+			this.unregisterClient(it.next());
+		}
 	}
 }

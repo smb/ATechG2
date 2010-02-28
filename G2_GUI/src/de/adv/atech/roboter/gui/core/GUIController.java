@@ -180,6 +180,8 @@ public class GUIController implements Controller {
 
 		ControllerManager.getInstance().setController(this);
 
+		this.clientManager = new ClientManager();
+
 	}
 
 	public void initGUI() {
@@ -201,8 +203,6 @@ public class GUIController implements Controller {
 
 			this.eventDispatcher = new EventDispatcher();
 
-			this.clientManager = new ClientManager();
-
 			Client localClient = new LocalClient();
 
 			this.clientManager.registerClient(localClient);
@@ -216,8 +216,7 @@ public class GUIController implements Controller {
 			this.eventDispatcher.registerEvent(this.actionCore, "Send",
 					EventDispatcher.TYPE_ACTION);
 
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 
 			message(Constant.MESSAGE_TYPE_ERROR, "Fehler beim Start: "
 					+ ex.getMessage());
@@ -289,8 +288,7 @@ public class GUIController implements Controller {
 	public void debug(String text) {
 		if (this.debugArea != null) {
 			this.debugArea.addText("[GUIController]" + text);
-		}
-		else {
+		} else {
 			System.out.println("[GUIController]" + text);
 		}
 	}

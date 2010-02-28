@@ -1,6 +1,8 @@
 package de.adv.atech.roboter.gui.core;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import de.adv.atech.roboter.commons.ClientManager;
@@ -47,6 +49,8 @@ public class CommController implements Runnable {
 
 				boolean clientActive = false;
 
+				List<String> removeClients = new ArrayList<String>();
+
 				for (Iterator<String> it = clientMap.keySet().iterator(); it
 						.hasNext();) {
 
@@ -78,11 +82,16 @@ public class CommController implements Runnable {
 											+ "' nicht mehr erreichbar - wird entfernt");
 
 							// this.clientManager.unregisterClient(client);
-							it.remove();
+							removeClients.add(clientIdentifier);
+							// it.remove();
 						}
 					} else {
 						clientActive = true;
 					}
+				}
+
+				if (removeClients.size() > 0) {
+					this.clientManager.unregisterClients(removeClients);
 				}
 
 			} catch (Exception e) {

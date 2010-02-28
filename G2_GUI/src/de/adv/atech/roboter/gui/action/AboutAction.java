@@ -2,6 +2,7 @@ package de.adv.atech.roboter.gui.action;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.AbstractButton;
 import javax.swing.JDialog;
 
 import de.adv.atech.roboter.gui.components.AboutDialog;
@@ -22,7 +23,10 @@ public class AboutAction extends GUIAbstractAction {
 				.getMainFrame());
 		aboutDialog.pack();
 		aboutDialog.setVisible(true);
+	}
 
+	public void registerButtonListener(AbstractButton button) {
+		//
 	}
 
 }
