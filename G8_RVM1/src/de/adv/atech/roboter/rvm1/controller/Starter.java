@@ -31,7 +31,7 @@ public class Starter
             this.serialReader = new SerialReader();
             this.serialWriter = new SerialWriter();
             this.rmiTranslator = new TranslatorToRmi();
-            this.serialTranslator = new TranslatorToSerial();
+            this.serialTranslator = new TranslatorToSerial(this.serialWriter);
             this.rmiServer = new RMIServer(this.rmiTranslator, this.serialTranslator);
             this.rmiClient = new RMIClient(this.rmiServer);
             this.serialReader.addObserver(this.serialWriter);

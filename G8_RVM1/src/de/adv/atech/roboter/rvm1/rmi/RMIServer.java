@@ -54,7 +54,7 @@ public class RMIServer extends UnicastRemoteObject
 		{
 			Command tmpCommand = it.next();
 			
-			// TODO send to serialTranslator
+			this.serialTranslator.processCommand(tmpCommand);
 		}
 	}
 

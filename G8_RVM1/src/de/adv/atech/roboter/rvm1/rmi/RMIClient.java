@@ -5,6 +5,7 @@ import de.adv.atech.roboter.commons.GenericController;
 import de.adv.atech.roboter.commons.interfaces.Client;
 import de.adv.atech.roboter.commons.network.NetworkSlaveManager;
 import de.adv.atech.roboter.commons.rmi.ServerInterface;
+import de.adv.atech.roboter.rvm1.commands.MoveToCoordinates;
 
 public class RMIClient
 {
@@ -24,6 +25,9 @@ public class RMIClient
 //			localClient.getCommandManager()
 //			        .registerCommand(DefaultNest.class);
 
+			localClient.getCommandManager()
+			        .registerCommand(MoveToCoordinates.class);
+			
 			NetworkSlaveManager ncl = 
 			        new NetworkSlaveManager(rmiServer, rmiServer.getName());
 
