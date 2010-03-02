@@ -9,30 +9,38 @@ import de.adv.atech.roboter.commons.interfaces.Client;
 import de.adv.atech.roboter.commons.network.NetworkSlaveManager;
 import de.adv.atech.roboter.commons.rmi.ServerInterface;
 
-public class RMIClient {
+public class RMIClient
+{
 
-	public static void main(String[] args) {
-		try {
+	public static void main(String[] args)
+	{
+		try
+		{
 			Client localClient = GenericController.getInstance()
 					.getClientManager().getClient(Constant.CLIENT_SELF);
 
-			localClient.getCommandManager().registerCommand(DefaultMove.class);
+			localClient.getCommandManager()
+			        .registerCommand(DefaultMove.class);
 
-			localClient.getCommandManager().registerCommand(DefaultSleep.class);
+			localClient.getCommandManager()
+			        .registerCommand(DefaultSleep.class);
 
-			localClient.getCommandManager().registerCommand(DefaultNest.class);
+			localClient.getCommandManager()
+			        .registerCommand(DefaultNest.class);
 
-			NetworkSlaveManager ncl = new NetworkSlaveManager(new RMIServer(),
-					"RVM1");
+			NetworkSlaveManager ncl = 
+			        new NetworkSlaveManager(new RMIServer(), "RVM1");
 
 			ncl.init();
 
 			ServerInterface client = ncl.getClient();
 
 			client.ping();
-
-		} catch (Exception ex) {
+		}
+		catch (Exception ex)
+		{
 			ex.printStackTrace();
 		}
 	}
+
 }

@@ -11,39 +11,54 @@ import de.adv.atech.roboter.commons.exceptions.CommandException;
 import de.adv.atech.roboter.commons.interfaces.Client;
 import de.adv.atech.roboter.commons.interfaces.Command;
 import de.adv.atech.roboter.commons.rmi.ServerInterface;
+import de.adv.atech.roboter.rvm1.controller.TranslatorToRmi;
+import de.adv.atech.roboter.rvm1.controller.TranslatorToSerial;
 
-/**
- * 
- * @author sbu
- * 
- */
-public class RMIServer extends UnicastRemoteObject implements ServerInterface {
 
-	RMIServer() throws RemoteException {
-		super();
+public class RMIServer extends UnicastRemoteObject
+                       implements ServerInterface
+{
+
+    private TranslatorToRmi rmiTranslator;
+    private TranslatorToSerial serialTranslator;
+    
+	RMIServer(TranslatorToRmi sender,
+	          TranslatorToSerial reciever)
+              throws RemoteException
+	{
+        // TODO logging
+	    
+	    super();
+	    this.rmiTranslator = sender;
+	    this.serialTranslator = reciever;
 	}
 
-	RMIServer(int port) throws RemoteException {
+	RMIServer(TranslatorToRmi sender,
+	          TranslatorToSerial reciever,
+	          int port)
+	          throws RemoteException
+    {
+        // TODO logging
+	    
 		super(port);
+	    this.rmiTranslator = sender;
+        this.serialTranslator = reciever;
 	}
 
-	/**
-   * 
-   */
 	public void processCommand(List<Command> commandList)
-			throws RemoteException {
+			                   throws RemoteException
+    {
+        // TODO logging 
 
-		System.out.println("[RVM1] Empfangene Daten: ");
-
-		for (Iterator<Command> it = commandList.iterator(); it.hasNext();) {
+		for( Iterator<Command> it = commandList.iterator(); it.hasNext(); )
+		{
 			Command tmpCommand = it.next();
-
-			System.out.println(tmpCommand.toString());
+			
+			// TODO send to serialTranslator
 		}
 	}
 
 	/**
-	 * 
 	 * @param client
 	 */
 	public void initConnection(String clientIdentifier, int localPort)
@@ -69,12 +84,9 @@ public class RMIServer extends UnicastRemoteObject implements ServerInterface {
 		return commandClassList;
 	}
 
-	/**
- * 
- */
-	public long ping() throws RemoteException {
-		System.out.println("** PING? PONG! **");
-
+	public long ping() throws RemoteException
+	{
+	    // TODO logging
 		return System.currentTimeMillis();
 	}
 
