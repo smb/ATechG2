@@ -22,9 +22,9 @@ public class RMIServer extends UnicastRemoteObject
     private TranslatorToRmi rmiTranslator;
     private TranslatorToSerial serialTranslator;
     
-	RMIServer(TranslatorToRmi sender,
-	          TranslatorToSerial reciever)
-              throws RemoteException
+	public RMIServer(TranslatorToRmi sender,
+                     TranslatorToSerial reciever)
+                     throws RemoteException
 	{
         // TODO logging
 	    
@@ -33,10 +33,10 @@ public class RMIServer extends UnicastRemoteObject
 	    this.serialTranslator = reciever;
 	}
 
-	RMIServer(TranslatorToRmi sender,
-	          TranslatorToSerial reciever,
-	          int port)
-	          throws RemoteException
+	public RMIServer(TranslatorToRmi sender,
+	                 TranslatorToSerial reciever,
+                     int port)
+                     throws RemoteException
     {
         // TODO logging
 	    
@@ -89,5 +89,10 @@ public class RMIServer extends UnicastRemoteObject
 	    // TODO logging
 		return System.currentTimeMillis();
 	}
+
+    public String getName()
+    {
+        return "RV-M1";
+    }
 
 }
