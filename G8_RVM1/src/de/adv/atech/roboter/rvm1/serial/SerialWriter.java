@@ -15,7 +15,7 @@ import de.adv.atech.roboter.rvm1.data.TimedCommand;
 public class SerialWriter implements Observer, Runnable
 {
 	OutputStream				out;
-	LinkedList< TimedCommand >	commandList	= new LinkedList< TimedCommand >();
+	LinkedList< TimedCommand >	commandList		= new LinkedList< TimedCommand >();
 	boolean						readyToSend;
 	String						answerFromRobot	= null;
 
@@ -115,32 +115,34 @@ public class SerialWriter implements Observer, Runnable
 		{
 			if ( readyToSend )
 			{
-				if (answerFromRobot != null || !answerFromRobot.equals( "0" ))
+				if ( answerFromRobot != null || !answerFromRobot.equals( "0" ) )
 				{
 					try
 					{
-						String comand =  "rs\r";
+						String comand = "rs\r";
 						byte[] coman_arr = comand.getBytes( "ASCII" );
 						for ( int i = 0; i < coman_arr.length; i++ )
 						{
 							out.write( coman_arr[i] );
 						}
 					}
-					catch (Exception e)
+					catch ( Exception e )
 					{
 						e.printStackTrace();
 					}
-					
+
+					answerFromRobot = null;
+
 				}
-				else if(answerFromRobot == null)
+				else
 				{
-					
+					if ( commandList.size() > 0 )
+					{
+						TimedCommand command = commandList.removeFirst();
+						writeCommand( command );
+					}
 				}
 			}
-			// if(liste != empy && senden == geht)
-			// {
-			// schicke nächstes command
-			// }
 		}
 	}
 
