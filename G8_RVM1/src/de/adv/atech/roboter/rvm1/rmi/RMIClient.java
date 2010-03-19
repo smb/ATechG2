@@ -2,10 +2,10 @@ package de.adv.atech.roboter.rvm1.rmi;
 
 import de.adv.atech.roboter.commons.Constant;
 import de.adv.atech.roboter.commons.GenericController;
+import de.adv.atech.roboter.commons.commands.rvm1.MoveToCoordinates;
 import de.adv.atech.roboter.commons.interfaces.Client;
 import de.adv.atech.roboter.commons.network.NetworkSlaveManager;
 import de.adv.atech.roboter.commons.rmi.ServerInterface;
-import de.adv.atech.roboter.rvm1.commands.MoveToCoordinates;
 
 public class RMIClient
 {
