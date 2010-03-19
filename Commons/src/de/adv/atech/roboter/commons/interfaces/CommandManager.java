@@ -6,7 +6,8 @@ import de.adv.atech.roboter.commons.exceptions.CommandException;
 
 public interface CommandManager {
 
-	public List<Class<? extends Command>> getCommandList() throws CommandException;
+	public List<Class<? extends Command>> getCommandList()
+			throws CommandException;
 
 	public boolean isRegisteredCommand(Class<? extends Command> command)
 			throws CommandException;
@@ -20,6 +21,14 @@ public interface CommandManager {
 	public boolean unregisterCommand(Class<? extends Command> commandClass)
 			throws CommandException;
 
-	public boolean registerCommandList(List<Class<? extends Command>> commandClassList)
+	public boolean registerCommandList(
+			List<Class<? extends Command>> commandClassList)
 			throws CommandException;
+
+	public Command getCommandInstance(Class<? extends Command> commandClass,
+			boolean forceNewInstance) throws CommandException;
+
+	public void registerCommandChangedListener(CommandChangedListener listener);
+
+	public void fireCommandChangedEvent();
 }

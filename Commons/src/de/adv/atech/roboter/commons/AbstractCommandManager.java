@@ -5,10 +5,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
+import java.util.Map.Entry;
 
 import de.adv.atech.roboter.commons.exceptions.CommandException;
 import de.adv.atech.roboter.commons.interfaces.Client;
 import de.adv.atech.roboter.commons.interfaces.Command;
+import de.adv.atech.roboter.commons.interfaces.CommandChangedListener;
 
 public abstract class AbstractCommandManager {
 
@@ -22,6 +24,23 @@ public abstract class AbstractCommandManager {
 		this.DPR_commandList = new HashMap<Client, List<Class<? extends Command>>>();
 		this.commandMap = new HashMap<Client, HashMap<String, Class<? extends Command>>>();
 		this.commandCacheMap = new HashMap<Client, HashMap<Class<? extends Command>, Command>>();
+		
+		this.listenerMap = new HashMap<CommandChangedListener, Client>();
+	}
+
+	private Map<CommandChangedListener, Client> listenerMap;
+
+	public void registerCommandChangedListener(CommandChangedListener listener,
+			Client client) {
+		this.listenerMap.put(listener, client);
+	}
+
+	public void fireCommandChangedEvent() {
+		for (Iterator<Entry<CommandChangedListener, Client>> it = this.listenerMap
+				.entrySet().iterator(); it.hasNext();) {
+			Entry<CommandChangedListener, Client> entry = it.next();
+			entry.getKey().commandChanged(entry.getValue());
+		}
 	}
 
 	protected List<Class<? extends Command>> getCommandList(Client client) {
@@ -80,7 +99,8 @@ public abstract class AbstractCommandManager {
 			if (getCommandCacheMap(client).containsKey(commandClass)) {
 				command = getCommandCacheMap(client).get(commandClass);
 				createNewInstance = false; // implizit - aber sicherer
-			} else {
+			}
+			else {
 				createNewInstance = true;
 			}
 		}
@@ -88,12 +108,15 @@ public abstract class AbstractCommandManager {
 		if (createNewInstance) {
 			try {
 				command = commandClass.newInstance();
-			} catch (IllegalAccessException ex) {
-				throw new CommandException(ex);
-			} catch (InstantiationException ex) {
+			}
+			catch (IllegalAccessException ex) {
 				throw new CommandException(ex);
 			}
-		} else {
+			catch (InstantiationException ex) {
+				throw new CommandException(ex);
+			}
+		}
+		else {
 
 		}
 
@@ -111,6 +134,8 @@ public abstract class AbstractCommandManager {
 				.iterator(); it.hasNext();) {
 			returnValue = returnValue & registerCommand(client, it.next());
 		}
+
+		fireCommandChangedEvent();
 
 		return returnValue;
 	}
@@ -141,6 +166,9 @@ public abstract class AbstractCommandManager {
 		Command tmpCommand = getCommandInstance(client, commandClass, false);
 
 		getCommandMap(client).remove(tmpCommand.getCommandName());
+
+		fireCommandChangedEvent();
+
 		return true;
 	}
 

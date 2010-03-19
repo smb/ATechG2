@@ -6,17 +6,17 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.Icon;
-import javax.swing.JLabel;
 
 import de.adv.atech.roboter.commons.ClientManager;
 import de.adv.atech.roboter.commons.Constant;
 import de.adv.atech.roboter.commons.ControllerManager;
 import de.adv.atech.roboter.commons.NetworkClient;
 import de.adv.atech.roboter.commons.interfaces.Client;
+import de.adv.atech.roboter.commons.interfaces.ClientChangedListener;
 import de.adv.atech.roboter.gui.core.GUIController;
 import de.adv.atech.roboter.gui.media.Media;
 
-public class ClientStatusInfo implements Runnable {
+public class ClientStatusInfo implements Runnable, ClientChangedListener {
 
 	boolean shutdown;
 
@@ -24,10 +24,10 @@ public class ClientStatusInfo implements Runnable {
 
 	Icon currentIcon;
 
-	List<JLabel> targetLabels;
+	List<ClientInfoGUIComponentInterface> targetComponent;
 
 	public ClientStatusInfo() {
-		targetLabels = new ArrayList<JLabel>();
+		targetComponent = new ArrayList<ClientInfoGUIComponentInterface>();
 
 		currentLabel = "Kein Client ausgewaehlt";
 
@@ -35,12 +35,16 @@ public class ClientStatusInfo implements Runnable {
 
 		currentIcon = Media.getIcon("stop");
 
-		Thread t = new Thread(this);
-		t.start();
+		ClientManager cm = GUIController.getInstance().getClientManager();
+
+		cm.registerClientChangedListener(this, null);
+
+		// Thread t = new Thread(this);
+		// t.start();
 	}
 
-	public boolean registerTargetLabel(JLabel label) {
-		return targetLabels.add(label);
+	public boolean registerTargetComponent(ClientInfoGUIComponentInterface label) {
+		return targetComponent.add(label);
 	}
 
 	/**
@@ -51,7 +55,8 @@ public class ClientStatusInfo implements Runnable {
 		// Get selected Client
 		ClientManager cm = GUIController.getInstance().getClientManager();
 
-		StringBuffer connectedClients = new StringBuffer();
+		List clientList = new ArrayList<ClientStatusInfo>();
+		String activeClient = null;
 
 		if (cm != null) {
 			Map<String, Client> clientMap = cm.getRegisteredClients();
@@ -64,34 +69,26 @@ public class ClientStatusInfo implements Runnable {
 
 				if (client != null) { // Network Client gefunden
 
-					if (connectedClients.length() > 0) {
-						connectedClients.append(" / ");
-					}
+					clientList.add(clientIdentifier);
 
 					if (client == cm.getActiveClient()) {
-						connectedClients.append("*" + clientIdentifier + "*");
-					}
-					else {
-						connectedClients.append(clientIdentifier);
+						activeClient = clientIdentifier;
 					}
 				}
 			}
 		}
 
-		if (connectedClients != null && connectedClients.length() > 0) {
-			currentLabel = "Verbundene Clients: " + connectedClients.toString();
-			currentIcon = Media.getIcon("accept");
-		}
-		else {
-			currentLabel = "Keine Clients verbunden";
-			currentIcon = Media.getIcon("stop");
-		}
-
 		// UpdateLabels
-		for (Iterator<JLabel> it = this.targetLabels.iterator(); it.hasNext();) {
-			JLabel tmpLabel = it.next();
-			tmpLabel.setIcon(currentIcon);
-			tmpLabel.setText(currentLabel);
+		for (Iterator<ClientInfoGUIComponentInterface> it = this.targetComponent
+				.iterator(); it.hasNext();) {
+			ClientInfoGUIComponentInterface cic = it.next();
+
+			cic.setItemList(clientList);
+			cic.setActiveItem(activeClient);
+
+			// JComponent tmpLabel = it.next();
+			// tmpLabel.setIcon(currentIcon);
+			// tmpLabel.setText(currentLabel);
 		}
 	}
 
@@ -120,5 +117,11 @@ public class ClientStatusInfo implements Runnable {
 	public void shutdown() {
 		this.shutdown = true;
 
+	}
+
+	@Override
+	public void clientChanged(ClientManager clientManager, Object object) {
+		// Aenderungen erkennen
+		setClientLabel();
 	}
 }

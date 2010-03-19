@@ -5,6 +5,7 @@ import java.util.List;
 import de.adv.atech.roboter.commons.exceptions.CommandException;
 import de.adv.atech.roboter.commons.interfaces.Client;
 import de.adv.atech.roboter.commons.interfaces.Command;
+import de.adv.atech.roboter.commons.interfaces.CommandChangedListener;
 import de.adv.atech.roboter.commons.interfaces.CommandManager;
 
 /**
@@ -45,13 +46,24 @@ public class ClientCommandManager extends AbstractCommandManager implements
 		return super.unregisterCommand(this.client, commandClass);
 	}
 
-	public boolean registerCommandList(List<Class<? extends Command>> commandClassList)
+	public boolean registerCommandList(
+			List<Class<? extends Command>> commandClassList)
 			throws CommandException {
 		return super.registerCommandList(this.client, commandClassList);
 	}
 
-	public List<Class<? extends Command>> getCommandList() throws CommandException {
+	public List<Class<? extends Command>> getCommandList()
+			throws CommandException {
 		return this.getCommandList(this.client);
+	}
+
+	public Command getCommandInstance(Class<? extends Command> commandClass,
+			boolean forceNewInstance) throws CommandException {
+		return getCommandInstance(this.client, commandClass, forceNewInstance);
+	}
+
+	public void registerCommandChangedListener(CommandChangedListener listener) {
+		registerCommandChangedListener(listener, this.client);
 	}
 
 }

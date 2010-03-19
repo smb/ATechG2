@@ -14,6 +14,7 @@ import javax.swing.plaf.UIResource;
 
 import de.adv.atech.roboter.gui.components.DateTimeStatusLabel;
 import de.adv.atech.roboter.gui.components.PercentLayout;
+import de.adv.atech.roboter.gui.components.StatusBarClientInfoLabel;
 import de.adv.atech.roboter.gui.core.GUIController;
 
 public class StatusBar extends JComponent {
@@ -45,9 +46,9 @@ public class StatusBar extends JComponent {
 		setZoneBorder(BorderFactory.createLineBorder(Color.lightGray));
 
 		// dateTimeLabel = new DateTimeStatusLabel();
-		JLabel clientLabel = new JLabel();
+		StatusBarClientInfoLabel clientLabel = new StatusBarClientInfoLabel();
 
-		controller.getClientStatusInfo().registerTargetLabel(clientLabel);
+		controller.getClientStatusInfo().registerTargetComponent(clientLabel);
 
 		textLabel = new JLabel();
 

@@ -2,22 +2,23 @@ package de.adv.atech.roboter.gui.panel;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.util.List;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import de.adv.atech.roboter.gui.components.ClientInfoSelector;
 import de.adv.atech.roboter.gui.core.GUIController;
 
 public class ClientInfoPanel extends JPanel {
 
-	public ClientInfoPanel() {
+	private List<ClientInfoBlock> infoList;
 
+	public ClientInfoPanel() {
 		setPreferredSize(new Dimension(300, 0));
 
 		init();
 
 		setupPanel();
-
 	}
 
 	public void init() {
@@ -31,13 +32,17 @@ public class ClientInfoPanel extends JPanel {
 
 		GUIController controller = GUIController.getInstance();
 
-		JLabel clientStatus = new JLabel();
+		ClientInfoSelector clientStatus = new ClientInfoSelector();
+		
+		CommandReferenceArea commandReferenceArea = new CommandReferenceArea();
+		
+		clientStatus.addItemListener(commandReferenceArea);
 
-		controller.getClientStatusInfo().registerTargetLabel(clientStatus);
+		controller.getClientStatusInfo().registerTargetComponent(clientStatus);
 
 		this.add(clientStatus, BorderLayout.NORTH);
 
-		this.add(new CommandReferenceArea(), BorderLayout.CENTER);
+		this.add(commandReferenceArea, BorderLayout.CENTER);
 
 	}
 }

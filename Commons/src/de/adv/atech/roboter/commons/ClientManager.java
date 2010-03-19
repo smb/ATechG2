@@ -111,7 +111,8 @@ public class ClientManager {
 			 * tmpClient; returnValue = true; } } else { returnValue = false; }
 			 * }
 			 */
-		} else {
+		}
+		else {
 		}
 
 		return returnValue;
@@ -123,6 +124,14 @@ public class ClientManager {
 
 	public Client getActiveClient() {
 		return this.activeClient;
+	}
+
+	public NetworkClient getActiveNetworkClient() {
+		if (this.activeClient instanceof NetworkClient) {
+			return (NetworkClient) this.activeClient;
+		}
+
+		return null;
 	}
 
 	public NetworkClient getNetworkClient(String identifier) {
