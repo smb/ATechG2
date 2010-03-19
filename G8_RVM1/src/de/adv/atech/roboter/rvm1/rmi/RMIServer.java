@@ -19,8 +19,8 @@ public class RMIServer extends UnicastRemoteObject
                        implements ServerInterface
 {
 
-    private TranslatorToRmi rmiTranslator;
     private TranslatorToSerial serialTranslator;
+
     
 	public RMIServer(TranslatorToRmi sender,
                      TranslatorToSerial reciever)
@@ -29,10 +29,10 @@ public class RMIServer extends UnicastRemoteObject
         // TODO logging
 	    
 	    super();
-	    this.rmiTranslator = sender;
 	    this.serialTranslator = reciever;
 	}
 
+	
 	public RMIServer(TranslatorToRmi sender,
 	                 TranslatorToSerial reciever,
                      int port)
@@ -41,10 +41,10 @@ public class RMIServer extends UnicastRemoteObject
         // TODO logging
 	    
 		super(port);
-	    this.rmiTranslator = sender;
-        this.serialTranslator = reciever;
+	    this.serialTranslator = reciever;
 	}
 
+	
 	public void processCommand(List<Command> commandList)
 			                   throws RemoteException
     {
@@ -58,41 +58,46 @@ public class RMIServer extends UnicastRemoteObject
 		}
 	}
 
-	/**
-	 * @param client
-	 */
+	
 	public void initConnection(String clientIdentifier, int localPort)
-			throws RemoteException {
-		// Handshake
+			throws RemoteException
+	{
+		// TODO Handshake
 
 	}
 
+	
 	public List<Class<? extends Command>> getCommandList()
-			throws RemoteException {
+			throws RemoteException
+	{
 		List<Class<? extends Command>> commandClassList = null;
 
-		Client localClient = GenericController.getInstance().getClientManager()
-				.getClient(Constant.CLIENT_SELF);
+		Client localClient = GenericController.getInstance()
+		        .getClientManager().getClient(Constant.CLIENT_SELF);
 
-		try {
-			commandClassList = localClient.getCommandManager().getCommandList();
+		try
+		{
+			commandClassList = localClient.getCommandManager()
+			        .getCommandList();
 		}
-		catch (CommandException ex) {
+		catch (CommandException ex)
+		{
 			throw new RemoteException();
 		}
 
 		return commandClassList;
 	}
 
+	
 	public long ping() throws RemoteException
 	{
 	    // TODO logging
 		return System.currentTimeMillis();
 	}
 
+	
     public String getName()
     {
         return "RV-M1";
     }
-
 }
