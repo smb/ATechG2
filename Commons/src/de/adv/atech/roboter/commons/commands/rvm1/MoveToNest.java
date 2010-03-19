@@ -1,9 +1,9 @@
 package de.adv.atech.roboter.commons.commands.rvm1;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.adv.atech.roboter.commons.commands.AbstractCommand;
-import de.adv.atech.roboter.commons.commands.rvm1.MoveToCoordinates.Parameter;
 import de.adv.atech.roboter.commons.exceptions.CommandException;
 import de.adv.atech.roboter.commons.interfaces.Rvm1CommandInternals;
 
@@ -25,10 +25,9 @@ public class MoveToNest extends AbstractCommand
     @Override
     public List<String> getCommandCodeList()
     {
-//        List<String> result = 
-//        result.add("NT");
-//        return result;
-        return null;
+        List<String> result = new ArrayList<String>();
+        result.add("NT");
+        return result;
     }
 
     @Override
