@@ -22,9 +22,7 @@ public class RMIServer extends UnicastRemoteObject
     private TranslatorToSerial serialTranslator;
 
     
-	public RMIServer(TranslatorToRmi sender,
-                     TranslatorToSerial reciever)
-                     throws RemoteException
+	public RMIServer(TranslatorToSerial reciever) throws RemoteException
 	{
         // TODO logging
 	    

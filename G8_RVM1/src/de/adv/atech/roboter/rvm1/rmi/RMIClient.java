@@ -1,6 +1,8 @@
 package de.adv.atech.roboter.rvm1.rmi;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 
 import de.adv.atech.roboter.commons.Constant;
 import de.adv.atech.roboter.commons.GenericController;
@@ -45,11 +47,11 @@ public class RMIClient
     
     public void sendCommand(Command command)
     {
-        
         try
         {
-            // TODO command to commandlist
-            this.GUI_client.processCommand(null);
+            List<Command> commandList = new ArrayList<Command>();
+            commandList.add(command);
+            this.GUI_client.processCommand(commandList);
         }
         catch( RemoteException e )
         {
