@@ -7,7 +7,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import de.adv.atech.roboter.commons.Constant;
+import de.adv.atech.roboter.commons.ControllerManager;
 import de.adv.atech.roboter.commons.NetworkClient;
+import de.adv.atech.roboter.commons.commands.rvm1.ErrorInfo;
+import de.adv.atech.roboter.commons.commands.rvm1.StatusInfo;
 import de.adv.atech.roboter.commons.exceptions.CommandException;
 import de.adv.atech.roboter.commons.interfaces.Client;
 import de.adv.atech.roboter.commons.interfaces.Command;
@@ -31,12 +34,30 @@ public class RMIServer extends UnicastRemoteObject implements ServerInterface {
 	public void processCommand(List<Command> commandList)
 			throws RemoteException {
 
-		System.out.println("[GUI] Empfangene Daten: ");
+		ControllerManager.message(Constant.MESSAGE_TYPE_INFO,
+				"[GUI] Empfangene Daten: ");
 
 		for (Iterator<Command> it = commandList.iterator(); it.hasNext();) {
 			Command tmpCommand = it.next();
 
-			System.out.println(tmpCommand.toString());
+			try {
+				if (tmpCommand instanceof ErrorInfo) {
+					ControllerManager.message(Constant.MESSAGE_TYPE_ERROR,
+							(String) tmpCommand
+									.getParameter(ErrorInfo.Parameter.Message));
+				}
+				if (tmpCommand instanceof StatusInfo) {
+					ControllerManager
+							.message(
+									Constant.MESSAGE_TYPE_INFO,
+									(String) tmpCommand
+											.getParameter(StatusInfo.Parameter.Message));
+				}
+			}
+			catch (CommandException ex) {
+				ControllerManager.message(Constant.MESSAGE_TYPE_ERROR, ex
+						.getMessage());
+			}
 		}
 	}
 

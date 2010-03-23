@@ -46,7 +46,8 @@ public class EventDispatcher {
 		if (actionEventMap == null) {
 			actionEventMap = new HashMap<String, List<RobotListener>>();
 			eventMap.put(type, actionEventMap);
-		} else {
+		}
+		else {
 			listenerList = actionEventMap.get(actionCommand);
 		}
 

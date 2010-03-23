@@ -6,33 +6,53 @@ import java.lang.reflect.Field;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
+import javax.swing.JEditorPane;
 import javax.swing.JLabel;
-import javax.swing.SwingConstants;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
 
 import de.adv.atech.roboter.commons.exceptions.CommandException;
 import de.adv.atech.roboter.commons.interfaces.Client;
 import de.adv.atech.roboter.commons.interfaces.Command;
 import de.adv.atech.roboter.commons.interfaces.CommandChangedListener;
 import de.adv.atech.roboter.commons.interfaces.CommandManager;
+import de.adv.atech.roboter.gui.components.MyHTMLEditorKit;
 import de.adv.atech.roboter.gui.core.GUIController;
+import edu.stanford.ejalbert.BrowserLauncher;
 
-public class CommandReferenceArea extends JLabel implements ItemListener,
-		CommandChangedListener {
+public class CommandReferenceArea extends JEditorPane implements ItemListener,
+		CommandChangedListener, HyperlinkListener {
 
 	private StringBuffer commandRef;
 
-	private String stringFormat = "<html><br>%s</html>";
+	private String stringFormat = "<html><body bgcolor=\"%s\"><br>%s</body></html>";
+
+	String BGColor = null;
 
 	public CommandReferenceArea() {
 		super();
+
+		setEditable(false);
+
+		setEditorKit(new MyHTMLEditorKit());
+
+		BGColor = Integer.toHexString(this.getBackground().getRed())
+				+ Integer.toHexString(this.getBackground().getGreen())
+				+ Integer.toHexString(this.getBackground().getBlue());
+
+		setAlignmentY(JLabel.TOP_ALIGNMENT);
+
+		addHyperlinkListener(this);
+
+		// setBorder(null);
 
 		this.commandRef = new StringBuffer();
 
 		// this.commandRef.append("Hallo<br>HUND<br>im<br><b>BUERO</b><br>");
 
-		this.setVerticalAlignment(SwingConstants.TOP);
+		// this.setVerticalAlignment(SwingConstants.TOP);
 
-		this.setText(String.format(this.stringFormat, this.commandRef
+		this.setText(String.format(this.stringFormat, BGColor, this.commandRef
 				.toString()));
 
 	}
@@ -53,7 +73,7 @@ public class CommandReferenceArea extends JLabel implements ItemListener,
 							+ e.getMessage());
 		}
 
-		this.setText(String.format(this.stringFormat, this.commandRef
+		this.setText(String.format(this.stringFormat, BGColor, this.commandRef
 				.toString()));
 	}
 
@@ -82,14 +102,24 @@ public class CommandReferenceArea extends JLabel implements ItemListener,
 
 		try {
 
-			for (Iterator<Entry<Enum<?>, Field>> it = command.getParameters()
-					.entrySet().iterator(); it.hasNext();) {
-				Entry<Enum<?>, Field> entry = it.next();
+			if (command.getParameters().size() > 0) {
 
-				localRef.append(" - " + entry.getKey() + " ("
-						+ command.getParameterClass(entry.getValue()) + ")");
+				for (Iterator<Entry<Enum<?>, Field>> it = command
+						.getParameters().entrySet().iterator(); it.hasNext();) {
+					Entry<Enum<?>, Field> entry = it.next();
 
-				localRef.append("<br>");
+					localRef
+							.append(" - "
+									+ entry.getKey()
+									+ " ("
+									+ command.getParameterClass(entry
+											.getValue()) + ")");
+
+					localRef.append("<br>");
+				}
+			}
+			else {
+				localRef.append("[Keine Parameter vorhanden]");
 			}
 
 			localRef.append("<br>");
@@ -120,5 +150,17 @@ public class CommandReferenceArea extends JLabel implements ItemListener,
 	public void commandChanged(Client client) {
 		update(client);
 
+	}
+
+	@Override
+	public void hyperlinkUpdate(HyperlinkEvent e) {
+		if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+			try {
+				BrowserLauncher launcher = new BrowserLauncher();
+				launcher.openURLinBrowser(e.getURL().toString());
+			}
+			catch (Exception r) {
+			}
+		}
 	}
 }

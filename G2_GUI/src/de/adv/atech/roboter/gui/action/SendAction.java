@@ -30,7 +30,8 @@ public class SendAction extends GUIAbstractAction implements
 	public void clientChanged(ClientManager clientManager, Object object) {
 		if (clientManager.getRegisteredNetworkClientCount() > 0) {
 			((AbstractButton) object).setEnabled(true);
-		} else {
+		}
+		else {
 			((AbstractButton) object).setEnabled(false);
 		}
 	}

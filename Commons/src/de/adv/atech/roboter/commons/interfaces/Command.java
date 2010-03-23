@@ -39,9 +39,8 @@ public interface Command {
 	 */
 	public void setParameter(Enum<?> name, Object object)
 			throws CommandException;
-	
-	public Class getParameterClass(Field field) throws CommandException;
 
+	public Class getParameterClass(Field field) throws CommandException;
 
 	/**
 	 * 
@@ -58,7 +57,7 @@ public interface Command {
 	 * @throws CommandException
 	 */
 	public String getCode(Object informationRef) throws CommandException;
-	
+
 	public Command clone();
 
 }

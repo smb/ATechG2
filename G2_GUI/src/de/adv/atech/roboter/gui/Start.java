@@ -13,17 +13,22 @@ public class Start {
 		SplashScreenMain ss = new SplashScreenMain("splashscreen.png");
 
 		java.awt.EventQueue.invokeLater(new Runnable() {
+
 			public void run() {
 				try {
 					UIManager
 							.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-				} catch (UnsupportedLookAndFeelException e) {
+				}
+				catch (UnsupportedLookAndFeelException e) {
 					e.printStackTrace();
-				} catch (ClassNotFoundException e) {
+				}
+				catch (ClassNotFoundException e) {
 					e.printStackTrace();
-				} catch (InstantiationException e) {
+				}
+				catch (InstantiationException e) {
 					e.printStackTrace();
-				} catch (IllegalAccessException e) {
+				}
+				catch (IllegalAccessException e) {
 					e.printStackTrace();
 				}
 

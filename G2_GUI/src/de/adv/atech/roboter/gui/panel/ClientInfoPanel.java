@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.util.List;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import de.adv.atech.roboter.gui.components.ClientInfoSelector;
 import de.adv.atech.roboter.gui.core.GUIController;
@@ -33,16 +34,16 @@ public class ClientInfoPanel extends JPanel {
 		GUIController controller = GUIController.getInstance();
 
 		ClientInfoSelector clientStatus = new ClientInfoSelector();
-		
+
 		CommandReferenceArea commandReferenceArea = new CommandReferenceArea();
-		
+
 		clientStatus.addItemListener(commandReferenceArea);
 
 		controller.getClientStatusInfo().registerTargetComponent(clientStatus);
 
 		this.add(clientStatus, BorderLayout.NORTH);
 
-		this.add(commandReferenceArea, BorderLayout.CENTER);
+		this.add(new JScrollPane(commandReferenceArea), BorderLayout.CENTER);
 
 	}
 }

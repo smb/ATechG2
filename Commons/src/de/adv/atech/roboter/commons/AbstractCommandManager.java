@@ -24,7 +24,7 @@ public abstract class AbstractCommandManager {
 		this.DPR_commandList = new HashMap<Client, List<Class<? extends Command>>>();
 		this.commandMap = new HashMap<Client, HashMap<String, Class<? extends Command>>>();
 		this.commandCacheMap = new HashMap<Client, HashMap<Class<? extends Command>, Command>>();
-		
+
 		this.listenerMap = new HashMap<CommandChangedListener, Client>();
 	}
 

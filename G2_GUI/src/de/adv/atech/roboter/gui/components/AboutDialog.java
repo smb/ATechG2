@@ -93,15 +93,15 @@ public class AboutDialog extends JDialog implements HyperlinkListener {
 
 		getContentPane().add(cancelButton, gridBagConstraints);
 
-/*		gcButton = new JButton("Garbage Collection");
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.gridx = 1;
-		gridBagConstraints.gridy = 1;
-		gridBagConstraints.weightx = 1;
-		gridBagConstraints.anchor = GridBagConstraints.WEST;
-		gridBagConstraints.insets = new java.awt.Insets(10, 5, 10, 10);
-
-		getContentPane().add(gcButton, gridBagConstraints);*/
+		/*
+		 * gcButton = new JButton("Garbage Collection"); gridBagConstraints =
+		 * new java.awt.GridBagConstraints(); gridBagConstraints.gridx = 1;
+		 * gridBagConstraints.gridy = 1; gridBagConstraints.weightx = 1;
+		 * gridBagConstraints.anchor = GridBagConstraints.WEST;
+		 * gridBagConstraints.insets = new java.awt.Insets(10, 5, 10, 10);
+		 * 
+		 * getContentPane().add(gcButton, gridBagConstraints);
+		 */
 	}
 
 	public JScrollPane getExportScrollPane() {
@@ -157,7 +157,8 @@ public class AboutDialog extends JDialog implements HyperlinkListener {
 			try {
 				BrowserLauncher launcher = new BrowserLauncher();
 				launcher.openURLinBrowser(e.getURL().toString());
-			} catch (Exception r) {
+			}
+			catch (Exception r) {
 			}
 			;
 		}

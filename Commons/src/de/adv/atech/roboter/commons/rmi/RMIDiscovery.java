@@ -234,7 +234,8 @@ public class RMIDiscovery {
 			}
 		};
 		listenerThread.start();
-		ControllerManager.debug("RMI discovery: Unicast Listener thread started ");
+		ControllerManager
+				.debug("RMI discovery: Unicast Listener thread started ");
 	}
 
 	private void startRequester() {
@@ -266,8 +267,9 @@ public class RMIDiscovery {
 						DatagramPacket packet = new DatagramPacket(buf,
 								buf.length, address, multicastPort);
 
-						ControllerManager.debug("RMI discovery: Sending request "
-								+ outMsg);
+						ControllerManager
+								.debug("RMI discovery: Sending request "
+										+ outMsg);
 						socket.send(packet);
 						Thread.sleep(5000);
 					}

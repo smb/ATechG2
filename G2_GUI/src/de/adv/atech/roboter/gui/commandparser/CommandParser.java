@@ -27,10 +27,15 @@ import de.adv.atech.roboter.gui.exceptions.IllegalSyntaxException;
 public class CommandParser {
 
 	private List<Command> commandList;
+
 	private Stack<Loop> loopQueue;
+
 	private Pattern[] commandPattern;
+
 	private Pattern commandNamePattern;
+
 	private Pattern parameterPattern;
+
 	private int codeLine;
 
 	public CommandParser() {
@@ -66,7 +71,8 @@ public class CommandParser {
 
 				if (i == parameters - 1) {
 					patternBuilder.append("\\)");
-				} else {
+				}
+				else {
 					patternBuilder.append(",");
 				}
 				patternBuilder
@@ -138,16 +144,21 @@ public class CommandParser {
 		if (commandName == null) {
 			throw new IllegalSyntaxException(
 					ErrorMessages.COMMANDPARSER_SYNTAX_ERROR, codeLine);
-		} else if (commandName
+		}
+		else if (commandName
 				.equals(Constant.COMMANDPARSER_COMMAND_SELECTCLIENT)) {
 			handleSelectCommand(line);
-		} else if (commandName.equals(Constant.COMMANDPARSER_COMMAND_LOOP)) {
+		}
+		else if (commandName.equals(Constant.COMMANDPARSER_COMMAND_LOOP)) {
 			handleLoopCommand(line);
-		} else if (commandName.equals(Constant.COMMANDPARSER_COMMAND_LOOPEND)) {
+		}
+		else if (commandName.equals(Constant.COMMANDPARSER_COMMAND_LOOPEND)) {
 			handleLoopEndCommand(line);
-		} else if (commandName.equals(Constant.COMMANDPARSER_COMMAND_SUB)) {
+		}
+		else if (commandName.equals(Constant.COMMANDPARSER_COMMAND_SUB)) {
 			handleSubCommand(line);
-		} else {
+		}
+		else {
 			handleRobotCommand(commandName, line);
 		}
 	}
@@ -201,7 +212,8 @@ public class CommandParser {
 		Loop loop;
 		try {
 			loop = loopQueue.pop();
-		} catch (EmptyStackException e) {
+		}
+		catch (EmptyStackException e) {
 			throw new IllegalSyntaxException(
 					ErrorMessages.COMMANDPARSER_ILLEGAL_PARAMETER, codeLine);
 		}
@@ -231,7 +243,8 @@ public class CommandParser {
 		try {
 			bufferedReader = new BufferedReader(new InputStreamReader(
 					new FileInputStream(filename)));
-		} catch (FileNotFoundException e) {
+		}
+		catch (FileNotFoundException e) {
 			throw new IllegalSyntaxException(
 					ErrorMessages.COMMANDPARSER_SUBFILE_NOT_FOUND, codeLine);
 		}
@@ -242,7 +255,8 @@ public class CommandParser {
 				stringBuffer.append(fileLine);
 				stringBuffer.append("\n");
 			}
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			throw new IllegalSyntaxException(
 					ErrorMessages.COMMANDPARSER_SUBFILE_ERROR, codeLine);
 		}
@@ -276,10 +290,12 @@ public class CommandParser {
 			if (fieldClass == Double.class) {
 				command.setParameter(parameterKey, Double.valueOf(parameterList
 						.get(i)));
-			} else if (fieldClass == Integer.class) {
+			}
+			else if (fieldClass == Integer.class) {
 				command.setParameter(parameterKey, Integer
 						.valueOf(parameterList.get(i)));
-			} else {
+			}
+			else {
 				command.setParameter(parameterKey, parameterList.get(i));
 			}
 			i++;
@@ -304,7 +320,8 @@ public class CommandParser {
 		int intValue = 0;
 		try {
 			intValue = Integer.valueOf(string);
-		} catch (NumberFormatException e) {
+		}
+		catch (NumberFormatException e) {
 			throw new IllegalSyntaxException(
 					ErrorMessages.COMMANDPARSER_ILLEGAL_PARAMETER, codeLine);
 		}

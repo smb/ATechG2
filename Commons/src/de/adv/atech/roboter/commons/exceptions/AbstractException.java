@@ -57,20 +57,20 @@ public abstract class AbstractException extends Exception {
 		sb.append("Exception: ");
 		sb.append(className);
 		sb.append("\n");
-		
+
 		sb.append("Message:   ");
 
 		sb.append(this.getMessage());
 
 		sb.append("\n");
-		
+
 		sb.append("Fields:");
 
 		for (int i = 0; i < declaredFields.length; i++) {
 			Field tmpField = declaredFields[i];
 			String tmpFieldName = tmpField.getName();
 			String tmpFieldType = tmpField.getType().getName();
-			
+
 			sb.append("\t   - ");
 			sb.append(tmpFieldName);
 			sb.append(": ");
@@ -78,14 +78,17 @@ public abstract class AbstractException extends Exception {
 				Object tmpObject = tmpField.get(this);
 				if (tmpObject == null) {
 					sb.append("*NULL*");
-				} else {
+				}
+				else {
 					sb.append(tmpObject.toString());
 				}
-			} catch (IllegalAccessException e) {
+			}
+			catch (IllegalAccessException e) {
 				sb.append("[");
-				sb.append(tmpFieldType);				
+				sb.append(tmpFieldType);
 				sb.append(": [*unknown/private*]]");
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				// RICHTIG FAIL! Java kaputt..
 				e.printStackTrace();
 				sb.append("Java Kaputt! - " + e.getMessage());

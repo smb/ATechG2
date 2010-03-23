@@ -29,8 +29,7 @@ public class RMIClient {
 
 			tmpProps.put("jip.rmi.multicast.address", "228.5.6.7");
 			tmpProps.put("jip.rmi.multicast.port", "6789");
-			tmpProps.put("jip.rmi.unicast.port", new Integer(
-					5000).toString());
+			tmpProps.put("jip.rmi.unicast.port", new Integer(5000).toString());
 			tmpProps.put("jip.rmi.unicast.portRange", "20");
 			tmpProps.put("jip.rmi.protocol.header", "ROBOTHEAD");
 			tmpProps.put("jip.rmi.protocol.delim", "|");

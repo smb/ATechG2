@@ -13,7 +13,8 @@ import de.adv.atech.roboter.commons.interfaces.Command;
  * @author sbu
  * 
  */
-public abstract class AbstractCommand implements Command, Serializable, Cloneable {
+public abstract class AbstractCommand implements Command, Serializable,
+		Cloneable {
 
 	/**
    * 
@@ -120,7 +121,8 @@ public abstract class AbstractCommand implements Command, Serializable, Cloneabl
 
 		if (field.isEnumConstant()) {
 			classField = resolveClassField(field.getName());
-		} else {
+		}
+		else {
 			classField = field;
 		}
 
@@ -139,9 +141,11 @@ public abstract class AbstractCommand implements Command, Serializable, Cloneabl
 
 		try {
 			classField = this.child.getClass().getDeclaredField(fieldName);
-		} catch (SecurityException e) {
+		}
+		catch (SecurityException e) {
 			throw new CommandException(e, this);
-		} catch (NoSuchFieldException e) {
+		}
+		catch (NoSuchFieldException e) {
 			throw new CommandException(e, this);
 		}
 
@@ -161,9 +165,11 @@ public abstract class AbstractCommand implements Command, Serializable, Cloneabl
 
 			try {
 				returnObject = parameterField.get(this.child);
-			} catch (IllegalArgumentException e) {
+			}
+			catch (IllegalArgumentException e) {
 				throw new CommandException(e, this);
-			} catch (IllegalAccessException e) {
+			}
+			catch (IllegalAccessException e) {
 				throw new CommandException(e, this);
 			}
 		}
@@ -184,20 +190,22 @@ public abstract class AbstractCommand implements Command, Serializable, Cloneabl
 
 			try {
 				parameterField.set(this.child, object);
-			} catch (IllegalArgumentException e) {
+			}
+			catch (IllegalArgumentException e) {
 				throw new CommandException(e, this);
-			} catch (IllegalAccessException e) {
+			}
+			catch (IllegalAccessException e) {
 				throw new CommandException(e, this);
 			}
 		}
 	}
-	
-	
+
 	public Command clone() {
 		Command clone;
 		try {
 			clone = (Command) super.clone();
-		} catch (CloneNotSupportedException e) {
+		}
+		catch (CloneNotSupportedException e) {
 			throw new InternalError();
 		}
 		return clone;
@@ -231,13 +239,16 @@ public abstract class AbstractCommand implements Command, Serializable, Cloneabl
 
 				if (tmpFieldContent == null) {
 					sb.append("*NULL*");
-				} else {
+				}
+				else {
 					sb.append(tmpFieldContent.toString());
 				}
 
-			} catch (IllegalAccessException e) {
+			}
+			catch (IllegalAccessException e) {
 				sb.append("*unknown*");
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				sb.append("*internal java error*");
 			}
 

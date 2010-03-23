@@ -216,7 +216,8 @@ public class GUIController implements Controller {
 			this.eventDispatcher.registerEvent(this.actionCore, "Send",
 					EventDispatcher.TYPE_ACTION);
 
-		} catch (Exception ex) {
+		}
+		catch (Exception ex) {
 
 			message(Constant.MESSAGE_TYPE_ERROR, "Fehler beim Start: "
 					+ ex.getMessage());
@@ -288,7 +289,8 @@ public class GUIController implements Controller {
 	public void debug(String text) {
 		if (this.debugArea != null) {
 			this.debugArea.addText("[GUIController]" + text);
-		} else {
+		}
+		else {
 			System.out.println("[GUIController]" + text);
 		}
 	}

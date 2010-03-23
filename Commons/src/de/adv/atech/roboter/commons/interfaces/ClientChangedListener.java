@@ -7,7 +7,5 @@ import de.adv.atech.roboter.commons.ClientManager;
 public interface ClientChangedListener extends EventListener {
 
 	public void clientChanged(ClientManager clientManager, Object object);
-	
-	
 
 }

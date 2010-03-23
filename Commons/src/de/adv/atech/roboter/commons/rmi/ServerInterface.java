@@ -20,7 +20,9 @@ public interface ServerInterface extends Remote {
 
 	public long ping() throws RemoteException;
 
-	public void initConnection(String clientIdentifier, int localPort) throws RemoteException;
+	public void initConnection(String clientIdentifier, int localPort)
+			throws RemoteException;
 
-	public List<Class<? extends Command>> getCommandList() throws RemoteException;
+	public List<Class<? extends Command>> getCommandList()
+			throws RemoteException;
 }

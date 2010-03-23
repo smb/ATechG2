@@ -32,7 +32,8 @@ public class CommController implements Runnable {
 		try {
 			this.nmm = new NetworkMasterManager(new RMIServer());
 			this.nmm.initServer();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			throw new Exception("Fehler beim Initialisieren des Servers", e);
 		}
 	}
@@ -63,7 +64,8 @@ public class CommController implements Runnable {
 
 						try {
 							clientTimestamp = client.getRMI().ping();
-						} catch (Exception ex) {
+						}
+						catch (Exception ex) {
 
 						}
 
@@ -73,7 +75,8 @@ public class CommController implements Runnable {
 							clientActive = true;
 							ControllerManager.debug(" Ping '"
 									+ clientIdentifier + "': " + diff + "ms");
-						} else {
+						}
+						else {
 							clientActive = false;
 
 							ControllerManager
@@ -85,7 +88,8 @@ public class CommController implements Runnable {
 							removeClients.add(clientIdentifier);
 							// it.remove();
 						}
-					} else {
+					}
+					else {
 						clientActive = true;
 					}
 				}
@@ -94,7 +98,8 @@ public class CommController implements Runnable {
 					this.clientManager.unregisterClients(removeClients);
 				}
 
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				e.printStackTrace();
 			}
 			try {
@@ -103,7 +108,8 @@ public class CommController implements Runnable {
 				 * this.sleepTime + "ms");
 				 */
 				Thread.sleep(this.sleepTime);
-			} catch (InterruptedException e) {
+			}
+			catch (InterruptedException e) {
 				ControllerManager.message(Constant.MESSAGE_TYPE_INFO,
 						"[CommController] Shutdown");
 			}

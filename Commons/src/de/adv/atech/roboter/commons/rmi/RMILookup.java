@@ -182,8 +182,9 @@ public class RMILookup implements Runnable {
 						params = parseMsg(msg);
 					}
 					catch (Exception ex) {
-						ControllerManager.debug("RMI lookup: bad packet format "
-								+ ex.getMessage());
+						ControllerManager
+								.debug("RMI lookup: bad packet format "
+										+ ex.getMessage());
 						continue;
 					}
 					InetAddress repAddress = packet.getAddress();
@@ -197,7 +198,8 @@ public class RMILookup implements Runnable {
 							+ interfaceName);
 					ControllerManager.debug("RMI lookup: Reply address="
 							+ repAddress);
-					ControllerManager.debug("RMI lookup: Reply port=" + repPort);
+					ControllerManager
+							.debug("RMI lookup: Reply port=" + repPort);
 
 					// if the Discovery.ANY flag has been passed in or a valid
 					// name doesn't match this name
@@ -237,7 +239,8 @@ public class RMILookup implements Runnable {
 						}
 					}
 					else {
-						ControllerManager.debug("RMI lookup: No matching interface");
+						ControllerManager
+								.debug("RMI lookup: No matching interface");
 					}
 				}
 			}

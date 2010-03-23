@@ -3,7 +3,6 @@
  */
 package de.adv.atech.roboter.commons;
 
-public class LocalCommand
-{
+public class LocalCommand {
 
 }

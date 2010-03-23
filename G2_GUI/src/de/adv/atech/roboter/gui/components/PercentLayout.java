@@ -44,6 +44,7 @@ public class PercentLayout implements LayoutManager2 {
 	public final static int VERTICAL = 1;
 
 	static class Constraint {
+
 		protected Object value;
 
 		private Constraint(Object value) {
@@ -52,6 +53,7 @@ public class PercentLayout implements LayoutManager2 {
 	}
 
 	static class NumberConstraint extends Constraint {
+
 		public NumberConstraint(int d) {
 			this(new Integer(d));
 		}
@@ -66,6 +68,7 @@ public class PercentLayout implements LayoutManager2 {
 	}
 
 	static class PercentConstraint extends Constraint {
+
 		public PercentConstraint(float d) {
 			super(new Float(d));
 		}
@@ -80,6 +83,7 @@ public class PercentLayout implements LayoutManager2 {
 	private final static Constraint PREFERRED_SIZE = new Constraint("");
 
 	private int orientation;
+
 	private int gap;
 
 	private Hashtable m_ComponentToConstraint;
@@ -131,14 +135,18 @@ public class PercentLayout implements LayoutManager2 {
 	public void setConstraint(Component component, Object constraints) {
 		if (constraints instanceof Constraint) {
 			m_ComponentToConstraint.put(component, constraints);
-		} else if (constraints instanceof Number) {
+		}
+		else if (constraints instanceof Number) {
 			setConstraint(component, new NumberConstraint(
 					((Number) constraints).intValue()));
-		} else if ("*".equals(constraints)) {
+		}
+		else if ("*".equals(constraints)) {
 			setConstraint(component, REMAINING_SPACE);
-		} else if ("".equals(constraints)) {
+		}
+		else if ("".equals(constraints)) {
 			setConstraint(component, PREFERRED_SIZE);
-		} else if (constraints instanceof String) {
+		}
+		else if (constraints instanceof String) {
 			String s = (String) constraints;
 			if (s.endsWith("%")) {
 				float value = Float.valueOf(s.substring(0, s.length() - 1))
@@ -147,14 +155,17 @@ public class PercentLayout implements LayoutManager2 {
 					throw new IllegalArgumentException(
 							"percent value must be >= 0 and <= 100");
 				setConstraint(component, new PercentConstraint(value));
-			} else {
+			}
+			else {
 				setConstraint(component, new NumberConstraint(Integer
 						.valueOf(s)));
 			}
-		} else if (constraints == null) {
+		}
+		else if (constraints == null) {
 			// null constraint means preferred size
 			setConstraint(component, PREFERRED_SIZE);
-		} else {
+		}
+		else {
 			throw new IllegalArgumentException("Invalid Constraint");
 		}
 	}
@@ -251,15 +262,18 @@ public class PercentLayout implements LayoutManager2 {
 					width += componentPreferredSize.width;
 					if (firstVisibleComponent) {
 						firstVisibleComponent = false;
-					} else {
+					}
+					else {
 						width += gap;
 					}
-				} else {
+				}
+				else {
 					height += componentPreferredSize.height;
 					width = Math.max(width, componentPreferredSize.width);
 					if (firstVisibleComponent) {
 						firstVisibleComponent = false;
-					} else {
+					}
+					else {
 						height += gap;
 					}
 				}
@@ -301,7 +315,8 @@ public class PercentLayout implements LayoutManager2 {
 							.getPreferredSize().width : components[i]
 							.getPreferredSize().height);
 					availableSize -= sizes[i];
-				} else if (constraint instanceof NumberConstraint) {
+				}
+				else if (constraint instanceof NumberConstraint) {
 					sizes[i] = ((NumberConstraint) constraint).intValue();
 					availableSize -= sizes[i];
 				}
@@ -352,7 +367,8 @@ public class PercentLayout implements LayoutManager2 {
 				if (HORIZONTAL == orientation) {
 					components[i].setBounds(currentOffset, insets.top,
 							sizes[i], d.height);
-				} else {
+				}
+				else {
 					components[i].setBounds(insets.left, currentOffset,
 							d.width, sizes[i]);
 				}

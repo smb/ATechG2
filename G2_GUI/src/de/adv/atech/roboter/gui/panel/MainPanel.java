@@ -24,12 +24,11 @@ public class MainPanel extends JTabbedPane {
 
 	}
 
-	
 	public void setupPanel() {
 		GUIController controller = GUIController.getInstance();
-		
+
 		this.addTab(Constant.TEXT_EDITOR_TAB, controller.getEditorPanel());
-		
+
 		this.addTab(Constant.TEXT_CONTROL_TAB, controller.getControlPanel());
 	}
 }

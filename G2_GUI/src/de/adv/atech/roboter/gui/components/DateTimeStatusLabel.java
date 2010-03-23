@@ -46,13 +46,15 @@ public class DateTimeStatusLabel extends JLabel implements Runnable {
 			try {
 				setDateTime();
 
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				e.printStackTrace();
 			}
 			try {
 
 				Thread.sleep(1 * 1000);
-			} catch (InterruptedException e) {
+			}
+			catch (InterruptedException e) {
 				ControllerManager.message(Constant.MESSAGE_TYPE_INFO,
 						"[DateTimeStatusLabel] Shutdown");
 			}

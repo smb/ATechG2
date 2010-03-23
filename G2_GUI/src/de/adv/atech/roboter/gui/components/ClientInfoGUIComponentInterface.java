@@ -11,7 +11,7 @@ public interface ClientInfoGUIComponentInterface {
 	public void setActiveItem(String item);
 
 	public void setItemList(List<String> itemList);
-	
+
 	public void setInfoIcon(Icon icon);
 
 }

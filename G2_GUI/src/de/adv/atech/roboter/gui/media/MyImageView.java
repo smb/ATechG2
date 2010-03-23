@@ -93,21 +93,23 @@ public class MyImageView extends View implements ImageObserver, MouseListener,
 					else
 						fImage = Toolkit.getDefaultToolkit().getImage(src);
 				}
-			} else {
+			}
+			else {
 
 				/******** Code to load from relative path *************/
 				String src = (String) fElement.getAttributes().getAttribute(
 						HTML.Attribute.SRC);
-				//System.out.println("before src: " + src);
+				// System.out.println("before src: " + src);
 				src = processSrcPath(src);
-				//System.out.println("after src: " + src);
+				// System.out.println("after src: " + src);
 
 				fImage = Toolkit.getDefaultToolkit().createImage(
 						Media.class.getResource(src));
 				// fImage = Toolkit.getDefaultToolkit().createImage(src);
 				try {
 					waitForImage();
-				} catch (InterruptedException e) {
+				}
+				catch (InterruptedException e) {
 					fImage = null;
 				}
 				/******************************************************/
@@ -148,7 +150,8 @@ public class MyImageView extends View implements ImageObserver, MouseListener,
 			 * getBorder());
 			 * //((AbstractDocument.AbstractElement)elem).dump(System.out,4); }
 			 ********************************************************/
-		} finally {
+		}
+		finally {
 			synchronized (this) {
 				loading = false;
 				if (customWidth || fWidth == 0) {
@@ -291,7 +294,8 @@ public class MyImageView extends View implements ImageObserver, MouseListener,
 		try {
 			URL u = new URL(reference, src);
 			return u;
-		} catch (MalformedURLException e) {
+		}
+		catch (MalformedURLException e) {
 			return null;
 		}
 	}
@@ -307,11 +311,13 @@ public class MyImageView extends View implements ImageObserver, MouseListener,
 			else
 				try {
 					i = Math.max(0, Integer.parseInt(val));
-				} catch (NumberFormatException x) {
+				}
+				catch (NumberFormatException x) {
 					i = deflt;
 				}
 			return i;
-		} else
+		}
+		else
 			return deflt;
 	}
 
@@ -535,7 +541,8 @@ public class MyImageView extends View implements ImageObserver, MouseListener,
 					((AbstractDocument) doc).readLock();
 				}
 				preferenceChanged(this, true, true);
-			} finally {
+			}
+			finally {
 				if (doc instanceof AbstractDocument) {
 					((AbstractDocument) doc).readUnlock();
 				}
@@ -560,6 +567,7 @@ public class MyImageView extends View implements ImageObserver, MouseListener,
 	 * @see #imageUpdate
 	 */
 	private static boolean sIsInc = true;
+
 	private static int sIncRate = 100;
 
 	// --- Layout ----------------------------------------------------------
@@ -578,12 +586,12 @@ public class MyImageView extends View implements ImageObserver, MouseListener,
 		// if(DEBUG)System.out.println("ImageView: getPreferredSpan");
 		int extra = 2 * (getBorder() + getSpace(axis));
 		switch (axis) {
-		case View.X_AXIS:
-			return fWidth + extra;
-		case View.Y_AXIS:
-			return fHeight + extra;
-		default:
-			throw new IllegalArgumentException("Invalid axis: " + axis);
+			case View.X_AXIS:
+				return fWidth + extra;
+			case View.Y_AXIS:
+				return fHeight + extra;
+			default:
+				throw new IllegalArgumentException("Invalid axis: " + axis);
 		}
 	}
 
@@ -601,10 +609,10 @@ public class MyImageView extends View implements ImageObserver, MouseListener,
 	 */
 	public float getAlignment(int axis) {
 		switch (axis) {
-		case View.Y_AXIS:
-			return getVerticalAlignment();
-		default:
-			return super.getAlignment(axis);
+			case View.Y_AXIS:
+				return getVerticalAlignment();
+			default:
+				return super.getAlignment(axis);
 		}
 	}
 
@@ -708,7 +716,8 @@ public class MyImageView extends View implements ImageObserver, MouseListener,
 			fGrowBase = new Point(loc.x + e.getX() - fWidth, loc.y + e.getY()
 					- fHeight);
 			fGrowProportionally = e.isShiftDown();
-		} else {
+		}
+		else {
 			// Else select image:
 			fGrowBase = null;
 			JTextComponent comp = (JTextComponent) fContainer;
@@ -722,7 +731,8 @@ public class MyImageView extends View implements ImageObserver, MouseListener,
 					comp.moveCaretPosition(end);
 				else
 					comp.moveCaretPosition(start);
-			} else {
+			}
+			else {
 				// just select image, without shift:
 				if (mark != start)
 					comp.setCaretPosition(start);
@@ -819,7 +829,8 @@ public class MyImageView extends View implements ImageObserver, MouseListener,
 				sPendingImageIcon = makeIcon(PENDING_IMAGE_SRC);
 			if (sMissingImageIcon == null)
 				sMissingImageIcon = makeIcon(MISSING_IMAGE_SRC);
-		} catch (Exception x) {
+		}
+		catch (Exception x) {
 			System.err.println("ImageView: Couldn't load image icons");
 		}
 	}
@@ -832,14 +843,23 @@ public class MyImageView extends View implements ImageObserver, MouseListener,
 	// --- member variables ------------------------------------------------
 
 	private AttributeSet attr;
+
 	private Element fElement;
+
 	private Image fImage;
+
 	private int fHeight, fWidth;
+
 	private Container fContainer;
+
 	private Rectangle fBounds;
+
 	private Component fComponent;
+
 	private Point fGrowBase; // base of drag while growing image
+
 	private boolean fGrowProportionally; // should grow be proportional?
+
 	/**
 	 * Set to true, while the receiver is locked, to indicate the reciever is
 	 * loading the image. This is used in imageUpdate.
@@ -849,6 +869,7 @@ public class MyImageView extends View implements ImageObserver, MouseListener,
 	// --- constants and static stuff --------------------------------
 
 	private static Icon sPendingImageIcon, sMissingImageIcon;
+
 	private static final String PENDING_IMAGE_SRC = "image-delayed.gif",
 			MISSING_IMAGE_SRC = "image-failed.gif";
 

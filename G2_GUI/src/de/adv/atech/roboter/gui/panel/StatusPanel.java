@@ -27,7 +27,7 @@ public class StatusPanel extends JPanel {
 
 	public void setupPanel() {
 		GUIController controller = GUIController.getInstance();
-		
+
 		this.setLayout(new BorderLayout());
 
 		this.add(controller.getDebugArea(), BorderLayout.CENTER);

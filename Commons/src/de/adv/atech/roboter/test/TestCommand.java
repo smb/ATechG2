@@ -48,7 +48,8 @@ public class TestCommand {
 			Object param = moveCommand.getParameter(DefaultMove.Parameter.X);
 
 			System.out.println(param + " - " + param.getClass());
-		} catch (CommandException e) {
+		}
+		catch (CommandException e) {
 			e.dumpException();
 		}
 	}

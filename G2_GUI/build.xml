@@ -16,7 +16,6 @@
 	<!-- Libs -->
 	<property name="LIB_BrowserLauncher" value="${libs}/BrowserLauncher2-all-1_3.jar" />
 	<property name="LIB_Icons" value="${libs}/G2_GUI_Icons.jar" />
-	<property name="LIB_JSyntaxPane" value="${libs}/jsyntaxpane-0.9.5-b29.jar" />
 
 	<property name="Commons.location" value="../Commons" />
 
@@ -36,7 +35,6 @@
 		<path refid="G2_Commons.classpath" />
 		<pathelement location="${LIB_BrowserLauncher}" />
 		<pathelement location="${LIB_Icons}" />
-		<pathelement location="${LIB_JSyntaxPane}" />
 	</path>
 
 	<target name="compile" depends="init" description="compile the source ">
@@ -63,7 +61,6 @@
 		<!-- unjar libs so we can build a standalone jar file -->
 		<unjar src="${LIB_BrowserLauncher}" dest="${build}" />
 		<unjar src="${LIB_Icons}" dest="${build}" />
-		<unjar src="${LIB_JSyntaxPane}" dest="${build}" />
 
 		<manifest file="MANIFEST.MF">
 			<attribute name="Built-By" value="${user.name}" />
