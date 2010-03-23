@@ -4,17 +4,17 @@ import java.awt.BorderLayout;
 
 import javax.swing.JPanel;
 
-import de.adv.atech.roboter.gui.components.SyntaxEditorContainer;
+import de.adv.atech.roboter.gui.components.SyntaxEditorPanel;
 
 public class EditorPanel extends JPanel {
 
-	SyntaxEditorContainer syntaxEditorPane;
+	SyntaxEditorPanel syntaxEditorPane;
 
 	ClientInfoPanel clientInfoPanel;
 
 	public EditorPanel() {
 
-		this.syntaxEditorPane = new SyntaxEditorContainer();
+		this.syntaxEditorPane = new SyntaxEditorPanel();
 
 		this.clientInfoPanel = new ClientInfoPanel();
 
