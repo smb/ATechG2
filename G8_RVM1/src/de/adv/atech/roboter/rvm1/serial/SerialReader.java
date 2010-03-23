@@ -1,7 +1,5 @@
 package de.adv.atech.roboter.rvm1.serial;
 
-import gnu.io.CommPort;
-import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 
 import java.io.IOException;
@@ -12,45 +10,20 @@ public class SerialReader extends Observable implements Runnable
 {
 	InputStream	in;
 
-	public SerialReader()
+	public SerialReader(SerialPort ssSerialPort)
 	{
 		try
 		{
-			CommPortIdentifier portIdentifier = CommPortIdentifier
-					.getPortIdentifier( "COM1" );
-			if ( portIdentifier.isCurrentlyOwned() )
-			{
-				System.out.println( "Error: Port is currently in use" );
-			}
-			else
-			{
-				CommPort commPort = portIdentifier.open( this.getClass()
-						.getName(), 2000 );
-
-				if ( commPort instanceof SerialPort )
-				{
-					SerialPort serialPort = (SerialPort) commPort;
-					serialPort.setSerialPortParams( 9600,
-							SerialPort.DATABITS_7, SerialPort.STOPBITS_2,
-							SerialPort.PARITY_EVEN );
-
-					in = serialPort.getInputStream();
-
-				}
-				else
-				{
-					System.out
-							.println( "Error: Only serial ports are handled by this example." );
-				}
-			}
+			in = ssSerialPort.getInputStream();
 		}
-		catch ( Exception e )
+		catch(IOException e)
 		{
 			e.printStackTrace();
 		}
+
 	}
 
-	private String read()
+	private synchronized String read()
 	{
 		String answer = null;
 
@@ -64,7 +37,13 @@ public class SerialReader extends Observable implements Runnable
 				{
 					answer = new String( buffer, 0, len );
 				}
+				if ( answer != null )
+				{
+					setChanged();
+					notifyObservers( answer );
+				}
 			}
+			System.out.println("SerialReader: nach der while Schleife");
 		}
 		catch ( IOException e )
 		{
@@ -79,12 +58,8 @@ public class SerialReader extends Observable implements Runnable
 	{
 		while ( true )
 		{
-			String answerFromRobot = read();
-
-			if ( answerFromRobot != null )
-			{
-				notifyObservers( answerFromRobot );
-			}
+			System.out.println("SerialReader: Run gestartet");
+			this.read();
 		}
 	}
 

@@ -28,8 +28,8 @@ public class Starter
     {
         try
         {
-            this.serialReader = new SerialReader();
-            this.serialWriter = new SerialWriter();
+//            this.serialReader = new SerialReader();
+//            this.serialWriter = new SerialWriter();
             this.rmiTranslator = new TranslatorToRmi();
             this.serialTranslator = new TranslatorToSerial(this.serialWriter);
             this.rmiServer = new RMIServer(this.rmiTranslator, this.serialTranslator);

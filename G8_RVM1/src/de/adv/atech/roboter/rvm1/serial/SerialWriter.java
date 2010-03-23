@@ -1,7 +1,5 @@
 package de.adv.atech.roboter.rvm1.serial;
 
-import gnu.io.CommPort;
-import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 
 import java.io.IOException;
@@ -16,42 +14,16 @@ public class SerialWriter implements Observer, Runnable
 {
 	OutputStream				out;
 	LinkedList< TimedCommand >	commandList		= new LinkedList< TimedCommand >();
-	boolean						readyToSend;
-	String						answerFromRobot	= null;
+	boolean						readyToSend		= true;
+	String						answerFromRobot	= "";
 
-	public SerialWriter()
+	public SerialWriter(SerialPort ssSerialPort)
 	{
 		try
 		{
-			CommPortIdentifier portIdentifier = CommPortIdentifier
-					.getPortIdentifier( "COM1" );
-			if ( portIdentifier.isCurrentlyOwned() )
-			{
-				System.out.println( "Error: Port is currently in use" );
-			}
-			else
-			{
-				CommPort commPort = portIdentifier.open( this.getClass()
-						.getName(), 2000 );
-
-				if ( commPort instanceof SerialPort )
-				{
-					SerialPort serialPort = (SerialPort) commPort;
-					serialPort.setSerialPortParams( 9600,
-							SerialPort.DATABITS_7, SerialPort.STOPBITS_2,
-							SerialPort.PARITY_EVEN );
-
-					out = serialPort.getOutputStream();
-
-				}
-				else
-				{
-					System.out
-							.println( "Error: Only serial ports are handled by this example." );
-				}
-			}
+			out = ssSerialPort.getOutputStream();
 		}
-		catch ( Exception e )
+		catch ( IOException e )
 		{
 			e.printStackTrace();
 		}
@@ -69,7 +41,10 @@ public class SerialWriter implements Observer, Runnable
 				answerFromRobot = robotAnswer.toString();
 			}
 		}
-
+	}
+	public void appendCommand (LinkedList<TimedCommand> ssCommandList)
+	{
+		commandList.addAll( ssCommandList );
 	}
 
 	public void appendCommand( TimedCommand ssCommandObject )
@@ -108,41 +83,72 @@ public class SerialWriter implements Observer, Runnable
 		}
 	}
 
+	private synchronized void errorRead()
+	{
+		try
+		{
+			Thread.sleep( 5000 );
+			String comand = "er\r";
+			byte[] coman_arr = comand.getBytes( "ASCII" );
+			for ( int i = 0; i < coman_arr.length; i++ )
+			{
+				out.write( coman_arr[i] );
+			}
+		}
+		catch ( Exception e )
+		{
+			e.printStackTrace();
+		}
+	}
+
+	private synchronized boolean checkRobot()
+	{
+		boolean robotOK = false;
+		errorRead();
+		if ( answerFromRobot.length() > 0 || !answerFromRobot.equals( "0" ) )
+		{
+			try
+			{
+				String comand2 = "rs\r";
+				byte[] coman_arr2 = comand2.getBytes( "ASCII" );
+				for ( int i = 0; i < coman_arr2.length; i++ )
+				{
+					out.write( coman_arr2[i] );
+				}
+			}
+			catch ( Exception e )
+			{
+				e.printStackTrace();
+			}
+
+			robotOK = true;
+		}
+		return robotOK;
+	}
+
 	@Override
 	public void run()
 	{
+		System.out.println( "SerialWriter: Run gestartet" );
+		
 		while ( true )
 		{
 			if ( readyToSend )
 			{
-				if ( answerFromRobot != null || !answerFromRobot.equals( "0" ) )
+				if ( checkRobot() )
 				{
-					try
-					{
-						String comand = "rs\r";
-						byte[] coman_arr = comand.getBytes( "ASCII" );
-						for ( int i = 0; i < coman_arr.length; i++ )
-						{
-							out.write( coman_arr[i] );
-						}
-					}
-					catch ( Exception e )
-					{
-						e.printStackTrace();
-					}
-
-					answerFromRobot = null;
-
+					answerFromRobot = "";
 				}
-				else
+
+				if ( commandList.size() > 0 )
 				{
-					if ( commandList.size() > 0 )
-					{
-						TimedCommand command = commandList.removeFirst();
-						writeCommand( command );
-					}
+					TimedCommand command = commandList.removeFirst();
+					writeCommand( command );
+					readyToSend = false;
 				}
+
 			}
+
 		}
 	}
 
