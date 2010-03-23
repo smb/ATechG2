@@ -1,9 +1,7 @@
 package de.adv.atech.roboter.gui.panel;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import de.adv.atech.roboter.gui.components.SyntaxEditorContainer;
