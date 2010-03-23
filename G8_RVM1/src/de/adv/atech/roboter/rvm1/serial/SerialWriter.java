@@ -87,7 +87,7 @@ public class SerialWriter implements Observer, Runnable
 	{
 		try
 		{
-			Thread.sleep( 5000 );
+			Thread.sleep( 500 );
 			String comand = "er\r";
 			byte[] coman_arr = comand.getBytes( "ASCII" );
 			for ( int i = 0; i < coman_arr.length; i++ )

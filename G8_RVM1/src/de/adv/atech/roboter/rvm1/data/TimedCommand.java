@@ -12,7 +12,11 @@ public class TimedCommand
 		commandCode = ssCommandCode;
 		timeout = 0;
 	}
-	
+	/**
+	 * 
+	 * @param ssCommandCode
+	 * @param ssTimeout 		Timeout in Milisekunden
+	 */
 	public TimedCommand(String ssCommandCode, long ssTimeout)
 	{
 		commandCode = ssCommandCode;
