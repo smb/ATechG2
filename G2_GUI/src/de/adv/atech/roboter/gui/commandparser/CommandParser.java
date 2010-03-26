@@ -277,7 +277,7 @@ public class CommandParser {
 		Client activeClient = cm.getActiveClient();
 
 		CommandManager commandManager = activeClient.getCommandManager();
-		Command command = commandManager.resolveCommand(commandName, false);
+		Command command = commandManager.resolveCommand(commandName, true);
 
 		if (command == null) {
 			throw new IllegalSyntaxException(
