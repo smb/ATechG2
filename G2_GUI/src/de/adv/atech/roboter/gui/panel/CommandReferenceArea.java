@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
+import de.adv.atech.roboter.commons.exceptions.ClientException;
 import de.adv.atech.roboter.commons.exceptions.CommandException;
 import de.adv.atech.roboter.commons.interfaces.Client;
 import de.adv.atech.roboter.commons.interfaces.Command;
@@ -73,6 +74,9 @@ public class CommandReferenceArea extends JEditorPane implements ItemListener,
 						.append("Command Liste konnte nicht gelesen werden: "
 								+ e.getMessage());
 			}
+			catch (ClientException e) {
+
+			}
 		}
 
 		this.setText(String.format(this.stringFormat, BGColor, this.commandRef
@@ -80,7 +84,8 @@ public class CommandReferenceArea extends JEditorPane implements ItemListener,
 	}
 
 	public void displayCommandInfo(StringBuffer ref,
-			CommandManager commandManager) throws CommandException {
+			CommandManager commandManager) throws CommandException,
+			ClientException {
 		for (Iterator<Class<? extends Command>> it = commandManager
 				.getCommandList().iterator(); it.hasNext();) {
 			Class<? extends Command> commandClass = it.next();

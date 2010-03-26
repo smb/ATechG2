@@ -11,6 +11,7 @@ import de.adv.atech.roboter.commons.ControllerManager;
 import de.adv.atech.roboter.commons.NetworkClient;
 import de.adv.atech.roboter.commons.commands.rvm1.ErrorInfo;
 import de.adv.atech.roboter.commons.commands.rvm1.StatusInfo;
+import de.adv.atech.roboter.commons.exceptions.ClientException;
 import de.adv.atech.roboter.commons.exceptions.CommandException;
 import de.adv.atech.roboter.commons.interfaces.Client;
 import de.adv.atech.roboter.commons.interfaces.Command;
@@ -115,7 +116,10 @@ public class RMIServer extends UnicastRemoteObject implements ServerInterface {
 			commandClassList = localClient.getCommandManager().getCommandList();
 		}
 		catch (CommandException ex) {
-			throw new RemoteException();
+			throw new RemoteException(ex.getMessage());
+		}
+		catch (ClientException e) {
+			throw new RemoteException(e.getMessage());
 		}
 
 		return commandClassList;

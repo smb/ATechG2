@@ -11,6 +11,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 
+import de.adv.atech.roboter.commons.ActiveClientCommandManager;
 import de.adv.atech.roboter.commons.ClientManager;
 import de.adv.atech.roboter.commons.Constant;
 import de.adv.atech.roboter.commons.ControllerManager;
@@ -44,6 +45,8 @@ public class GUIController implements Controller {
 	private EventDispatcher eventDispatcher;
 
 	private ActionHandler actionCore;
+
+	private ActiveClientCommandManager activeClientCommandManager;
 
 	/*
 	 * Threads
@@ -182,6 +185,7 @@ public class GUIController implements Controller {
 
 		this.clientManager = new ClientManager();
 
+		this.activeClientCommandManager = new ActiveClientCommandManager(this.clientManager);
 	}
 
 	public void initGUI() {

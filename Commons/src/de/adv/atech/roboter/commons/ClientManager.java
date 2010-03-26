@@ -37,6 +37,14 @@ public class ClientManager {
 		}
 	}
 
+	public void fireActiveClientChangedEvent() {
+		for (Iterator<Entry<ClientChangedListener, Object>> it = this.listenerMap
+				.entrySet().iterator(); it.hasNext();) {
+			Entry<ClientChangedListener, Object> entry = it.next();
+			entry.getKey().activeClientChanged(this, entry.getValue());
+		}
+	}
+
 	public boolean registerClient(Client client) {
 		ControllerManager.debug("[ClientManager] registered Client: "
 				+ client.getIdentifier());
@@ -60,7 +68,7 @@ public class ClientManager {
 
 			// Client war aktiver Client - entfernen
 			if (this.activeClient == client) {
-				this.activeClient = null;
+				this.clearActiveClient();
 			}
 
 			fireClientChangedEvent();
@@ -75,7 +83,7 @@ public class ClientManager {
 			Client client = this.clientMap.remove(identifier);
 
 			if (this.activeClient == null || this.activeClient.equals(client)) {
-				this.activeClient = null;
+				this.clearActiveClient();
 			}
 
 			fireClientChangedEvent();
@@ -100,6 +108,7 @@ public class ClientManager {
 				this.activeClient = this.clientMap.get(identifier);
 				returnValue = true;
 
+				fireActiveClientChangedEvent();
 				ControllerManager.message(Constant.MESSAGE_TYPE_INFO,
 						"Aktiver Client gesetzt: " + this.activeClient);
 			}
@@ -119,8 +128,14 @@ public class ClientManager {
 		return returnValue;
 	}
 
+	public void clearActiveClient() {
+		this.activeClient = null;
+		fireActiveClientChangedEvent();
+	}
+
 	public void setActiveClient(Client client) {
 		this.activeClient = client;
+		fireActiveClientChangedEvent();
 	}
 
 	public Client getActiveClient() throws ClientException {

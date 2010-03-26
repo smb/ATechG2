@@ -130,4 +130,10 @@ public class ClientStatusInfo implements Runnable, ClientChangedListener {
 		// Aenderungen erkennen
 		setClientLabel();
 	}
+
+	@Override
+	public void activeClientChanged(ClientManager clientManager, Object object) {
+		// TODO Auto-generated method stub
+
+	}
 }

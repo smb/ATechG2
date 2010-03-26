@@ -8,4 +8,6 @@ public interface ClientChangedListener extends EventListener {
 
 	public void clientChanged(ClientManager clientManager, Object object);
 
+	public void activeClientChanged(ClientManager clientManager, Object object);
+
 }

@@ -40,4 +40,10 @@ public class SendAction extends GUIAbstractAction implements
 		GUIController.getInstance().getClientManager()
 				.registerClientChangedListener(this, button);
 	}
+
+	@Override
+	public void activeClientChanged(ClientManager clientManager, Object object) {
+		// TODO Auto-generated method stub
+
+	}
 }
