@@ -331,10 +331,13 @@ public abstract class AbstractCommand implements Command, Serializable,
 					String paramName = entry.getKey().toString();
 
 					localRef.append(paramType);
+					
+					localRef.append(" ");
+					
 					localRef.append(paramName);
 
 					if (it.hasNext()) {
-						localRef.append(",");
+						localRef.append(", ");
 					}
 				}
 
