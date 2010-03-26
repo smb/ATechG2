@@ -12,51 +12,68 @@ import de.adv.atech.roboter.commons.exceptions.CommandException;
 import de.adv.atech.roboter.commons.interfaces.Client;
 import de.adv.atech.roboter.commons.interfaces.Command;
 import de.adv.atech.roboter.commons.rmi.ServerInterface;
-import de.adv.atech.roboter.rvm1.controller.TranslatorToRmi;
 import de.adv.atech.roboter.rvm1.controller.TranslatorToSerial;
 
-public class RMIServer extends UnicastRemoteObject implements ServerInterface {
 
-	private TranslatorToSerial serialTranslator;
+public class RMIServer extends UnicastRemoteObject
+                       implements ServerInterface
+{
 
-	public RMIServer(TranslatorToSerial reciever) throws RemoteException {
-		// TODO logging
+    private TranslatorToSerial serialTranslator;
 
-		super();
-		this.serialTranslator = reciever;
+    
+	public RMIServer() throws RemoteException
+	{
+        // TODO logging
+	    
+	    super();
 	}
 
-	public RMIServer(TranslatorToRmi sender, TranslatorToSerial reciever,
-			int port) throws RemoteException {
-		// TODO logging
-
+	
+	public RMIServer(int port)
+                     throws RemoteException
+    {
+        // TODO logging
+	    
 		super(port);
-		this.serialTranslator = reciever;
 	}
 
+	
+	public void setTranslator(TranslatorToSerial serialTrans)
+	{
+	    this.serialTranslator = serialTrans;
+	}
+
+	
 	public void processCommand(List<Command> commandList)
-			throws RemoteException {
-		// TODO logging
+			                   throws RemoteException
+    {
+        // TODO logging 
 
-		for (Iterator<Command> it = commandList.iterator(); it.hasNext();) {
+		for( Iterator<Command> it = commandList.iterator(); it.hasNext(); )
+		{
 			Command tmpCommand = it.next();
-
+			
 			this.serialTranslator.processCommand(tmpCommand);
 		}
 	}
 
+	
 	public void initConnection(String clientIdentifier, int localPort)
-			throws RemoteException {
+			throws RemoteException
+	{
 		// TODO Handshake
-
+	    System.out.println("Shaking hands. (has no effect)");
 	}
 
+	
 	public List<Class<? extends Command>> getCommandList()
-			throws RemoteException {
+			throws RemoteException
+	{
 		List<Class<? extends Command>> commandClassList = null;
 
-		Client localClient = GenericController.getInstance().getClientManager()
-				.getClient(Constant.CLIENT_SELF);
+		Client localClient = GenericController.getInstance()
+		        .getClientManager().getClient(Constant.CLIENT_SELF);
 
 		try {
 			commandClassList = localClient.getCommandManager().getCommandList();
@@ -71,12 +88,16 @@ public class RMIServer extends UnicastRemoteObject implements ServerInterface {
 		return commandClassList;
 	}
 
-	public long ping() throws RemoteException {
-		// TODO logging
+	
+	public long ping() throws RemoteException
+	{
+	    System.out.println("got pinged");
 		return System.currentTimeMillis();
 	}
 
-	public String getName() {
-		return "RV-M1";
-	}
+	
+    public String getName()
+    {
+        return "RV-M1";
+    }
 }
