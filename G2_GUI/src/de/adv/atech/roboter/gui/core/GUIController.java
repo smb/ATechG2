@@ -185,7 +185,8 @@ public class GUIController implements Controller {
 
 		this.clientManager = new ClientManager();
 
-		this.activeClientCommandManager = new ActiveClientCommandManager(this.clientManager);
+		this.activeClientCommandManager = new ActiveClientCommandManager(
+				this.clientManager);
 	}
 
 	public void initGUI() {
@@ -257,6 +258,14 @@ public class GUIController implements Controller {
 	 */
 	public ClientManager getClientManager() {
 		return this.clientManager;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public ActiveClientCommandManager getActiveClientCommandManager() {
+		return this.activeClientCommandManager;
 	}
 
 	/**
