@@ -51,12 +51,9 @@ public class RMIServer extends UnicastRemoteObject
     {
         ControllerManager.message(0, "Recieve command list.");
 
-		for( Iterator<Command> it = commandList.iterator(); it.hasNext(); )
-		{
-			Command tmpCommand = it.next();
-			
-			this.serialTranslator.processCommand(tmpCommand);
-		}
+		this.serialTranslator.processCommand(commandList);
+		Thread t = new Thread(this.serialTranslator);
+	    t.start();
 	}
 
 	
