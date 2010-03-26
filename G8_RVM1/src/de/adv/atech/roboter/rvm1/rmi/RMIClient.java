@@ -6,6 +6,7 @@ import java.util.List;
 
 import de.adv.atech.roboter.commons.Constant;
 import de.adv.atech.roboter.commons.GenericController;
+import de.adv.atech.roboter.commons.commands.rvm1.MoveJoints;
 import de.adv.atech.roboter.commons.commands.rvm1.MoveToCoordinates;
 import de.adv.atech.roboter.commons.commands.rvm1.MoveToNest;
 import de.adv.atech.roboter.commons.commands.rvm1.MoveToOrigin;
@@ -44,6 +45,9 @@ public class RMIClient implements Runnable
             
             localClient.getCommandManager()
                     .registerCommand(ResetRvm1.class);
+            
+            localClient.getCommandManager()
+                    .registerCommand(MoveJoints.class);
             
             NetworkSlaveManager ncl = 
                     new NetworkSlaveManager(this.rmiServer,
