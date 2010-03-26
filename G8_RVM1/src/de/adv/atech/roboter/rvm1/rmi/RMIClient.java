@@ -8,6 +8,8 @@ import de.adv.atech.roboter.commons.Constant;
 import de.adv.atech.roboter.commons.GenericController;
 import de.adv.atech.roboter.commons.commands.rvm1.MoveToCoordinates;
 import de.adv.atech.roboter.commons.commands.rvm1.MoveToNest;
+import de.adv.atech.roboter.commons.commands.rvm1.MoveToOrigin;
+import de.adv.atech.roboter.commons.commands.rvm1.ResetRvm1;
 import de.adv.atech.roboter.commons.interfaces.Client;
 import de.adv.atech.roboter.commons.interfaces.Command;
 import de.adv.atech.roboter.commons.network.NetworkSlaveManager;
@@ -36,6 +38,12 @@ public class RMIClient implements Runnable
 
             localClient.getCommandManager()
                     .registerCommand(MoveToNest.class);
+            
+            localClient.getCommandManager()
+                    .registerCommand(MoveToOrigin.class);
+            
+            localClient.getCommandManager()
+                    .registerCommand(ResetRvm1.class);
             
             NetworkSlaveManager ncl = 
                     new NetworkSlaveManager(this.rmiServer,
