@@ -32,12 +32,12 @@ public class NetworkSlaveManager {
 		Discovery.setProperties("RMIDiscovery.properties");
 
 		int rmiPort = Discovery.getRMIRegistryPort() + 1;
+		
+	    LocateRegistry.createRegistry(rmiPort);
+	    
+        Registry reg = LocateRegistry.getRegistry(rmiPort);
 
-		LocateRegistry.createRegistry(rmiPort);
-
-		Registry reg = LocateRegistry.getRegistry(rmiPort);
-
-		reg.bind(this.clientName, this.serverReg);
+        reg.bind(this.clientName, this.serverReg);  
 
 		// RMILookup.bind(this.server, Constant.RMI_SERVER_GUI);
 
