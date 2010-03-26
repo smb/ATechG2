@@ -90,7 +90,13 @@ public class SerialController implements Observer
 
 	public void writeNextCommand()
 	{
-		serialWriter.writeCommand( commandList.removeFirst() );
+		if(roboterStatus)
+		{
+			for(TimedCommand tc1 : commandList)
+			{
+				serialWriter.writeCommand( tc1 );
+			}
+		}
 	}
 
 	private void notifyTranslator(String ssMessage)
@@ -107,7 +113,15 @@ public class SerialController implements Observer
 	
 	public void setRoboterOK()
 	{
+		String reset = "rs";
+		TimedCommand tc1 = new TimedCommand( reset );
+		serialWriter.writeCommand( tc1 );
 		roboterStatus = true;
+	}
+	
+	public boolean getRoboterStatus()
+	{
+		return roboterStatus;
 	}
 	
 	/**
