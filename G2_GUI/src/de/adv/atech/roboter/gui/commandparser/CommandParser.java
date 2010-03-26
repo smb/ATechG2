@@ -18,7 +18,9 @@ import java.util.regex.Pattern;
 import de.adv.atech.roboter.commons.ClientManager;
 import de.adv.atech.roboter.commons.Constant;
 import de.adv.atech.roboter.commons.ErrorMessages;
+import de.adv.atech.roboter.commons.exceptions.ClientException;
 import de.adv.atech.roboter.commons.exceptions.CommandException;
+import de.adv.atech.roboter.commons.interfaces.Client;
 import de.adv.atech.roboter.commons.interfaces.Command;
 import de.adv.atech.roboter.commons.interfaces.CommandManager;
 import de.adv.atech.roboter.gui.core.GUIController;
@@ -90,9 +92,10 @@ public class CommandParser {
 	 * @return commandList
 	 * @throws IllegalSyntaxException
 	 * @throws CommandException
+	 * @throws ClientException 
 	 */
 	public List<Command> getCommandList(String codeLines)
-			throws IllegalSyntaxException, CommandException {
+			throws IllegalSyntaxException, CommandException, ClientException {
 		commandList.clear();
 		loopQueue.clear();
 		codeLine = 0;
@@ -109,9 +112,10 @@ public class CommandParser {
 	 * @param isRecursive
 	 * @throws CommandException
 	 * @throws IllegalSyntaxException
+	 * @throws ClientException 
 	 */
 	private void handleCodeLines(String codeLines, boolean isRecursive)
-			throws CommandException, IllegalSyntaxException {
+			throws CommandException, IllegalSyntaxException, ClientException {
 		StringTokenizer stringTokenizer = new StringTokenizer(codeLines,
 				Constant.COMMANDPARSER_COMMANDSDELIMITER);
 		while (stringTokenizer.hasMoreTokens()) {
@@ -129,9 +133,10 @@ public class CommandParser {
 	 * @param isRecursive
 	 * @throws IllegalSyntaxException
 	 * @throws CommandException
+	 * @throws ClientException 
 	 */
 	private void handleLine(String line, boolean isRecursive)
-			throws IllegalSyntaxException, CommandException {
+			throws IllegalSyntaxException, CommandException, ClientException {
 		if (!isRecursive) {
 			codeLine++;
 		}
@@ -233,9 +238,10 @@ public class CommandParser {
 	 * @param line
 	 * @throws IllegalSyntaxException
 	 * @throws CommandException
+	 * @throws ClientException
 	 */
 	private void handleSubCommand(String line) throws IllegalSyntaxException,
-			CommandException {
+			CommandException, ClientException {
 		checkCommandPattern(line, Constant.COMMANDPARSER_COMMAND_SUB_PARAMETER);
 		List<String> parameterList = getParameters(line);
 		String filename = parameterList.get(0);
@@ -265,10 +271,12 @@ public class CommandParser {
 	}
 
 	private void handleRobotCommand(String commandName, String line)
-			throws CommandException, IllegalSyntaxException {
+			throws CommandException, IllegalSyntaxException, ClientException {
 		ClientManager cm = GUIController.getInstance().getClientManager();
-		CommandManager commandManager = cm.getActiveClient()
-				.getCommandManager();
+
+		Client activeClient = cm.getActiveClient();
+
+		CommandManager commandManager = activeClient.getCommandManager();
 		Command command = commandManager.resolveCommand(commandName, false);
 
 		if (command == null) {

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import de.adv.atech.roboter.commons.exceptions.ClientException;
 import de.adv.atech.roboter.commons.interfaces.Client;
 import de.adv.atech.roboter.commons.interfaces.ClientChangedListener;
 
@@ -122,7 +123,10 @@ public class ClientManager {
 		this.activeClient = client;
 	}
 
-	public Client getActiveClient() {
+	public Client getActiveClient() throws ClientException {
+		if (this.activeClient == null) {
+			throw new ClientException("Kein aktiver Client gefunden");
+		}
 		return this.activeClient;
 	}
 

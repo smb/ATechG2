@@ -58,19 +58,21 @@ public class CommandReferenceArea extends JEditorPane implements ItemListener,
 	}
 
 	public void update(Client client) {
-
-		CommandManager commandManager = null;
-		commandManager = client.getCommandManager();
-
 		this.commandRef = new StringBuffer(400);
 
-		try {
-			displayCommandInfo(this.commandRef, commandManager);
-		}
-		catch (CommandException e) {
-			this.commandRef
-					.append("Command Liste konnte nicht gelesen werden: "
-							+ e.getMessage());
+		if (client != null) {
+
+			CommandManager commandManager = null;
+			commandManager = client.getCommandManager();
+
+			try {
+				displayCommandInfo(this.commandRef, commandManager);
+			}
+			catch (CommandException e) {
+				this.commandRef
+						.append("Command Liste konnte nicht gelesen werden: "
+								+ e.getMessage());
+			}
 		}
 
 		this.setText(String.format(this.stringFormat, BGColor, this.commandRef
@@ -140,8 +142,14 @@ public class CommandReferenceArea extends JEditorPane implements ItemListener,
 		Client client = GUIController.getInstance().getClientManager()
 				.getClient(clientIdentifier);
 
-		client.getCommandManager().registerCommandChangedListener(this);
+		if (client != null) {
 
+			GUIController.getInstance().getClientManager().setActiveClient(
+					client);
+
+			client.getCommandManager().registerCommandChangedListener(this);
+
+		}
 		update(client);
 		//
 	}

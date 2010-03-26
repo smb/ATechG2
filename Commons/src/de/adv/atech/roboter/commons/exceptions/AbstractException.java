@@ -5,6 +5,9 @@ package de.adv.atech.roboter.commons.exceptions;
 
 import java.lang.reflect.Field;
 
+import de.adv.atech.roboter.commons.Constant;
+import de.adv.atech.roboter.commons.ControllerManager;
+
 /**
  * @author sb
  * 
@@ -97,7 +100,7 @@ public abstract class AbstractException extends Exception {
 		}
 
 		// TODO: Logger benutzen!
-		System.out.println(sb.toString());
+		ControllerManager.message(Constant.MESSAGE_TYPE_ERROR, sb.toString());
 
 	}
 }

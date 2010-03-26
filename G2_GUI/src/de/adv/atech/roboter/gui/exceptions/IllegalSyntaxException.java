@@ -1,6 +1,8 @@
 package de.adv.atech.roboter.gui.exceptions;
 
-public class IllegalSyntaxException extends Exception {
+import de.adv.atech.roboter.commons.exceptions.AbstractException;
+
+public class IllegalSyntaxException extends AbstractException {
 
 	/**
 	 * 

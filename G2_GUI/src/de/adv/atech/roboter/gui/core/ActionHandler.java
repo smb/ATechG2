@@ -6,6 +6,7 @@ import java.util.List;
 import de.adv.atech.roboter.commons.Constant;
 import de.adv.atech.roboter.commons.ControllerManager;
 import de.adv.atech.roboter.commons.NetworkClient;
+import de.adv.atech.roboter.commons.exceptions.AbstractException;
 import de.adv.atech.roboter.commons.interfaces.Command;
 import de.adv.atech.roboter.gui.commandparser.CommandParser;
 
@@ -46,9 +47,13 @@ public class ActionHandler implements RobotListener {
 					client.getRMI().processCommand(commandList);
 				}
 			}
+			catch (AbstractException ex) {
+				ex.dumpException();
+			}
 			catch (Exception ex) {
 				ControllerManager.message(Constant.MESSAGE_TYPE_ERROR,
 						"Fehler: " + ex.getMessage());
+
 			}
 
 		}

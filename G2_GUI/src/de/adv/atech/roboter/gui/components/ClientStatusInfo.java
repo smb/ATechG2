@@ -11,6 +11,7 @@ import de.adv.atech.roboter.commons.ClientManager;
 import de.adv.atech.roboter.commons.Constant;
 import de.adv.atech.roboter.commons.ControllerManager;
 import de.adv.atech.roboter.commons.NetworkClient;
+import de.adv.atech.roboter.commons.exceptions.ClientException;
 import de.adv.atech.roboter.commons.interfaces.Client;
 import de.adv.atech.roboter.commons.interfaces.ClientChangedListener;
 import de.adv.atech.roboter.gui.core.GUIController;
@@ -48,6 +49,7 @@ public class ClientStatusInfo implements Runnable, ClientChangedListener {
 	}
 
 	/**
+	 *
 	 * 
 	 */
 	private void setClientLabel() {
@@ -71,8 +73,12 @@ public class ClientStatusInfo implements Runnable, ClientChangedListener {
 
 					clientList.add(clientIdentifier);
 
-					if (client == cm.getActiveClient()) {
-						activeClient = clientIdentifier;
+					try {
+						if (client == cm.getActiveClient()) {
+							activeClient = clientIdentifier;
+						}
+					}
+					catch (ClientException e) {
 					}
 				}
 			}
