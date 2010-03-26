@@ -43,9 +43,10 @@ public class RMIServer extends UnicastRemoteObject implements ServerInterface {
 
 			try {
 				if (tmpCommand instanceof ErrorInfo) {
-					ControllerManager.message(Constant.MESSAGE_TYPE_ERROR,
-							(String) tmpCommand
-									.getParameter(ErrorInfo.Parameter.Message));
+					ControllerManager.message(Constant.MESSAGE_TYPE_POPUP,
+							"Fehler", (String) tmpCommand
+									.getParameter(ErrorInfo.Parameter.Message),
+							"");
 				}
 				if (tmpCommand instanceof StatusInfo) {
 					ControllerManager
@@ -130,7 +131,6 @@ public class RMIServer extends UnicastRemoteObject implements ServerInterface {
  */
 	public long ping() throws RemoteException {
 		System.out.println("** PING? PONG! **");
-
 		return System.currentTimeMillis();
 	}
 

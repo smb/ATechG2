@@ -18,6 +18,8 @@ public class Constant {
 
 	public static final int MESSAGE_TYPE_ERROR = 1;
 
+	public static final int MESSAGE_TYPE_POPUP = 2;
+
 	public static final String COMMANDPARSER_COMMANDSDELIMITER = "\n";
 
 	public static final String COMMANDPARSER_WHITESPACESPATTERN = "\\s*";
@@ -34,19 +36,19 @@ public class Constant {
 	public static final int COMMANDPARSER_COMMAND_SELECTCLIENT_PARAMETER = 1;
 
 	public static final String COMMANDPARSER_COMMAND_LOOP = "LOOP";
-	
+
 	public static final String COMMANDPARSER_COMMAND_LOOP_STRING = "LOOP (int loops)";
 
 	public static final int COMMANDPARSER_COMMAND_LOOP_PARAMETER = 1;
 
 	public static final String COMMANDPARSER_COMMAND_LOOPEND = "LOOPEND";
-	
+
 	public static final String COMMANDPARSER_COMMAND_LOOPEND_STRING = "LOOPEND";
 
 	public static final int COMMANDPARSER_COMMAND_LOOPEND_PARAMETER = 0;
 
 	public static final String COMMANDPARSER_COMMAND_SUB = "SUB";
-	
+
 	public static final String COMMANDPARSER_COMMAND_SUB_STRING = "SUB (String filename)";
 
 	public static final int COMMANDPARSER_COMMAND_SUB_PARAMETER = 1;

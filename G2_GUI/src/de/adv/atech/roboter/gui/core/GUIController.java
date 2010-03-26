@@ -291,12 +291,16 @@ public class GUIController implements Controller {
 		return this.debugArea;
 	}
 
-	public void message(int messageType, String text) {
+	public void message(int messageType, String... text) {
 		if (messageType == Constant.MESSAGE_TYPE_INFO) {
-			debug(text);
+			debug(text[0]);
 		}
 		if (messageType == Constant.MESSAGE_TYPE_ERROR) {
-			debug("ERROR: " + text);
+			debug("ERROR: " + text[0]);
+		}
+		if (messageType == Constant.MESSAGE_TYPE_POPUP) {
+			ExceptionDialog.showDialog(getMainFrame(), new IncidentInfo(
+					text[0], text[1], text[2]));
 		}
 	}
 
