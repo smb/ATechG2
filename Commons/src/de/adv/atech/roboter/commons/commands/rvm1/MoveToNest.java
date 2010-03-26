@@ -24,7 +24,7 @@ public class MoveToNest extends AbstractCommand
 	public List<String> getCommandCodeList()
 	{
 		List<String> result = new ArrayList<String>();
-		result.add("NT");
+		result.add("nt");
 		return result;
 	}
 
