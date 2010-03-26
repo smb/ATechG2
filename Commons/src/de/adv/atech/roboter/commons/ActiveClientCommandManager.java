@@ -110,7 +110,7 @@ public class ActiveClientCommandManager implements CommandManager,
 
 	@Override
 	public void registerCommandChangedListener(CommandChangedListener listener) {
-		this.registerCommandChangedListener(listener);
+		this.registerCommandChangedListener(listener, null);
 	}
 
 	@Override
