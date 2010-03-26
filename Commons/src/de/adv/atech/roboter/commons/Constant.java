@@ -47,4 +47,8 @@ public class Constant {
 
 	public static final int COMMANDPARSER_PARAMETER_MAX = 10;
 
+	public static final int COMMAND_SYNTAX_STYLE_COMMAND_REFERENCE = 0;
+
+	public static final int COMMAND_SYNTAX_STYLE_EDITOR = 1;
+
 }

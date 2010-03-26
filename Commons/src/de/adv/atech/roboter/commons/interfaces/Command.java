@@ -60,4 +60,5 @@ public interface Command {
 
 	public Command clone();
 
+	public String getSyntax(int style);
 }

@@ -2,9 +2,13 @@ package de.adv.atech.roboter.commons.commands;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
+import de.adv.atech.roboter.commons.Constant;
+import de.adv.atech.roboter.commons.ControllerManager;
 import de.adv.atech.roboter.commons.exceptions.CommandException;
 import de.adv.atech.roboter.commons.interfaces.Command;
 
@@ -260,5 +264,102 @@ public abstract class AbstractCommand implements Command, Serializable,
 		sb.append("]]");
 
 		return sb.toString();
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	private String getCommandReferenceSyntax() {
+
+		StringBuffer localRef = new StringBuffer(100);
+
+		localRef.append("<b>");
+		localRef.append(this.getCommandName());
+		localRef.append("</b><br>");
+
+		try {
+
+			if (this.getParameters().size() > 0) {
+
+				for (Iterator<Entry<Enum<?>, Field>> it = this.getParameters()
+						.entrySet().iterator(); it.hasNext();) {
+					Entry<Enum<?>, Field> entry = it.next();
+
+					localRef.append(" - "
+							+ entry.getKey()
+							+ " ("
+							+ this.getParameterClass(entry.getValue())
+									.getSimpleName() + ")");
+
+					localRef.append("<br>");
+				}
+			}
+			else {
+				localRef.append("[Keine Parameter vorhanden]");
+			}
+
+			localRef.append("<br>");
+		}
+		catch (CommandException ex) {
+			localRef.append("- Parameter konnten nicht gelesen werden: "
+					+ ex.getMessage());
+			localRef.append("<br>");
+		}
+
+		return localRef.toString();
+	}
+
+	private String getEditorSyntax() {
+
+		StringBuffer localRef = new StringBuffer(100);
+
+		localRef.append(this.getCommandName());
+
+		try {
+			if (this.getParameters().size() > 0) {
+
+				localRef.append(" (");
+
+				for (Iterator<Entry<Enum<?>, Field>> it = this.getParameters()
+						.entrySet().iterator(); it.hasNext();) {
+					Entry<Enum<?>, Field> entry = it.next();
+
+					String paramType = this.getParameterClass(entry.getValue())
+							.getSimpleName();
+
+					String paramName = entry.getKey().toString();
+
+					localRef.append(paramType);
+					localRef.append(paramName);
+
+					if (it.hasNext()) {
+						localRef.append(",");
+					}
+				}
+
+				localRef.append(")");
+			}
+		}
+		catch (CommandException ex) {
+			ControllerManager.message(Constant.MESSAGE_TYPE_ERROR,
+					"Parameter konnten nicht gelesen werden: "
+							+ ex.getMessage());
+		}
+
+		return localRef.toString();
+	}
+
+	public String getSyntax(int style) {
+		String syntaxString = null;
+
+		if (style == Constant.COMMAND_SYNTAX_STYLE_EDITOR) {
+			syntaxString = getEditorSyntax();
+		}
+		if (style == Constant.COMMAND_SYNTAX_STYLE_COMMAND_REFERENCE) {
+			syntaxString = getCommandReferenceSyntax();
+		}
+
+		return syntaxString;
 	}
 }

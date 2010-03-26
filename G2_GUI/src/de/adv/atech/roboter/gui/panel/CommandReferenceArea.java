@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
+import de.adv.atech.roboter.commons.Constant;
 import de.adv.atech.roboter.commons.exceptions.ClientException;
 import de.adv.atech.roboter.commons.exceptions.CommandException;
 import de.adv.atech.roboter.commons.interfaces.Client;
@@ -93,51 +94,12 @@ public class CommandReferenceArea extends JEditorPane implements ItemListener,
 			Command command = commandManager.getCommandInstance(commandClass,
 					false);
 
-			appendCommandInfo(ref, command);
+			ref
+					.append(command
+							.getSyntax(Constant.COMMAND_SYNTAX_STYLE_COMMAND_REFERENCE));
 
 			ref.append("<br>");
 		}
-	}
-
-	public void appendCommandInfo(StringBuffer ref, Command command) {
-
-		StringBuffer localRef = new StringBuffer(200);
-
-		localRef.append("<b>");
-		localRef.append(command.getCommandName());
-		localRef.append("</b><br>");
-
-		try {
-
-			if (command.getParameters().size() > 0) {
-
-				for (Iterator<Entry<Enum<?>, Field>> it = command
-						.getParameters().entrySet().iterator(); it.hasNext();) {
-					Entry<Enum<?>, Field> entry = it.next();
-
-					localRef
-							.append(" - "
-									+ entry.getKey()
-									+ " ("
-									+ command.getParameterClass(entry
-											.getValue()) + ")");
-
-					localRef.append("<br>");
-				}
-			}
-			else {
-				localRef.append("[Keine Parameter vorhanden]");
-			}
-
-			localRef.append("<br>");
-		}
-		catch (CommandException ex) {
-			localRef.append("- Parameter konnten nicht gelesen werden: "
-					+ ex.getMessage());
-			localRef.append("<br>");
-		}
-
-		ref.append(localRef);
 	}
 
 	@Override
