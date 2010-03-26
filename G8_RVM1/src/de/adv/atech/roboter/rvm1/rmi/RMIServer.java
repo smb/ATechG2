@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import de.adv.atech.roboter.commons.Constant;
+import de.adv.atech.roboter.commons.ControllerManager;
 import de.adv.atech.roboter.commons.GenericController;
 import de.adv.atech.roboter.commons.exceptions.ClientException;
 import de.adv.atech.roboter.commons.exceptions.CommandException;
@@ -48,7 +49,8 @@ public class RMIServer extends UnicastRemoteObject
 	public void processCommand(List<Command> commandList)
 			                   throws RemoteException
     {
-        // TODO logging 
+        ControllerManager.message(0, "Recieve command list.");
+        System.out.println("RMIServer: Its alive!");
 
 		for( Iterator<Command> it = commandList.iterator(); it.hasNext(); )
 		{

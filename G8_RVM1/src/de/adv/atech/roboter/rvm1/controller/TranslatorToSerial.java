@@ -18,7 +18,7 @@ public class TranslatorToSerial
     
     public void processCommand(Command comm)
     {
-        System.out.println("TranslatorToSerial: Prcessing command: " +
+        System.out.println("TranslatorToSerial: Processing command: " +
                 comm.toString());
         Rvm1CommandInternals rvm1Comm = (Rvm1CommandInternals)comm;
         List<String> commandCodes = rvm1Comm.getCommandCodeList();
