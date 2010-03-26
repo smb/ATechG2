@@ -11,7 +11,7 @@ public class Starter
     private RMIServer rmiServer;
     private RMIClient rmiClient;
     private TranslatorToRmi rmiTranslator;
-    private TranslatorToSerial serialTranslator;
+    private TranslatorToSerial serialTrans;
     
     private SerialController controller;
     
@@ -27,17 +27,20 @@ public class Starter
     {
         try
         {
+            this.rmiServer = new RMIServer();
+     
+            this.rmiClient = new RMIClient(this.rmiServer);
             
-            this.rmiTranslator = new TranslatorToRmi();// parameter rmiclient needed
+            this.rmiTranslator = new TranslatorToRmi(this.rmiClient);
             
             this.controller = new SerialController(this.rmiTranslator);
             
-            this.serialTranslator = new TranslatorToSerial(this.controller);
+            this.serialTrans = new TranslatorToSerial(this.controller);
             
-            this.rmiServer = new RMIServer(this.serialTranslator);
+            this.rmiServer.setTranslator(this.serialTrans);
             
-            this.rmiClient = new RMIClient(this.rmiServer);
-            
+            Thread t = new Thread(this.rmiClient);
+            t.start();
         }
         catch( RemoteException e )
         {
