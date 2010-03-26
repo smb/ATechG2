@@ -17,5 +17,11 @@ public class ErrorMessages {
 	public static final String COMMANDPARSER_SUBFILE_NOT_FOUND = "Datei fuer Unterprogramm wurde nicht gefunden";
 
 	public static final String COMMANDPARSER_SUBFILE_ERROR = "Unterprogramm konnte nicht gelesen werden";
+	
+	public static final String SYNTAXEDITOR_POPUP_CARET_ERROR = "Befehl kann an dieser Stelle im Editor nicht eingefügt werden";
+	
+	public static final String SYNTAXEDITOR_POPUP_COMMAND_ERROR = "Es können keine Befehle des aktuellen Clients gelesen werden";
+	
+	public static final String SYNTAXEDITOR_POPUP_CLIENT_ERROR = "Es existiert aktuell kein Client";
 
 }
