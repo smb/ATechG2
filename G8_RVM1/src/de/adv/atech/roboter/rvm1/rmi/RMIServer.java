@@ -50,7 +50,6 @@ public class RMIServer extends UnicastRemoteObject
 			                   throws RemoteException
     {
         ControllerManager.message(0, "Recieve command list.");
-        System.out.println("RMIServer: Its alive!");
 
 		for( Iterator<Command> it = commandList.iterator(); it.hasNext(); )
 		{
