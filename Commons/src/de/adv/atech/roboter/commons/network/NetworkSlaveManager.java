@@ -5,6 +5,7 @@ package de.adv.atech.roboter.commons.network;
 
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.ExportException;
 
 import de.adv.atech.roboter.commons.ControllerManager;
 import de.adv.atech.roboter.commons.rmi.Discovery;
@@ -33,11 +34,18 @@ public class NetworkSlaveManager {
 
 		int rmiPort = Discovery.getRMIRegistryPort() + 1;
 		
-	    LocateRegistry.createRegistry(rmiPort);
-	    
+		// TODO objid in use
+		try
+		{
+		    LocateRegistry.createRegistry(rmiPort);
+		}
+		catch(ExportException ee)
+		{
+		    ControllerManager.debug("RVM1 already registered for RMI");
+		}
         Registry reg = LocateRegistry.getRegistry(rmiPort);
 
-        reg.bind(this.clientName, this.serverReg);  
+        reg.rebind(this.clientName, this.serverReg);  
 
 		// RMILookup.bind(this.server, Constant.RMI_SERVER_GUI);
 
