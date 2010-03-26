@@ -20,5 +20,10 @@ public class TranslatorToRmi implements Observer
         // TODO Auto-generated method stub
         System.out.println("TranslatorToRmi: Notification recieved.");
     }
+    
+    public void sendCommand( String ssMessage)
+    {
+    	
+    }
 
 }

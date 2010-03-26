@@ -11,11 +11,11 @@ import de.adv.atech.roboter.rvm1.serial.SerialWriter;
 
 public class TranslatorToSerial
 {
-    private SerialWriter serialWriter;
+    private SerialController serialController;
     
     public TranslatorToSerial(SerialController controller)
     {
-        this.serialWriter = serialWriter;
+        this.serialController = controller;
     }
     
     public void processCommand(Command comm)
@@ -26,7 +26,7 @@ public class TranslatorToSerial
         List<String> commandCodes = rvm1Comm.getCommandCodeList();
         for(String code: commandCodes)
         {
-            this.serialWriter.appendCommand(new TimedCommand(code));
+            this.serialController.addCommand(new TimedCommand(code));
         }
         
     }
