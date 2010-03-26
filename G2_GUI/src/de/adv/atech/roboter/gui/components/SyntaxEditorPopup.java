@@ -31,6 +31,7 @@ public class SyntaxEditorPopup extends JPopupMenu {
 		JMenu languageMenu = new JMenu("Sprachbefehle");
 		this.add(languageMenu);
 		robotMenu = new JMenu("Roboterbefehle");
+		robotMenu.setEnabled(false);
 		this.add(robotMenu);
 		
 		JMenuItem loopMenuItem = new JMenuItem(Constant.COMMANDPARSER_COMMAND_LOOP);
@@ -66,6 +67,7 @@ public class SyntaxEditorPopup extends JPopupMenu {
 		CommandManager commandManager = GUIController.getInstance().getActiveClientCommandManager();
 		List<Class<? extends Command>> commandList = commandManager.getCommandList();
 		for (Iterator<Class<? extends Command>> iterator = commandList.iterator(); iterator.hasNext();) {
+			robotMenu.setEnabled(true);
 			Class<? extends Command> commandClass = iterator.next();
 			final Command command = commandManager.getCommandInstance(commandClass, false);
 			JMenuItem menuItem = new JMenuItem(command.getCommandName());
