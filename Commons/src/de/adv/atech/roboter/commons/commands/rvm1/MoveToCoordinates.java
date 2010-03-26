@@ -9,11 +9,11 @@ import de.adv.atech.roboter.commons.interfaces.Rvm1CommandInternals;
 public class MoveToCoordinates extends AbstractCommand implements
 		Rvm1CommandInternals {
 
-	protected Double X;
+	public Double X;
 
-	protected Double Y;
+	public Double Y;
 
-	protected Double Z;
+	public Double Z;
 
 	public enum Parameter {
 		X, Y, Z
