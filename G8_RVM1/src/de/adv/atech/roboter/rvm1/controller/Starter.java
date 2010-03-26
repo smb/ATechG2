@@ -61,7 +61,7 @@ public class Starter implements Controller
     }
 
     @Override
-    public void message( int messageType, String text )
+    public void message( int messageType, String... text )
     {
          System.out.println(text);   
     }
