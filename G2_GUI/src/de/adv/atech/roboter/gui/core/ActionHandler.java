@@ -51,6 +51,7 @@ public class ActionHandler implements RobotListener {
 				ex.dumpException();
 			}
 			catch (Exception ex) {
+				ex.printStackTrace();
 				ControllerManager.message(Constant.MESSAGE_TYPE_ERROR,
 						"Fehler: " + ex.getMessage());
 

@@ -5,6 +5,7 @@ import java.rmi.registry.LocateRegistry;
 import de.adv.atech.roboter.commons.Constant;
 import de.adv.atech.roboter.commons.ControllerManager;
 import de.adv.atech.roboter.commons.rmi.Discovery;
+import de.adv.atech.roboter.commons.rmi.RMIDiscovery;
 import de.adv.atech.roboter.commons.rmi.RMILookup;
 import de.adv.atech.roboter.commons.rmi.ServerInterface;
 
@@ -26,6 +27,22 @@ public class NetworkMasterManager {
    */
 	public void initServer() throws Exception {
 		Discovery.setProperties("RMIDiscovery.properties");
+
+		ServerInterface clientReg = null;
+
+		try {
+			clientReg = (ServerInterface) RMIDiscovery.lookup(
+					ServerInterface.class, null, 1);
+		}
+		catch (Exception ex) {
+			clientReg = null;
+		}
+
+		// Schon ein anderer Server hoert auf der Adresse, ABBRUCH!
+		if (clientReg != null) {
+			throw new Exception(
+					"Auf der angegbeenen Adresse ist schon eine andere GUI gestartet");
+		}
 
 		int rmiPort = Discovery.getRMIRegistryPort();
 

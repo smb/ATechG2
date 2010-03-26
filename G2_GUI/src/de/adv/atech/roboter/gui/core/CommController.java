@@ -8,9 +8,11 @@ import java.util.Map;
 import de.adv.atech.roboter.commons.ClientManager;
 import de.adv.atech.roboter.commons.Constant;
 import de.adv.atech.roboter.commons.ControllerManager;
+import de.adv.atech.roboter.commons.IncidentInfo;
 import de.adv.atech.roboter.commons.NetworkClient;
 import de.adv.atech.roboter.commons.interfaces.Client;
 import de.adv.atech.roboter.commons.network.NetworkMasterManager;
+import de.adv.atech.roboter.gui.components.ExceptionDialog;
 import de.adv.atech.roboter.gui.rmi.RMIServer;
 
 public class CommController implements Runnable {
@@ -34,7 +36,9 @@ public class CommController implements Runnable {
 			this.nmm.initServer();
 		}
 		catch (Exception e) {
-			throw new Exception("Fehler beim Initialisieren des Servers", e);
+
+			throw new Exception("Fehler beim Initialisieren des Servers: "
+					+ e.getMessage(), e);
 		}
 	}
 

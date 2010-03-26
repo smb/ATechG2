@@ -25,6 +25,8 @@ import de.adv.atech.roboter.commons.ControllerManager;
  */
 public class RMIDiscovery {
 
+	private int nAttempts = 7;
+
 	/**
 	 * The interface class object for the server we are tring to discover
 	 * 
@@ -57,7 +59,8 @@ public class RMIDiscovery {
 	 */
 	private Object _lock = new Object();
 
-	private RMIDiscovery(Class serviceInterface, String serviceName) {
+	public RMIDiscovery(Class serviceInterface, String serviceName, int attempts) {
+		this.nAttempts = attempts;
 		_serviceInterface = serviceInterface;
 		_serviceName = serviceName;
 		if (_serviceName == null || _serviceName.length() == 0) {
@@ -79,7 +82,24 @@ public class RMIDiscovery {
 	public static Remote lookup(Class serviceInterface, String serviceName)
 			throws java.rmi.ConnectException {
 
-		RMIDiscovery disco = new RMIDiscovery(serviceInterface, serviceName);
+		RMIDiscovery disco = new RMIDiscovery(serviceInterface, serviceName, 7);
+		return disco.lookupImpl();
+	}
+
+	/**
+	 * Find first matching services via multicast - variable
+	 * 
+	 * @param serviceInterface
+	 *            Interface that the server we are trying to discover
+	 * @param serviceName
+	 *            Unique name of server we are trying to discover.
+	 * @return The discovered server ref.
+	 * @exception java.rmi.ConnectException
+	 */
+	public static Remote lookup(Class serviceInterface, String serviceName,
+			int attempts) throws java.rmi.ConnectException {
+		RMIDiscovery disco = new RMIDiscovery(serviceInterface, serviceName,
+				attempts);
 		return disco.lookupImpl();
 	}
 
@@ -259,7 +279,6 @@ public class RMIDiscovery {
 					MulticastSocket socket = new MulticastSocket(multicastPort);
 					socket.joinGroup(address);
 
-					int nAttempts = 7;
 					for (int nTimes = 0; _discoveryResult == null
 							&& nTimes < nAttempts; nTimes++) {
 
@@ -271,7 +290,7 @@ public class RMIDiscovery {
 								.debug("RMI discovery: Sending request "
 										+ outMsg);
 						socket.send(packet);
-						Thread.sleep(5000);
+						Thread.sleep(700 * nAttempts);
 					}
 					socket.leaveGroup(address);
 					socket.close();

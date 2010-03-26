@@ -15,12 +15,14 @@ import de.adv.atech.roboter.commons.ActiveClientCommandManager;
 import de.adv.atech.roboter.commons.ClientManager;
 import de.adv.atech.roboter.commons.Constant;
 import de.adv.atech.roboter.commons.ControllerManager;
+import de.adv.atech.roboter.commons.IncidentInfo;
 import de.adv.atech.roboter.commons.LocalClient;
 import de.adv.atech.roboter.commons.interfaces.Client;
 import de.adv.atech.roboter.commons.interfaces.Controller;
 import de.adv.atech.roboter.gui.ActionManager;
 import de.adv.atech.roboter.gui.components.ClientStatusInfo;
 import de.adv.atech.roboter.gui.components.DateTimeStatusLabel;
+import de.adv.atech.roboter.gui.components.ExceptionDialog;
 import de.adv.atech.roboter.gui.components.MainFrame;
 import de.adv.atech.roboter.gui.panel.DebugArea;
 import de.adv.atech.roboter.gui.panel.EditorPanel;
@@ -224,8 +226,7 @@ public class GUIController implements Controller {
 		}
 		catch (Exception ex) {
 
-			message(Constant.MESSAGE_TYPE_ERROR, "Fehler beim Start: "
-					+ ex.getMessage());
+			showException("Kritischer Fehler beim Programmstart", ex, true);
 
 			return false;
 		}
@@ -370,7 +371,9 @@ public class GUIController implements Controller {
 
 	@Override
 	public void shutdown() {
-		this.commController.shutdown();
+		if (this.commController != null) {
+			this.commController.shutdown();
+		}
 		System.exit(0);
 	}
 
@@ -430,4 +433,20 @@ public class GUIController implements Controller {
 	public ClientStatusInfo getClientStatusInfo() {
 		return clientStatusInfo;
 	}
+
+	/**
+	 * 
+	 * @param title
+	 * @param exception
+	 * @param shutdown
+	 */
+	public void showException(String title, Throwable exception,
+			boolean shutdown) {
+		ExceptionDialog.showDialog(GUIController.getInstance().getMainFrame(),
+				new IncidentInfo("Kritischer Fehler", exception));
+		if (shutdown) {
+			this.shutdown();
+		}
+	}
+
 }
