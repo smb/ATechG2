@@ -32,7 +32,7 @@ public class SetSpeed extends AbstractCommand implements
     }
 
     @Override
-    public List<String> getCommandCodeList(Object informationRef) {
+    public List<String> getCommandCodeList() {
         int spd;
         if(Speed <= 1)
         {

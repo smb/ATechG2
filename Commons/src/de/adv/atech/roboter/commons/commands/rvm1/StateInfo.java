@@ -5,24 +5,28 @@ import de.adv.atech.roboter.commons.exceptions.CommandException;
 
 public class StateInfo extends AbstractCommand {
 
-	protected String Message;
+    public String Message;
 
-	protected Double X;
+	public Double X;
 
-	protected Double Y;
+	public Double Y;
 
-	protected Double Z;
-
-	// more to come
+	public Double Z;
+	
+	public Integer Tilt;
+	
+	public Integer Pitch;
+	
+	public Boolean Open;
 
 	public enum Parameter {
-		Message, X, Y, Z
+		Message, X, Y, Z, Tilt, Pitch, Open
 	}
 
 	public StateInfo() {
 		super();
 		init(this, Parameter.class);
-		this.commandName = "StatusInfo";
+		this.commandName = "Status";
 	}
 
 	@Override

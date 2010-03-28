@@ -20,7 +20,7 @@ public class MoveToOrigin extends AbstractCommand implements
     }
 
     @Override
-    public List<String> getCommandCodeList(Object informationRef)
+    public List<String> getCommandCodeList()
     {
         List<String> result = new ArrayList<String>();
         result.add("og");

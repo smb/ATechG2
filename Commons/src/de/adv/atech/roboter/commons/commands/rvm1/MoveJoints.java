@@ -38,7 +38,7 @@ public class MoveJoints extends AbstractCommand implements
     }
 
     @Override
-    public List<String> getCommandCodeList(Object informationRef) {
+    public List<String> getCommandCodeList() {
         String mj = "mj " + A +
                      "," + B + 
                      "," + C +

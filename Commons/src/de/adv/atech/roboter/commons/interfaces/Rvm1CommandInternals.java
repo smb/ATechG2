@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface Rvm1CommandInternals {
 
-	public List<String> getCommandCodeList(Object infoRef);
+	public List<String> getCommandCodeList();
 }

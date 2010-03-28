@@ -5,16 +5,17 @@ import de.adv.atech.roboter.commons.exceptions.CommandException;
 
 public class ErrorInfo extends AbstractCommand {
 
-	protected String Message;
+	public String Message;
+	public Integer Code;
 
 	public enum Parameter {
-		Message
+		Message, Code
 	}
 
 	public ErrorInfo() {
 		super();
 		init(this, Parameter.class);
-		this.commandName = "ErrorInfo";
+		this.commandName = "Error";
 	}
 
 	@Override

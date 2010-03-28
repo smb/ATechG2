@@ -21,7 +21,7 @@ public class MoveToNest extends AbstractCommand
 	}
 
 	@Override
-	public List<String> getCommandCodeList(Object informationRef)
+	public List<String> getCommandCodeList()
 	{
 		List<String> result = new ArrayList<String>();
 		result.add("nt");
