@@ -10,7 +10,7 @@ import de.adv.atech.roboter.commons.Constant;
 import de.adv.atech.roboter.commons.ControllerManager;
 import de.adv.atech.roboter.commons.NetworkClient;
 import de.adv.atech.roboter.commons.commands.rvm1.ErrorInfo;
-import de.adv.atech.roboter.commons.commands.rvm1.StatusInfo;
+import de.adv.atech.roboter.commons.commands.rvm1.StateInfo;
 import de.adv.atech.roboter.commons.exceptions.ClientException;
 import de.adv.atech.roboter.commons.exceptions.CommandException;
 import de.adv.atech.roboter.commons.interfaces.Client;
@@ -48,12 +48,12 @@ public class RMIServer extends UnicastRemoteObject implements ServerInterface {
 									.getParameter(ErrorInfo.Parameter.Message),
 							"");
 				}
-				if (tmpCommand instanceof StatusInfo) {
+				if (tmpCommand instanceof StateInfo) {
 					ControllerManager
 							.message(
 									Constant.MESSAGE_TYPE_INFO,
 									(String) tmpCommand
-											.getParameter(StatusInfo.Parameter.Message));
+											.getParameter(StateInfo.Parameter.Message));
 				}
 			}
 			catch (CommandException ex) {
