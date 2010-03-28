@@ -2,6 +2,7 @@ package de.adv.atech.roboter.rvm1.controller;
 
 import java.util.List;
 
+import de.adv.atech.roboter.commons.commands.rvm1.MoveToCoordinates;
 import de.adv.atech.roboter.commons.interfaces.Command;
 import de.adv.atech.roboter.commons.interfaces.Rvm1CommandInternals;
 import de.adv.atech.roboter.rvm1.data.RoboterState;
@@ -36,17 +37,31 @@ public class TranslatorToSerial implements Runnable
         
         Rvm1CommandInternals rvm1Comm = (Rvm1CommandInternals)comm;
         
-        List<String> commandCodes = rvm1Comm.getCommandCodeList(this.robotState);
+        List<String> commandCodes = rvm1Comm.getCommandCodeList();
         
             for(String code: commandCodes)
             {
-                if (!code.equals( "rs" ))
+                if (code.equals( "rs" ))
                 {
-                    this.serialController.addCommand(new TimedCommand(code));
+                    serialController.setRoboterOK();
                 }
                 else
                 {
-                    serialController.setRoboterOK();
+                    if( code.equals("mp") )
+                    {
+                        MoveToCoordinates mtc = (MoveToCoordinates)comm;
+                        String newCode = "mp " + mtc.X + "," +
+                                         mtc.Y + "," + mtc.Z + "," +
+                                         this.robotState.getPitch() +
+                                         "," + this.robotState.getTilt();
+                        this.serialController
+                                .addCommand(new TimedCommand(newCode));
+                    }
+                    else
+                    {
+                        this.serialController
+                                .addCommand(new TimedCommand(code));
+                    }
                 }
                 
             }
