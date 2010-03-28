@@ -4,31 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.adv.atech.roboter.commons.commands.AbstractCommand;
+import de.adv.atech.roboter.commons.commands.rvm1.MoveToCoordinates.Parameter;
 import de.adv.atech.roboter.commons.exceptions.CommandException;
 import de.adv.atech.roboter.commons.interfaces.Rvm1CommandInternals;
 
-public class MoveJoints extends AbstractCommand implements
+public class SetSpeed extends AbstractCommand implements
         Rvm1CommandInternals
 {
+    public Byte Speed;
 
-    public Integer A;
-
-    public Integer B;
-
-    public Integer C;
-    
-    public Integer D;
-    
-    public Integer E;
+    public Boolean FastAcceleration;
 
     public enum Parameter {
-        A, B, C, D, E
+        Speed, FastAcceleration
     }
 
-    public MoveJoints() {
+    public SetSpeed() {
         super();
         init(this, Parameter.class);
-        this.commandName = "MoveJoints";
+        this.commandName = "Speed";
     }
 
     @Override
@@ -39,14 +33,33 @@ public class MoveJoints extends AbstractCommand implements
 
     @Override
     public List<String> getCommandCodeList(Object informationRef) {
-        String mj = "mj " + A +
-                     "," + B + 
-                     "," + C +
-                     "," + D +
-                     "," + E;
+        int spd;
+        if(Speed <= 1)
+        {
+            spd = 1;
+        }
+        else
+        {
+            if(Speed >= 9)
+            {
+                spd = 9;
+            }
+            else
+            {
+                spd = 1;
+            }
+        }
+        char accel;
+        if(FastAcceleration)
+        {
+            accel = 'h';
+        }
+        else
+        {
+            accel = 'l';
+        }
         List<String> result = new ArrayList<String>();
-        result.add(mj);
+        result.add("sp " + spd + "," + accel);
         return result;
     }
-
 }

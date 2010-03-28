@@ -3,7 +3,7 @@ package de.adv.atech.roboter.commons.commands.rvm1;
 import de.adv.atech.roboter.commons.commands.AbstractCommand;
 import de.adv.atech.roboter.commons.exceptions.CommandException;
 
-public class StatusInfo extends AbstractCommand {
+public class StateInfo extends AbstractCommand {
 
 	protected String Message;
 
@@ -19,7 +19,7 @@ public class StatusInfo extends AbstractCommand {
 		Message, X, Y, Z
 	}
 
-	public StatusInfo() {
+	public StateInfo() {
 		super();
 		init(this, Parameter.class);
 		this.commandName = "StatusInfo";

@@ -21,7 +21,7 @@ public class ResetRvm1 extends AbstractCommand implements
     }
 
     @Override
-    public List<String> getCommandCodeList()
+    public List<String> getCommandCodeList(Object informationRef)
     {
         List<String> result = new ArrayList<String>();
         result.add("rs");

@@ -20,10 +20,11 @@ public class MoveToOrigin extends AbstractCommand implements
     }
 
     @Override
-    public List<String> getCommandCodeList()
+    public List<String> getCommandCodeList(Object informationRef)
     {
         List<String> result = new ArrayList<String>();
         result.add("og");
+        result.add("mj 0,0,0,0,6"); // correction of hand roll offset
         return result;
     }
 
