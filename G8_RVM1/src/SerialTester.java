@@ -18,7 +18,7 @@ public class SerialTester
 		
 		TranslatorToRmi tr1 = new TranslatorToRmi( null );
 		
-		SerialController sc1 = new SerialController( tr1 );
+		SerialController sc1 = new SerialController( tr1 , null);
 		
 //		SerialPort serialPort = null;
 //    	try

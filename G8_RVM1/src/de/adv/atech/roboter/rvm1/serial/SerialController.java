@@ -9,21 +9,23 @@ import java.util.Observable;
 import java.util.Observer;
 
 import de.adv.atech.roboter.rvm1.controller.TranslatorToRmi;
+import de.adv.atech.roboter.rvm1.data.RoboterState;
 import de.adv.atech.roboter.rvm1.data.TimedCommand;
 
 public class SerialController implements Observer
 {
-	TranslatorToRmi				rmiTranslator;
-	SerialWriter				serialWriter;
-	SerialReader				serialReader;
-	LinkedList< TimedCommand >	commandList	= new LinkedList< TimedCommand >();
-	boolean						readyToSend	= false;
-	boolean 					roboterStatus = true;
+	private TranslatorToRmi				rmiTranslator;
+	private SerialWriter				serialWriter;
+	private SerialReader				serialReader;
+	private LinkedList< TimedCommand >	commandList	= new LinkedList< TimedCommand >();
+	private boolean						readyToSend	= false;
+	private boolean 					roboterStatus = true;
+	private RoboterState                robotStateInfo;
 
-	public SerialController(TranslatorToRmi ssTranslator)
+	public SerialController(TranslatorToRmi ssTranslator, RoboterState robotState)
 	{
 		rmiTranslator = ssTranslator;
-
+		robotStateInfo = robotState;
 		initSerial();
 	}
 

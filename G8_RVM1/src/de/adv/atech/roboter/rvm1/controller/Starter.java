@@ -4,6 +4,7 @@ import java.rmi.RemoteException;
 
 import de.adv.atech.roboter.commons.ControllerManager;
 import de.adv.atech.roboter.commons.interfaces.Controller;
+import de.adv.atech.roboter.rvm1.data.RoboterState;
 import de.adv.atech.roboter.rvm1.rmi.RMIClient;
 import de.adv.atech.roboter.rvm1.rmi.RMIServer;
 import de.adv.atech.roboter.rvm1.serial.SerialController;
@@ -14,7 +15,7 @@ public class Starter implements Controller
     private RMIClient rmiClient;
     private TranslatorToRmi rmiTranslator;
     private TranslatorToSerial serialTrans;
-    
+    private RoboterState robotState;
     private SerialController controller;
     
     /**
@@ -31,15 +32,19 @@ public class Starter implements Controller
         {
             ControllerManager.getInstance().setController(this);
             
+            this.robotState = new RoboterState();
+            
             this.rmiServer = new RMIServer();
      
             this.rmiClient = new RMIClient(this.rmiServer);
             
             this.rmiTranslator = new TranslatorToRmi(this.rmiClient);
             
-            this.controller = new SerialController(this.rmiTranslator);
+            this.controller = new SerialController(this.rmiTranslator,
+                                                   this.robotState);
             
-            this.serialTrans = new TranslatorToSerial(this.controller);
+            this.serialTrans = new TranslatorToSerial(this.controller,
+                                                      this.robotState);
             
             this.rmiServer.setTranslator(this.serialTrans);
             
