@@ -29,7 +29,7 @@ public class Constant {
 	// TODO: Parameter RegEx so anpassen, dass auch Punkte für Double Werte
 	// akzeptiert werden
 
-	public static final String COMMANDPARSER_PARAMETERPATTERNSTRING = "([a-zA-Z0-9\\.]+)";
+	public static final String COMMANDPARSER_PARAMETERPATTERNSTRING = "([a-zA-Z0-9-\\.]+)";
 
 	public static final String COMMANDPARSER_COMMAND_SELECTCLIENT = "SELECT";
 
