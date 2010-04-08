@@ -16,7 +16,7 @@ public class ControlPanel extends JPanel {
 		setLayout(new FlowLayout(FlowLayout.LEFT));
 		
 		add(new BaseControl(new MoveToNest(), "Nestposition"));
-		add(new BaseControl(new MoveToNest(), "Origin"));
+		add(new BaseControl(new MoveToOrigin(), "Origin"));
 		SliderControl slider = new SliderControl(new MoveToCoordinates(), "Move to Coordiantes");
 		slider.addSlider(0, 100, "X");
 		slider.addSlider(0, 100, "Y");
