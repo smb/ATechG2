@@ -4,14 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JSlider;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
@@ -19,10 +14,10 @@ import de.adv.atech.roboter.commons.exceptions.CommandException;
 import de.adv.atech.roboter.commons.interfaces.Command;
 
 public class BaseControl extends JPanel {
-
-	JButton executeButton;
 	
 	Command command;
+	
+	private JButton executeButton;
 	private String title;
 	
 	public BaseControl(Command command, String title) {
@@ -47,25 +42,13 @@ public class BaseControl extends JPanel {
 	}
 	
 	private void sendCommand() throws CommandException {
-		List<Double> parameterList = getParameters();
-		if (parameterList != null && !parameterList.isEmpty()) {
-			int i=0;
-			Set<Enum<?>> parameterSet = command.getParameters().keySet();
-			for (Iterator<Enum<?>> iterator = parameterSet.iterator(); iterator.hasNext();) {
-				Enum<?> parameterKey = (Enum<?>) iterator.next();	
-				if (i < parameterList.size()) {
-					command.setParameter(parameterKey, parameterList.get(i));	
-				}
-				i++;
-			}
-		}
+		setCommandParameters();
 		System.out.println(command.toString());
 		//TODO: impl
 	}
 	
-	List<Double> getParameters() {
-		return null;
-	}
+	// wird von erbenden Klassen ggf. Ÿberschrieben
+	void setCommandParameters() {}
 	
 	public void setExecuteButtonTitle(String title) {
 		executeButton.setText(title);

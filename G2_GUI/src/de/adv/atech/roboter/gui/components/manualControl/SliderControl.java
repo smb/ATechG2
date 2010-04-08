@@ -1,44 +1,25 @@
 package de.adv.atech.roboter.gui.components.manualControl;
 
-import java.awt.BorderLayout;
 import java.awt.Component;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.List;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import de.adv.atech.roboter.commons.exceptions.CommandException;
 import de.adv.atech.roboter.commons.interfaces.Command;
 
-public class SliderControl extends BaseControl {
+public class SliderControl extends AbstractParametrizableControl {
 
-	JPanel panel;
-	
 	public SliderControl(Command command, String title) {
 		super(command, title);
-		panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
-		add(panel, BorderLayout.CENTER);
 	}
 	
-	public List<Double> getParameters() {
-		List<Double> parameterList = new ArrayList<Double>();
-		Component[] components = panel.getComponents();
-		for (int i = 0; i < components.length; i++) {
-			JSlider slider = (JSlider) components[i];
-			parameterList.add(Double.valueOf(slider.getValue()));
-		}
-		return parameterList;
-	}
-	
-	public void addSlider(int min, int max, String title) {
+	@Override
+	public void addParameterControl(Enum<?> parameterName, int min, int max, String title) {
 		JSlider slider = new JSlider();
 		slider.setMinimum(min);
 		slider.setMaximum(max);
@@ -61,8 +42,24 @@ public class SliderControl extends BaseControl {
 				valueLabel.setText(String.valueOf(slider.getValue()));
 			}
 		});
-		
+		componentParameterMap.put(slider, parameterName);
 		panel.add(slider);
+	}
+
+	@Override
+	void setCommandParameters() {
+		Component[] components = panel.getComponents();
+		for (int i = 0; i < components.length; i++) {
+			JSlider slider = (JSlider) components[i];
+			double value = slider.getValue();
+			Enum<?> parameterName = componentParameterMap.get(slider);
+			try {
+				command.setParameter(parameterName, value);
+			} catch (CommandException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 }
