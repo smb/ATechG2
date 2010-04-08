@@ -58,5 +58,9 @@ public class Constant {
 	public static final int COMMAND_SYNTAX_STYLE_COMMAND_REFERENCE = 0;
 
 	public static final int COMMAND_SYNTAX_STYLE_EDITOR = 1;
+	
+	public static final String EDITOR_LOADFILE_FILTER_DESCRIPTION = "Robotercodedatei (*.rob)";
+	
+	public static final String EDITOR_LOADFILE_FILTER_ENDING = ".rob";
 
 }

@@ -29,5 +29,9 @@ public class EditorPanel extends JPanel {
 	public String getEditorContent() {
 		return this.syntaxEditorPane.getEditorContent();
 	}
+	
+	public void setEditorContent(String content) {
+		this.syntaxEditorPane.setEditorContent(content);
+	}
 
 }

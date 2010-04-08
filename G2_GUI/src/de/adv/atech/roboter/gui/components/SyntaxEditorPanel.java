@@ -49,6 +49,10 @@ public class SyntaxEditorPanel extends JPanel implements CommandChangedListener 
 	public String getEditorContent() {
 		return editorPane.getText();
 	}
+	
+	public void setEditorContent(String content) {
+		editorPane.setText(content);
+	}
 
 	@Override
 	public void commandChanged(Client client) {
